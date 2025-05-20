@@ -51,9 +51,9 @@ $ads = [
     ],
 ];
 
-function amount_formatting(int $amount): string
+function price_format(int $price): string
 {
-    return number_format($amount, 0, ',', ' ') . ' ₽';
+    return number_format($price, 0, ',', ' ') . ' ₽';
 }
 ?>
 
@@ -130,7 +130,7 @@ function amount_formatting(int $amount): string
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?php isset($ad['price']) ? print(amount_formatting($ad['price'])) : print('0 ₽'); ?></span>
+                            <span class="lot__cost"><?= price_format($ad['price'] ?? 0); ?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
