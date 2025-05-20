@@ -114,18 +114,18 @@ $ads = [
             <h2>Открытые лоты</h2>
         </div>
         <ul class="lots__list">
-            <?php foreach ($ads as ['name' => $name, 'category' => $category, 'price' => $price, 'urlPhoto' => $urlPhoto]): ?>
+            <?php foreach ($ads as $ad): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="<?=$urlPhoto; ?>" width="350" height="260" alt="<?=$name; ?>">
+                    <img src="<?=$ad['urlPhoto'] ?? ''; ?>" width="350" height="260" alt="<?=$ad['name'] ?? ''; ?>">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?=$category; ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$name; ?></a></h3>
+                    <span class="lot__category"><?=$d['category'] ?? ''; ?></span>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$d['name'] ?? ''; ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$price; ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?=$ad['price'] ?? 0; ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
