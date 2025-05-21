@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var string[] $categories
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+*/
+?>
+
 <section class="promo">
     <h2 class="promo__title">Нужен стафф для катки?</h2>
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
@@ -17,7 +24,7 @@
         <?php foreach ($lots as $lot): ?>
         <li class="lots__item lot">
             <div class="lot__image">
-                <img src="<?=htmlspecialchars($lot['img_url'] ?? ''); ?>" width="350" height="260" alt="<?=htmlspecialchars($lot['name'] ?? ''); ?>">
+                <img src="<?=$lot['img_url'] ?? ''; ?>" width="350" height="260" alt="<?=htmlspecialchars($lot['name'] ?? ''); ?>">
             </div>
             <div class="lot__info">
                 <span class="lot__category"><?=htmlspecialchars($lot['category'] ?? ''); ?></span>
@@ -25,7 +32,7 @@
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
-                        <span class="lot__cost"><?= htmlspecialchars(price_format($lot['price'] ?? 0)); ?></span>
+                        <span class="lot__cost"><?=price_format($lot['price'] ?? 0); ?></span>
                     </div>
                     <div class="lot__timer timer">
                         12:23

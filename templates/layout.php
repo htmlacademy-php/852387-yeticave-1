@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var string $title
+ * @var int $is_auth
+ * @var string $user_name
+ * @var string[] $categories
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+ * @var string $content
+*/
+?>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -26,7 +36,7 @@
 
                 <?php if ($is_auth === 1): ?>
                     <div class="user-menu__logged">
-                        <p><?=$user_name; ?></p>
+                        <p><?=htmlspecialchars($user_name); ?></p>
                         <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
                         <a class="user-menu__logout" href="#">Выход</a>
                     </div>

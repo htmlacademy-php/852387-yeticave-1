@@ -143,7 +143,6 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
-
 /**
  * Форматирует сумму и добавляет к ней знак рубля
  * @param int $price
