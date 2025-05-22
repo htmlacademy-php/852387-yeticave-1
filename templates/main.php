@@ -1,7 +1,8 @@
 <?php
 /**
  * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
+ * @var array|null $timer
 */
 ?>
 
@@ -22,6 +23,10 @@
     </div>
     <ul class="lots__list">
         <?php foreach ($lots as $lot): ?>
+            <!-- по идее нужно делать проверку, если разница во времени < 0, то лот совсем удаляется или идет в архив ? -->
+            <!-- можно ли в html создавать переменные ???, как сделала ниже -->
+        <?php $timer=get_dt_range($lot['date_end']) ?>
+            <?php if($timer): ?>
         <li class="lots__item lot">
             <div class="lot__image">
                 <img src="<?=$lot['img_url'] ?? ''; ?>" width="350" height="260" alt="<?=htmlspecialchars($lot['name'] ?? ''); ?>">
@@ -34,12 +39,14 @@
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost"><?=price_format($lot['price'] ?? 0); ?></span>
                     </div>
-                    <div class="lot__timer timer">
-                        12:23
+
+                    <div class="lot__timer timer <?=$timer[0] <= 0 ? 'timer--finishing' : ''?>">
+                        <?=time_format($timer); ?>
                     </div>
                 </div>
             </div>
         </li>
+        <?php endif; ?>
         <?php endforeach; ?>
     </ul>
 </section>

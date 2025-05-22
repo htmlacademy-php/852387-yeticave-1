@@ -152,3 +152,38 @@ function price_format($price)
 {
     return number_format($price, 0, ',', ' ') . ' ₽';
 }
+
+/**
+ * @param array $time
+ * @return string
+ */
+function time_format($time)
+{
+    [$hours, $minutes] = $time;
+    $hours_format = str_pad(strval($hours), 2, "0", STR_PAD_LEFT);
+    $minutes_format = str_pad(strval($minutes), 2, "0", STR_PAD_LEFT);
+    return $hours_format . ':' . $minutes_format;
+}
+
+/**
+ * @param string $date_end
+ * @return array|null
+ */
+function get_dt_range($date_end)
+{
+//    date_default_timezone_set("Europe/Moscow");
+//    setlocale(LC_ALL, 'ru_RU');
+
+    $ts = time();
+    $end_ts = strtotime($date_end);
+    $ts_diff = $end_ts - $ts;
+    if ($ts_diff < 0) {
+        return null;
+    }
+    $secs_in_hour = 3600;
+    $secs_in_minute = 60;
+    $hours_until_end = floor($ts_diff / $secs_in_hour);
+    $minutes_until_end = abs(floor($ts_diff % $secs_in_hour / $secs_in_minute));
+
+    return [$hours_until_end, $minutes_until_end];
+}
