@@ -1,4 +1,14 @@
 <?php
+declare(strict_types=1);
+
+/*
+ * писала константы через define(),
+ * редактор кода подсвечивает волнистой линией код и просит писать через const
+ * можно константы через const объявлять??
+*/
+const SECS_IN_HOUR = 3600;
+const SECS_IN_MINUTE = 60;
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -148,42 +158,41 @@ function include_template($name, array $data = []) {
  * @param int $price
  * @return string
  */
-function price_format($price)
+function price_format(int $price): string
 {
     return number_format($price, 0, ',', ' ') . ' ₽';
 }
 
 /**
- * @param array $time
+ * Функция получает на вход массив из 2-х элементов(часы и минуты) и форматирует время в строку
+ * @param int[] $time массив [количество часов, количество минут]
  * @return string
  */
-function time_format($time)
+function time_format(array $time): string
 {
     [$hours, $minutes] = $time;
     $hours_format = str_pad(strval($hours), 2, "0", STR_PAD_LEFT);
     $minutes_format = str_pad(strval($minutes), 2, "0", STR_PAD_LEFT);
-    return $hours_format . ':' . $minutes_format;
+    return "{$hours_format}:{$minutes_format}";
 }
 
 /**
- * @param string $date_end
- * @return array|null
+ * Функция возвращает массив, где первый элемент — целое количество часов до даты, а второй — остаток в минутах
+ * @param string $date_end дата истечения лота
+ * @return int[]|null
  */
-function get_dt_range($date_end)
+function get_dt_range(string $date_end): array|null
 {
-//    date_default_timezone_set("Europe/Moscow");
-//    setlocale(LC_ALL, 'ru_RU');
-
     $ts = time();
     $end_ts = strtotime($date_end);
     $ts_diff = $end_ts - $ts;
+
     if ($ts_diff < 0) {
         return null;
     }
-    $secs_in_hour = 3600;
-    $secs_in_minute = 60;
-    $hours_until_end = floor($ts_diff / $secs_in_hour);
-    $minutes_until_end = abs(floor($ts_diff % $secs_in_hour / $secs_in_minute));
+
+    $hours_until_end = floor($ts_diff / SECS_IN_HOUR);
+    $minutes_until_end = abs(floor($ts_diff % SECS_IN_HOUR / SECS_IN_MINUTE));
 
     return [$hours_until_end, $minutes_until_end];
 }

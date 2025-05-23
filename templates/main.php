@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
- * @var string[] $categories
+ * @var string[] $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
- * @var array|null $timer
+ * @var array{hours: int, minutes: int}|null $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var int $hours
+ * @var int $minutes
 */
 ?>
 
@@ -23,9 +26,11 @@
     </div>
     <ul class="lots__list">
         <?php foreach ($lots as $lot): ?>
-            <!-- по идее нужно делать проверку, если разница во времени < 0, то лот совсем удаляется или идет в архив ? -->
-            <!-- можно ли в html создавать переменные ???, как сделала ниже -->
-        <?php $timer=get_dt_range($lot['date_end']) ?>
+            <!--  проверку, если оставшееся время до окончания лота < 0
+             я делаю в самой функции get_dt_range(), и получается лот совсем удаляется или идет в архив ? -->
+            <!--  можно ли в html создавать переменные ???, как сделала ниже -->
+        <?php $timer=get_dt_range($lot['date_end']);
+            [$hours, $minutes]=$timer; ?>
             <?php if($timer): ?>
         <li class="lots__item lot">
             <div class="lot__image">
@@ -39,8 +44,8 @@
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost"><?=price_format($lot['price'] ?? 0); ?></span>
                     </div>
-
-                    <div class="lot__timer timer <?=$timer[0] <= 0 ? 'timer--finishing' : ''?>">
+                    <!-- по заданию, если оставшееся время меньше одного часа, то этому блоку также надо добавить класс -->
+                    <div class="lot__timer timer <?=$hours === 0 ? 'timer--finishing' : ''?>">
                         <?=time_format($timer); ?>
                     </div>
                 </div>

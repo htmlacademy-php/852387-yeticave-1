@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
 /**
  * @var string $user_name
- * @var string[] $categories
+ * @var string[] $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  */
 
