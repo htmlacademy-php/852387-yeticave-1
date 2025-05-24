@@ -1,7 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
- * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+ * @var string[] $categories список категорий лотов
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
+ * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var int $hours
+ * @var int $minutes
 */
 ?>
 
@@ -22,6 +26,8 @@
     </div>
     <ul class="lots__list">
         <?php foreach ($lots as $lot): ?>
+        <?php $timer=get_dt_range($lot['date_end']);
+              [$hours, $minutes]=$timer; ?>
         <li class="lots__item lot">
             <div class="lot__image">
                 <img src="<?=$lot['img_url'] ?? ''; ?>" width="350" height="260" alt="<?=htmlspecialchars($lot['name'] ?? ''); ?>">
@@ -34,8 +40,8 @@
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost"><?=price_format($lot['price'] ?? 0); ?></span>
                     </div>
-                    <div class="lot__timer timer">
-                        12:23
+                    <div class="lot__timer timer <?=$hours === 0 ? 'timer--finishing' : ''?>">
+                        <?=time_format($timer); ?>
                     </div>
                 </div>
             </div>

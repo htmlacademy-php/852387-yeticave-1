@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+date_default_timezone_set("Europe/Moscow");
+setlocale(LC_ALL, 'ru_RU');
 
 require_once('helpers.php');
 require_once('data.php');
@@ -6,7 +10,7 @@ require_once('data.php');
 /**
  * @var string $user_name
  * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  */
 
 $page_content = include_template('main.php', [

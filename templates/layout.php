@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
  * @var string $title
  * @var int $is_auth
  * @var string $user_name
  * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string} $lots
+ * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  * @var string $content
 */
 ?>

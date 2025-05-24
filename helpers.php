@@ -1,4 +1,9 @@
 <?php
+declare(strict_types=1);
+
+const SECS_IN_HOUR = 3600;
+const SECS_IN_MINUTE = 60;
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -148,7 +153,41 @@ function include_template($name, array $data = []) {
  * @param int $price
  * @return string
  */
-function price_format($price)
+function price_format(int $price): string
 {
     return number_format($price, 0, ',', ' ') . ' ₽';
+}
+
+/**
+ * Функция форматирует массив времени в строку
+ * @param int[] $time массив [количество часов, количество минут]
+ * @return string
+ */
+function time_format(array $time): string
+{
+    [$hours, $minutes] = $time;
+    $hours_format = str_pad(strval($hours), 2, "0", STR_PAD_LEFT);
+    $minutes_format = str_pad(strval($minutes), 2, "0", STR_PAD_LEFT);
+    return "{$hours_format}:{$minutes_format}";
+}
+
+/**
+ * Функция возвращает остаток времени до данной даты
+ * @param string $date_end дата истечения лота
+ * @return int[] [остаток часов до даты, остаток минут]
+ */
+function get_dt_range(string $date_end): array
+{
+    $ts = time();
+    $end_ts = strtotime($date_end);
+    $ts_diff = $end_ts - $ts;
+
+    if ($ts_diff < 0) {
+        return [0, 0];
+    }
+
+    $hours_until_end = floor($ts_diff / SECS_IN_HOUR);
+    $minutes_until_end = abs(floor($ts_diff % SECS_IN_HOUR / SECS_IN_MINUTE));
+
+    return [$hours_until_end, $minutes_until_end];
 }
