@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/*
- * писала константы через define(),
- * редактор кода подсвечивает волнистой линией код и просит писать через const
- * можно константы через const объявлять??
-*/
 const SECS_IN_HOUR = 3600;
 const SECS_IN_MINUTE = 60;
 
@@ -164,7 +159,7 @@ function price_format(int $price): string
 }
 
 /**
- * Функция получает на вход массив из 2-х элементов(часы и минуты) и форматирует время в строку
+ * Функция форматирует массив времени в строку
  * @param int[] $time массив [количество часов, количество минут]
  * @return string
  */
@@ -177,18 +172,18 @@ function time_format(array $time): string
 }
 
 /**
- * Функция возвращает массив, где первый элемент — целое количество часов до даты, а второй — остаток в минутах
+ * Функция возвращает остаток времени до данной даты
  * @param string $date_end дата истечения лота
- * @return int[]|null
+ * @return int[] [остаток часов до даты, остаток минут]
  */
-function get_dt_range(string $date_end): array|null
+function get_dt_range(string $date_end): array
 {
     $ts = time();
     $end_ts = strtotime($date_end);
     $ts_diff = $end_ts - $ts;
 
     if ($ts_diff < 0) {
-        return null;
+        return [0, 0];
     }
 
     $hours_until_end = floor($ts_diff / SECS_IN_HOUR);
