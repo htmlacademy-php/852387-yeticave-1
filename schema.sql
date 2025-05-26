@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS yeticave;
+DROP DATABASE yeticave;
 
 CREATE DATABASE yeticave
   DEFAULT CHARACTER SET utf8mb4
@@ -7,51 +7,63 @@ CREATE DATABASE yeticave
 USE yeticave;
 
 CREATE TABLE users (
-  id  INT unsigned AUTO_INCREMENT PRIMARY KEY,
+  id INT NOT NULL AUTO_INCREMENT,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name VARCHAR(128) NOT NULL,
   email VARCHAR(128) NOT NULL UNIQUE,
   password VARCHAR(64) NOT NULL,
-  contact VARCHAR(255) NOT NULL
+  contact VARCHAR(255) NOT NULL,
+
+  PRIMARY KEY(id)
 ) ENGINE=INNODB;
 
 CREATE TABLE categories (
-  id INT unsigned AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(128) NOT NULL UNIQUE
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(128) NOT NULL UNIQUE,
+
+  PRIMARY KEY(id)
 ) ENGINE=INNODB;
 
+
 CREATE TABLE lots (
-  id INT unsigned AUTO_INCREMENT PRIMARY KEY,
-  user_id INT unsigned NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name VARCHAR(128) NOT NULL,
-  description TEXT NOT NULL,
+  description TEXT,
   img_url VARCHAR(255) NOT NULL,
-  cat_id INT unsigned NOT NULL,
-  price INT NOT NULL,
+  price DECIMAL,
   date_end DATE NOT NULL,
   step_bet INT NOT NULL,
-  user_win_id INT unsigned,
+  user_win_id INT,
+  cat_id INT NOT NULL,
 
-  FOREIGN KEY (user_id, user_win_id)
-                  REFERENCES users(id),
+  PRIMARY KEY(id),
+
+  FOREIGN KEY (user_id)
+    REFERENCES users(id),
+
+  FOREIGN KEY (user_win_id)
+    REFERENCES users(id),
 
   FOREIGN KEY (cat_id)
-                  REFERENCES categories(id)
+    REFERENCES categories(id)
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=INNODB;
 
 CREATE TABLE bets (
-  id INT unsigned AUTO_INCREMENT PRIMARY KEY,
-  user_id INT unsigned NOT NULL,
-  lot_id INT unsigned NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  lot_id INT NOT NULL,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  cost INT NOT NULL,
+  cost DECIMAL,
+
+  PRIMARY KEY(id),
 
   FOREIGN KEY (user_id)
-                  REFERENCES users(id),
+    REFERENCES users(id),
 
   FOREIGN KEY (lot_id)
-                  REFERENCES lots(id)
+    REFERENCES lots(id)
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=INNODB;
