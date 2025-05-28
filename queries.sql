@@ -79,32 +79,31 @@ SELECT l.name 'lot_name',
        GREATEST(price, IFNULL(b.cost, 0)) 'cost',
        c.name 'cat_name'
 FROM lots l
-LEFT JOIN bets b ON b.lot_id = l.id
-INNER JOIN categories c ON l.cat_id = c.id
+    LEFT JOIN bets b ON b.lot_id = l.id
+    INNER JOIN categories c ON l.cat_id = c.id
 WHERE l.date_end < DATE(NOW())
 ORDER BY l.date_add DESC;
 
 -- показываем лот по его ID (например id = 1). Получаем также название категории, к которой принадлежит лот;
 SELECT l.*, c.name 'cat_name' FROM lots l
-INNER JOIN categories c ON l.cat_id = c.id
-WHERE l.id = 1;
+    INNER JOIN categories c ON l.cat_id = c.id
+                              WHERE l.id = 1;
 
 -- обновляем название лота по его идентификатору;
-UPDATE lots
-SET name = 'Ботинки'
-WHERE id = 4;
+UPDATE lots SET name = 'Ботинки' WHERE id = 4;
 -- проверяем изминения в таблице
-SELECT *, categories.name 'cat_name' FROM lots, categories
-WHERE lots.id = 4;
+SELECT *, c.name 'cat_name' FROM lots l
+    INNER JOIN categories c ON l.cat_id = c.id
+                            WHERE l.id = 4;
 
 
 -- получаем список ставок для лота по его id (например id = 6)с сортировкой по дате.
 SELECT * FROM bets
-WHERE lot_id = 6
-ORDER BY bets.date_add;
+         WHERE lot_id = 6
+         ORDER BY bets.date_add;
 -- тоже получаем список ставок для лота по его id (например id = 3)
 -- с сортировкой по дате с использованием JOIN.
 SELECT b.* FROM bets b
-INNER JOIN lots l ON l.id = b.lot_id
-WHERE l.id = 6
-ORDER BY b.date_add;
+    INNER JOIN lots l ON l.id = b.lot_id
+           WHERE l.id = 6
+           ORDER BY b.date_add;
