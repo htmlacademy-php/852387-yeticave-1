@@ -1,10 +1,10 @@
 -- добавляем в таблицу categories существующие категории объявлений (лотов)
-INSERT categories(name) VALUE ('Доски и лыжи'),
-                              ('Крепления'),
-                              ('Ботинки'),
-                              ('Одежда'),
-                              ('Инструменты'),
-                              ('Разное');
+INSERT categories(name, code) VALUE ('Доски и лыжи', 'boards'),
+                              ('Крепления', 'attachment'),
+                              ('Ботинки', 'boots'),
+                              ('Одежда', 'clothing'),
+                              ('Инструменты', 'tools'),
+                              ('Разное', 'other');
 
 -- добавляем в таблицу users данные нескольких выдуманных пользователей
 INSERT INTO users(name, email, password, contact)
@@ -18,7 +18,7 @@ VALUES (1,
         '',
         '/img/lot-1.jpg',
         10999,
-        '2025-05-21',
+        '2025-05-31',
         100,
         1),
         (2,
@@ -26,7 +26,7 @@ VALUES (1,
         '',
         '/img/lot-2.jpg',
         159999,
-        '2025-05-25',
+        '2025-05-29',
         120,
         1),
         (2,
@@ -50,7 +50,7 @@ VALUES (1,
          'немного б/у, без пятен, замки все работают',
          '/img/lot-5.jpg',
          7500,
-         '2025-05-23',
+         '2025-05-31',
          200,
          4),
         (1,
@@ -65,7 +65,7 @@ VALUES (1,
 -- добавляем пару ставок для любого объявления
 INSERT INTO bets(user_id, lot_id, cost)
 VALUES (2, 6, 5500),
-       (1, 6, 5600),
+       (2, 5, 7700),
        (1, 3, 8150);
 
 -- получаем все категории из таблицы categories;
@@ -73,38 +73,39 @@ SELECT *  FROM categories;
 
 -- получаем самые новые, открытые лоты. Каждый лот включает:
 -- название, стартовую цену, ссылку на изображение, цену, название категории;
-SELECT l.name 'lot_name',
+
+SELECT l.date_end,
+       l.name 'lot_name',
        price 'price_start',
        img_url,
        GREATEST(price, IFNULL(b.cost, 0)) 'cost',
        c.name 'cat_name'
 FROM lots l
-LEFT JOIN bets b ON b.lot_id = l.id
-INNER JOIN categories c ON l.cat_id = c.id
-WHERE l.date_end < DATE(NOW())
+    LEFT JOIN bets b ON b.lot_id = l.id
+    INNER JOIN categories c ON l.cat_id = c.id
+WHERE l.date_end > DATE(NOW())
 ORDER BY l.date_add DESC;
 
 -- показываем лот по его ID (например id = 1). Получаем также название категории, к которой принадлежит лот;
 SELECT l.*, c.name 'cat_name' FROM lots l
-INNER JOIN categories c ON l.cat_id = c.id
-WHERE l.id = 1;
+    INNER JOIN categories c ON l.cat_id = c.id
+                              WHERE l.id = 1;
 
 -- обновляем название лота по его идентификатору;
-UPDATE lots
-SET name = 'Ботинки'
-WHERE id = 4;
+UPDATE lots SET name = 'Ботинки' WHERE id = 4;
 -- проверяем изминения в таблице
-SELECT *, categories.name 'cat_name' FROM lots, categories
-WHERE lots.id = 4;
+SELECT *, c.name 'cat_name' FROM lots l
+    INNER JOIN categories c ON l.cat_id = c.id
+                            WHERE l.id = 4;
 
 
 -- получаем список ставок для лота по его id (например id = 6)с сортировкой по дате.
 SELECT * FROM bets
-WHERE lot_id = 6
-ORDER BY bets.date_add;
+         WHERE lot_id = 6
+         ORDER BY bets.date_add;
 -- тоже получаем список ставок для лота по его id (например id = 3)
 -- с сортировкой по дате с использованием JOIN.
 SELECT b.* FROM bets b
-INNER JOIN lots l ON l.id = b.lot_id
-WHERE l.id = 6
-ORDER BY b.date_add;
+    INNER JOIN lots l ON l.id = b.lot_id
+           WHERE l.id = 6
+           ORDER BY b.date_add;

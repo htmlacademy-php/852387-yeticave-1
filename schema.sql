@@ -1,8 +1,8 @@
-DROP DATABASE yeticave;
+DROP DATABASE if exists yeticave;
 
 CREATE DATABASE yeticave
-  DEFAULT CHARACTER SET utf8mb4
-  DEFAULT COLLATE utf8mb4_general_ci;
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
 
 USE yeticave;
 
@@ -20,6 +20,7 @@ CREATE TABLE users (
 CREATE TABLE categories (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(128) NOT NULL UNIQUE,
+  code VARCHAR(128) NOT NULL UNIQUE,
 
   PRIMARY KEY(id)
 ) ENGINE=INNODB;
