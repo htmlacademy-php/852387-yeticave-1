@@ -5,43 +5,69 @@ date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
 require_once('helpers.php');
-require_once('data.php');
 require_once ('init.php');
 
 /**
+ * @var string $user_name
  * @var boolean|object $connect
  * @var string $user_name
  * @var string[] $categories
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  */
 
+$user_name = 'Татьяна';
+$is_auth = rand(0, 1);
+$categories = [];
+$lots = [];
+$page_content = '';
+
 if (!$connect) {
     print('Ошибка подключения: ' . mysqli_connect_error());
 } else {
     print('Соединение установлено');
     // выполнение запросов
-    $sql = '';
+    $sql = 'SELECT *  FROM categories';
     $result = mysqli_query($connect, $sql);
 
-    if (!$result) {
+    if ($result) {
+        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
         $error = mysqli_error($connect);
         print("Ошибка MySQL: " . $error);
     }
 
-    mysqli_set_charset($connect, "utf8");
+    $sql = 'SELECT l.date_end,
+                    l.name "lot_name",
+                    price "price_start",
+                    img_url,
+                    GREATEST(price, IFNULL(b.cost, 0)) "cost",
+                    c.name "cat_name"
+            FROM lots l
+                LEFT JOIN bets b ON b.lot_id = l.id
+                INNER JOIN categories c ON l.cat_id = c.id
+            WHERE l.date_end > DATE(NOW())
+            ORDER BY l.date_add DESC;';
 
-    $page_content = include_template('main.php', [
-        'categories' => $categories,
-        'lots' => $lots,
-    ]);
+    $result = mysqli_query($connect, $sql);
 
+    if ($result) {
+        $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        $page_content = include_template('main.php', [
+            'categories' => $categories,
+            'lots' => $lots,
+        ]);
+    } else {
+        $error = mysqli_error($connect);
+        print("Ошибка MySQL: " . $error);
+    }
     $layout_content = include_template('layout.php', [
         'content' => $page_content,
         'title' => 'Главная',
-        'is_auth' => rand(0, 1),
+        'is_auth' => $is_auth,
         'user_name' => $user_name,
         'categories' => $categories,
     ]);
-
-    print($layout_content);
 }
+
+print($layout_content);
