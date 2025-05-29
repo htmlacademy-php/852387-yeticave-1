@@ -31,8 +31,7 @@ if (!$connect) {
     if ($result) {
         $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        $error = mysqli_error($connect);
-        print("Ошибка MySQL: " . $error);
+        die(mysqli_error($connect));
     }
     // выполнение запроса на список новых лотов
     $sql = 'SELECT l.date_end,
@@ -52,8 +51,7 @@ if (!$connect) {
     if ($result) {
         $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        $error = mysqli_error($connect);
-        print("Ошибка MySQL: " . $error);
+        die(mysqli_error($connect));
     }
     $page_content = include_template('main.php', [
         'categories' => $categories,
