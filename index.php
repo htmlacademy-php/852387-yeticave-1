@@ -22,7 +22,7 @@ $lots = [];
 $page_content = '';
 
 if (!$connect) {
-    print('Ошибка подключения: ' . mysqli_connect_error());
+    die(mysqli_connect_error());
 } else {
     // выполнение запроса на список категорий
     $sql = 'SELECT *  FROM categories';
