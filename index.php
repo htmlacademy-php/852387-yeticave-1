@@ -24,8 +24,7 @@ $page_content = '';
 if (!$connect) {
     print('Ошибка подключения: ' . mysqli_connect_error());
 } else {
-    print('Соединение установлено');
-    // выполнение запросов
+    // выполнение запроса на список категорий
     $sql = 'SELECT *  FROM categories';
     $result = mysqli_query($connect, $sql);
 
@@ -35,7 +34,7 @@ if (!$connect) {
         $error = mysqli_error($connect);
         print("Ошибка MySQL: " . $error);
     }
-
+    // выполнение запроса на список новых лотов
     $sql = 'SELECT l.date_end,
                     l.name "lot_name",
                     price "price_start",
@@ -52,15 +51,14 @@ if (!$connect) {
 
     if ($result) {
         $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-        $page_content = include_template('main.php', [
-            'categories' => $categories,
-            'lots' => $lots,
-        ]);
     } else {
         $error = mysqli_error($connect);
         print("Ошибка MySQL: " . $error);
     }
+    $page_content = include_template('main.php', [
+        'categories' => $categories,
+        'lots' => $lots,
+    ]);
     $layout_content = include_template('layout.php', [
         'content' => $page_content,
         'title' => 'Главная',

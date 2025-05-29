@@ -38,7 +38,7 @@ declare(strict_types=1);
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
-                        <span class="lot__cost"><?=price_format(intval($lot['cost']) ?? 0); ?></span>
+                        <span class="lot__cost"><?=price_format(intval($lot['price_start']) ?? 0); ?></span>
                     </div>
                     <div class="lot__timer timer <?=$hours === 0 ? 'timer--finishing' : ''?>">
                         <?=time_format($timer); ?>

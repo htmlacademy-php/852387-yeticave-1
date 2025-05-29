@@ -1,4 +1,4 @@
-DROP DATABASE yeticave;
+DROP DATABASE if exists yeticave;
 
 CREATE DATABASE yeticave
   DEFAULT CHARACTER SET utf8
