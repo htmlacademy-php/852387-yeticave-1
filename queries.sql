@@ -9,7 +9,8 @@ INSERT categories(name, code) VALUE ('Доски и лыжи', 'boards'),
 -- добавляем в таблицу users данные нескольких выдуманных пользователей
 INSERT INTO users(name, email, password, contact)
 VALUES ('Елена', 'stor@internet.ru', 'asJHfd4UE3m', 'телефон 8450934324'),
-       ('Макс', 'frik@mail.ru', 'dge7jMN4', 'telegramm @frick');
+       ("Егор", 'smir@yandex.ru', 'wHyt23bvyK', 'telegram @smita'),
+       ('Макс', 'frik@mail.ru', 'dge7jMN4', 'telegram @frick');
 
 -- добавляем в таблицу lots существующий список объявлений (лотов)
 INSERT INTO lots(user_id, name, description, img_url, price, date_end, step_bet, cat_id)
@@ -18,7 +19,7 @@ VALUES (1,
         '',
         '/img/lot-1.jpg',
         10999,
-        '2025-05-31',
+        '2025-06-04',
         100,
         1),
         (2,
@@ -26,7 +27,7 @@ VALUES (1,
         '',
         '/img/lot-2.jpg',
         159999,
-        '2025-05-29',
+        '2025-06-09',
         120,
         1),
         (2,
@@ -34,7 +35,7 @@ VALUES (1,
          '',
          '/img/lot-3.jpg',
          8000,
-         '2025-06-24',
+         '2025-06-07',
          150,
          2),
         (2,
@@ -42,7 +43,7 @@ VALUES (1,
          'без дефектов',
          '/img/lot-4.jpg',
          10999,
-         '2025-04-23',
+         '2025-07-23',
          250,
          3),
         (1,
@@ -50,7 +51,7 @@ VALUES (1,
          'немного б/у, без пятен, замки все работают',
          '/img/lot-5.jpg',
          7500,
-         '2025-05-31',
+         '2025-06-10',
          200,
          4),
         (1,
@@ -58,14 +59,16 @@ VALUES (1,
          'новая',
          '/img/lot-6.jpg',
          5400,
-         '2025-05-30',
+         '2025-06-03',
          100,
          6);
 
 -- добавляем пару ставок для любого объявления
 INSERT INTO bets(user_id, lot_id, cost)
 VALUES (2, 6, 5500),
+       (3, 6, 5600),
        (2, 5, 7700),
+       (3, 3, 8300),
        (1, 3, 8150);
 
 -- получаем все категории из таблицы categories;
@@ -74,17 +77,19 @@ SELECT *  FROM categories;
 -- получаем самые новые, открытые лоты. Каждый лот включает:
 -- название, стартовую цену, ссылку на изображение, цену, название категории;
 
-SELECT l.date_end,
+SELECT l.id,
+       l.date_end,
        l.name 'lot_name',
        price 'price_start',
        img_url,
-       GREATEST(price, IFNULL(b.cost, 0)) 'cost',
+       MAX(b.cost) 'cost',
        c.name 'cat_name'
 FROM lots l
     LEFT JOIN bets b ON b.lot_id = l.id
     INNER JOIN categories c ON l.cat_id = c.id
 WHERE l.date_end > DATE(NOW())
-ORDER BY l.date_add DESC;
+group by l.id
+ORDER BY l.date_add DESC LIMIT 10;
 
 -- показываем лот по его ID (например id = 1). Получаем также название категории, к которой принадлежит лот;
 SELECT l.*, c.name 'cat_name' FROM lots l

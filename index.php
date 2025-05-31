@@ -7,6 +7,8 @@ setlocale(LC_ALL, 'ru_RU');
 require_once('helpers.php');
 require_once ('init.php');
 
+const LIMIT_ITEMS = 10;
+
 /**
  * @var string $user_name
  * @var boolean|object $connect
@@ -23,47 +25,38 @@ $page_content = '';
 
 if (!$connect) {
     die(mysqli_connect_error());
-} else {
-    // выполнение запроса на список категорий
-    $sql = 'SELECT *  FROM categories';
-    $result = mysqli_query($connect, $sql);
-
-    if ($result) {
-        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        die(mysqli_error($connect));
-    }
-    // выполнение запроса на список новых лотов
-    $sql = 'SELECT l.date_end,
-                    l.name "lot_name",
-                    price "price_start",
-                    img_url,
-                    GREATEST(price, IFNULL(b.cost, 0)) "cost",
-                    c.name "cat_name"
-            FROM lots l
-                LEFT JOIN bets b ON b.lot_id = l.id
-                INNER JOIN categories c ON l.cat_id = c.id
-            WHERE l.date_end > DATE(NOW())
-            ORDER BY l.date_add DESC;';
-
-    $result = mysqli_query($connect, $sql);
-
-    if ($result) {
-        $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        die(mysqli_error($connect));
-    }
-    $page_content = include_template('main.php', [
-        'categories' => $categories,
-        'lots' => $lots,
-    ]);
-    $layout_content = include_template('layout.php', [
-        'content' => $page_content,
-        'title' => 'Главная',
-        'is_auth' => $is_auth,
-        'user_name' => $user_name,
-        'categories' => $categories,
-    ]);
 }
+    // выполнение запроса на список категорий
+$sql = 'SELECT *  FROM categories LIMIT ?';
+
+$categories = getItems($connect, $sql, LIMIT_ITEMS);
+// выполнение запроса на список новых лотов
+$sql = 'SELECT l.id,
+       l.date_end,
+       l.name "lot_name",
+       price "price_start",
+       img_url,
+       MAX(b.cost) "cost",
+       c.name "cat_name" FROM lots l
+           LEFT JOIN bets b ON b.lot_id = l.id
+           INNER JOIN categories c ON l.cat_id = c.id
+                         WHERE l.date_end > DATE(NOW())
+                         GROUP BY l.id
+                         ORDER BY l.date_add DESC LIMIT ?';
+
+$lots = getItems($connect, $sql, LIMIT_ITEMS);
+
+$page_content = include_template('main.php', [
+    'categories' => $categories,
+    'lots' => $lots,
+]);
+
+$layout_content = include_template('layout.php', [
+    'content' => $page_content,
+    'title' => 'Главная',
+    'is_auth' => $is_auth,
+    'user_name' => $user_name,
+    'categories' => $categories,
+]);
 
 print($layout_content);
