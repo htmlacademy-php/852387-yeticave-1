@@ -4,8 +4,6 @@ declare(strict_types=1);
  * @var string[] $categories список категорий лотов
  * @var array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lot
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
- * @var int $hours
- * @var int $minutes
  */
 ?>
 
