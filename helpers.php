@@ -165,9 +165,8 @@ function price_format(int $price): string
  */
 function time_format(array $time): string
 {
-    [$hours, $minutes] = $time;
-    $hours_format = str_pad(strval($hours), 2, "0", STR_PAD_LEFT);
-    $minutes_format = str_pad(strval($minutes), 2, "0", STR_PAD_LEFT);
+    $hours_format = str_pad(strval($time['hours']), 2, "0", STR_PAD_LEFT);
+    $minutes_format = str_pad(strval($time['minutes']), 2, "0", STR_PAD_LEFT);
     return "{$hours_format}:{$minutes_format}";
 }
 
@@ -183,13 +182,19 @@ function get_dt_range(string $date_end): array
     $ts_diff = $end_ts - $ts;
 
     if ($ts_diff < 0) {
-        return [0, 0];
+        return [
+            'hours' => 0,
+            'minutes' => 0
+        ];
     }
 
     $hours_until_end = floor($ts_diff / SECS_IN_HOUR);
     $minutes_until_end = abs(floor($ts_diff % SECS_IN_HOUR / SECS_IN_MINUTE));
 
-    return [$hours_until_end, $minutes_until_end];
+    return [
+        'hours' => $hours_until_end,
+        'minutes' => $minutes_until_end,
+    ];
 }
 
 /**

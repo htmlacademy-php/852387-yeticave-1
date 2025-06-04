@@ -31,8 +31,9 @@ declare(strict_types=1);
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
-                    <div class="lot-item__timer timer">
-                        10:54
+                    <?php $timer=get_dt_range($lot['date_end']); ?>
+                    <div class="lot-item__timer timer <?=$timer['hours'] === 0 ? 'timer--finishing' : ''?>">
+                        <?=time_format($timer); ?>
                     </div>
                     <div class="lot-item__cost-state">
                         <div class="lot-item__rate">

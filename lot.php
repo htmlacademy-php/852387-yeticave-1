@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+date_default_timezone_set("Europe/Moscow");
+setlocale(LC_ALL, 'ru_RU');
+
 require_once('helpers.php');
 require_once ('init.php');
 
