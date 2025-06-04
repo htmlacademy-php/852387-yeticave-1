@@ -30,16 +30,27 @@ $categories = getItems($connect, $sql, LIMIT_ITEMS);
 
 $id = mysqli_real_escape_string($connect, $_GET['id']);
 
-$sql = 'SELECT *, c.name "cat_name" FROM lots l
-    INNER JOIN categories c ON l.cat_id = c.id
-                            WHERE l.id = ?';
+$sql = 'SELECT l.id,
+       l.user_id "autor_id",
+       l.date_end,
+       l.name "lot_name",
+       l.img_url,
+       l.description,
+       price "price_start",
+       img_url, c.name "cat_name" FROM lots l
+           INNER JOIN categories c ON l.cat_id = c.id
+                                  WHERE l.id = "%s"';
 
-$lot = getItems($connect, $sql, $id);
+$sql = sprintf($sql, $id);
+$result = mysqli_query($connect, $sql);
+$lot = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+//$lot = getItems($connect, $sql, $id);
 //print(include_template('index.php', ['content' => $content, 'categories' => $categories]));
 
 $page_content = include_template('lot.php', [
     'categories' => $categories,
-    'lots' => $lot,
+    'lot' => $lot,
 ]);
 
 $layout_content = include_template('layout.php', [
