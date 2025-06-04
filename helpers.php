@@ -202,9 +202,9 @@ function get_dt_range(string $date_end): array
  * @return ?array
 **/
 
-function getItems($link, $sql, $data = [])
+function getItems($link, $sql, ...$data)
 {
-    $stmt = db_get_prepare_stmt($link, $sql, [LIMIT_ITEMS]);
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 

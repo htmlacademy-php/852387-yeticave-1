@@ -28,7 +28,14 @@ $sql = 'SELECT *  FROM categories LIMIT ?';
 
 $categories = getItems($connect, $sql, LIMIT_ITEMS);
 
+if (!isset($_GET['id'])) {
+
+}
 $id = mysqli_real_escape_string($connect, $_GET['id']);
+
+if (!isset($id)) {
+
+}
 
 $sql = 'SELECT l.id,
        l.user_id "autor_id",
@@ -44,9 +51,6 @@ $sql = 'SELECT l.id,
 $sql = sprintf($sql, $id);
 $result = mysqli_query($connect, $sql);
 $lot = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-//$lot = getItems($connect, $sql, $id);
-//print(include_template('index.php', ['content' => $content, 'categories' => $categories]));
 
 $page_content = include_template('lot.php', [
     'categories' => $categories,
