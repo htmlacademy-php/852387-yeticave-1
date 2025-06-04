@@ -10,11 +10,12 @@ require_once ('init.php');
 const LIMIT_ITEMS = 10;
 
 /**
- * @var string $user_name
- * @var boolean|object $connect
- * @var string $user_name
- * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
+ * @var string $user_name имя авторизованного пользователя
+ * @var boolean|object $connect mysqli Ресурс соединения
+ * @var int $is_auth
+ * @var array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
+ * * все новые лота из БД
  */
 
 $user_name = 'Татьяна';

@@ -10,17 +10,21 @@ require_once ('init.php');
 const LIMIT_ITEMS = 10;
 
 /**
- * @var string $user_name
- * @var boolean|object $connect
- * @var string $user_name
- * @var string[] $categories
- * @var array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lot
+ * @var string $user_name имя авторизованного пользователя
+ * @var boolean|object $connect mysqli Ресурс соединения
+ * @var int $is_auth
+ * @var array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var array{id: string, author_id: string, date_end: string, lot_name: string, cat_name: string, price_start: string, img_url: string, description: string, step_bet: string} $lot
+ * * все данные по ID лота из БД
+ * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
+ *
  */
 
 $user_name = 'Татьяна';
 $is_auth = rand(0, 1);
 $categories = [];
 $lot = [];
+$bets = [];
 $page_content = '';
 
 if (!$connect) {
@@ -45,10 +49,11 @@ if (!isset($_GET['id'])) {
         l.name "lot_name",
         l.img_url,
         l.description,
-        price "price_start",
+        l.price "price_start",
+        l.step_bet,
         img_url, c.name "cat_name" FROM lots l
             INNER JOIN categories c ON l.cat_id = c.id
-                              WHERE l.id = "%s"';
+                              WHERE l.id = %s';
 
     $sql = sprintf($sql, $id);
     $result = mysqli_query($connect, $sql);
@@ -62,9 +67,22 @@ if (!isset($_GET['id'])) {
         ]);;
     } else {
 
+        $sql = 'SELECT user_id "customer_id",
+                    lot_id,
+                    date_add,
+                    cost FROM bets
+         WHERE lot_id = %s
+         ORDER BY bets.date_add
+         LIMIT %s';
+
+        $sql = sprintf($sql, $id, LIMIT_ITEMS);
+        $result = mysqli_query($connect, $sql);
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
         $page_content = include_template('lot.php', [
             'categories' => $categories,
             'lot' => $lot,
+            'bets' => $bets
         ]);
     }
 }

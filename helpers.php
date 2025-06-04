@@ -207,14 +207,28 @@ function get_dt_range(string $date_end): array
  * @return ?array
 **/
 
-function getItems($link, $sql, ...$data)
+function getItems($link, string $sql, ...$data): ?array
 {
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
-    if (!$result) {
+    if (!isset($result)) {
         die(mysqli_error($link));
     }
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * Находит елемент(ассоциативный массив) с данными по максимальной ставе
+ *
+ **@var array $bets все ставки по лоту
+ * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
+ */
+
+function findMaxBet(array $bets): array
+{
+    return array_reduce($bets, function ($acc, $bet) {
+        return $acc['cost'] < $bet['cost'] ? $bet : $acc;
+    }, $bets[0]);
 }
