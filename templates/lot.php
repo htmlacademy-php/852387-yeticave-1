@@ -37,7 +37,7 @@ declare(strict_types=1);
                     </div>
                     <div class="lot-item__cost-state">
                         <?php if (!empty($bets)): ?>
-                            <?php $bet = findMaxBet($bets); ?>
+                            <?php $bet = find_max_bet($bets); ?>
                         <div class="lot-item__rate">
                             <span class="lot-item__amount">Текущая цена</span>
                             <span class="lot-item__cost"><?= price_format(intval($bet['cost'])); ?></span>

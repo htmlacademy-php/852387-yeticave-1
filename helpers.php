@@ -202,12 +202,12 @@ function get_dt_range(string $date_end): array
  *
  * @param $link mysqli Ресурс соединения
  * @param $sql string SQL запрос с плейсхолдерами вместо значений
- * @param array $data Данные для вставки на место плейсхолдеров
+ * @param mixed $data Данные для вставки на место плейсхолдеров
  *
  * @return ?array
 **/
 
-function getItems($link, string $sql, ...$data): ?array
+function get_items(mysqli $link, string $sql, ...$data): ?array
 {
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     mysqli_stmt_execute($stmt);
@@ -220,15 +220,56 @@ function getItems($link, string $sql, ...$data): ?array
 }
 
 /**
+ * Получаем данные из БД в виде ассоциативного массива или завершаем код с ошибкой
+ *
+ * @param $link mysqli Ресурс соединения
+ * @param $sql string SQL запрос с плейсхолдерами вместо значений
+ * @param mixed $data Данные для вставки на место плейсхолдеров
+ *
+ * @return ?array
+ **/
+
+function get_item(mysqli $link, string $sql, ...$data): ?array
+{
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (!$result) {
+        return null;
+    }
+    return mysqli_fetch_assoc($result);
+}
+
+/**
  * Находит елемент(ассоциативный массив) с данными по максимальной ставе
  *
  **@var array $bets все ставки по лоту
  * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
  */
 
-function findMaxBet(array $bets): array
+function find_max_bet(array $bets): array
 {
     return array_reduce($bets, function ($acc, $bet) {
         return $acc['cost'] < $bet['cost'] ? $bet : $acc;
     }, $bets[0]);
+}
+
+/**
+ * Создает новую ссылку с данными параметрами
+ * @var string $path адрес данной страницы
+ * @var mixed $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @return string новый адрес ссылки: адрес страницы + строка запроса
+ **/
+
+function create_new_url(string $path, ...$data): string
+{
+    $params = $_GET;
+
+    foreach ($data as $key => $value) {
+        $params[$key] = $value;
+    }
+
+    $query = http_build_query(...$params);
+    return "/{$path}?{$query}";
 }
