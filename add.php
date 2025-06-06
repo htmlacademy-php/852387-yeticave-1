@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
 require_once('helpers.php');
-require_once ('init.php');
-require_once ('models/categories.php');
-require_once ('models/lots.php');
+require_once('init.php');
+require_once('models/categories.php');
+//require_once('models/lots.php');
 
 /**
  * @var string $user_name имя авторизованного пользователя
@@ -23,12 +24,9 @@ if (!$connect) {
 }
 // выполнение запроса на список категорий
 $categories = getCategories($connect);
-// выполнение запроса на список новых лотов
-$lots = getLots($connect);
 
-$page_content = include_template('main.php', [
+$page_content = include_template('add.php', [
     'categories' => $categories,
-    'lots' => $lots,
 ]);
 
 $layout_content = include_template('layout.php', [

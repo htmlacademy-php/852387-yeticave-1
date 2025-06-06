@@ -6,9 +6,9 @@ setlocale(LC_ALL, 'ru_RU');
 
 require_once('helpers.php');
 require_once ('init.php');
-require_once ('model/categories.php');
-require_once ('model/lots.php');
-require_once ('model/bets.php');
+require_once ('models/categories.php');
+require_once ('models/lots.php');
+require_once ('models/bets.php');
 
 /**
  * @var string $user_name имя авторизованного пользователя
