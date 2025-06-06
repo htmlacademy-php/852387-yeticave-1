@@ -10,6 +10,7 @@ require_once ('models/categories.php');
 require_once ('models/lots.php');
 
 /**
+ * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
  * @var boolean|object $connect mysqli Ресурс соединения
  * @var int $is_auth
@@ -33,7 +34,7 @@ $page_content = include_template('main.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
-    'title' => 'Главная',
+    'title' => $title,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'categories' => $categories,
