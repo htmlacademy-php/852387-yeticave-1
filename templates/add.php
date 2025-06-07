@@ -15,7 +15,7 @@ declare(strict_types=1);
             <?php endforeach; ?>
         </ul>
     </nav>
-    <form class="form form--add-lot container form--invalid" action="<?=create_new_url('add.php'); ?>" method="post"> <!-- form--invalid -->
+    <form class="form form--add-lot container form--invalid" action="<?=create_new_url('add.php'); ?>" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">
             <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
@@ -27,7 +27,7 @@ declare(strict_types=1);
                 <label for="category">Категория <sup>*</sup></label>
                 <select id="category" name="category">
                     <?php foreach ($categories as $category): ?>
-                        <option><?=htmlspecialchars($category['name']); ?></option>
+                        <option value="<?=$category['id']; ?>"><?=$category['name']; ?></option>
                     <?php endforeach; ?>
                 </select>
                 <span class="form__error">Выберите категорию</span>
@@ -41,7 +41,7 @@ declare(strict_types=1);
         <div class="form__item form__item--file">
             <label>Изображение <sup>*</sup></label>
             <div class="form__input-file">
-                <input class="visually-hidden" type="file" id="lot-img" value="">
+                <input class="visually-hidden" type="file" id="lot-img" name="lot_img" value="">
                 <label for="lot-img">
                     Добавить
                 </label>

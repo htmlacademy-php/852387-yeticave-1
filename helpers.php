@@ -275,3 +275,7 @@ function create_new_url(string $path, array $data = []): string
     $query = http_build_query($params);
     return "/{$path}?{$query}";
 }
+
+function get_file_extension($filename) {
+    return pathinfo($filename, PATHINFO_EXTENSION);
+}
