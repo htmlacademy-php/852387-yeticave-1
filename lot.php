@@ -4,7 +4,8 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
+require_once ('utilities/date-time.php');
 require_once ('init.php');
 require_once ('models/categories.php');
 require_once ('models/lots.php');
@@ -26,7 +27,7 @@ if (!$connect) {
 }
 $title = 'Страница лота';
 // выполнение запроса на список категорий
-$categories = getCategories($connect);
+$categories = get_categories($connect);
 
 if (!isset($_GET['id'])) {
     http_response_code(404);
@@ -37,12 +38,12 @@ if (!isset($_GET['id'])) {
         http_response_code(404);
         $path = '404.php';
     } else {
-        $lot = getLotById($connect, $id);
+        $lot = get_lot_by_id($connect, $id);
         if (!$lot) {
             http_response_code(404);
             $path = '404.php';
         } else {
-            $bets = getBetsById($connect, $id);
+            $bets = get_bets_by_id($connect, $id);
             $path = 'lot.php';
         }
     }

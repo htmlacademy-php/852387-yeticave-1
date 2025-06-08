@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
 
 const LIMIT_CATEGORIES = 10;
 
@@ -11,7 +11,7 @@ const LIMIT_CATEGORIES = 10;
  * @param int $limit Количество категорий, которые можно получить в БД
  * @return ?array<int,array{id: string, name: string, code: string}
 **/
-function getCategories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
+function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
 {
     $sql = 'SELECT id, name, code FROM categories LIMIT ?';
     return get_items($connect, $sql, $limit);

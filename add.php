@@ -1,14 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
 require_once('init.php');
 require_once('models/categories.php');
-//require_once('models/lots.php');
+require_once ('models/lots.php');
+require_once('validate.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -16,8 +16,11 @@ require_once('models/categories.php');
  * @var boolean|object $connect mysqli Ресурс соединения
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var array $errors все ошибки заполнения формы пользователем
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * * все новые лота из БД
+ * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
+ * @var ?array $lot заполненные пользователем поля формы
  */
 
 if (!$connect) {
@@ -25,36 +28,60 @@ if (!$connect) {
 }
 $title = 'Добавление лота';
 // выполнение запроса на список категорий
-$categories = getCategories($connect);
-
-$page_content = include_template('add.php', [
-    'categories' => $categories,
-]);
+$categories = get_categories($connect);
+// получаем список ID всех категорий
+$cat_ids = array_column($categories, 'id');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $lot = $_POST;
-    $filename = $_FILES['lot_img']['name'];
-    $extension = pathinfo($filename, PATHINFO_EXTENSION);
-    $filename = uniqid() . $extension;
-    $lot['img_url'] = $filename;
-    move_uploaded_file($_FILES['lot_img']['tmp_name'], 'uploads/' . $filename);
-
-    $sql = 'INSERT INTO lots(user_id, name, description, img_url, price, date_end, step_bet, cat_id)
-            VALUES (3, ?, ?, ?, ?, ?, ?, ?)';
-
-    $stmt = db_get_prepare_stmt($connect, $sql, $lot);
-    $result = mysqli_stmt_execute($stmt);
-
-    if (!$result) {
-        $lot_id = mysqli_insert_id($connect);
-
-        header('Location: add.php?id=' . $lot_id);
+    // получаем данные из полей формы
+    $lot = get_lot_fields();
+    // получаем массив ошибок по данным полей из формы
+    $errors = get_errors($lot, $cat_ids);
+    // проверка файла
+    if (empty($_FILES['lot_img']['name'])) {
+        $errors['file'] = 'Вы не загрузили файл';
     } else {
-        // выводим страницу 404.php? и пропадают введенные данные
-        // выводим ошибку (отсутствия соединения с БД, отсутствие интернета, или другой форс-мажор)? и пропадают веденные данные
-        // или возвращаем страницу с формой и с заполненными полями и просим загрузить ещё раз данные (сейчас или позже)?
-        // смотрим код ошибки и выводим соответствующую страницу
+
+        $tmp_name = $_FILES['lot_img']['tmp_name'];
+        $file_type = mime_content_type($tmp_name);
+
+        if ($file_type === 'image/jpeg' || $file_type === 'image/png') {
+
+            $path = $_FILES['lot_img']['name'];
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+            $file_name = uniqid() . '.' . $extension;
+
+            move_uploaded_file($_FILES['lot_img']['tmp_name'], 'uploads/' . $file_name);
+            $lot['img_url'] = '/uploads/' . $file_name;
+
+        } else {
+            $errors['file'] = 'Неверный формат файла. Загрузите файл в формате JPG, JPEG или PNG';
+        }
     }
+    if (count($errors)) {
+        $page_content = include_template('add.php', [
+            'lot' => $lot,
+            'errors' => $errors,
+            'categories' => $categories
+        ]);
+    }
+    else {
+
+        $is_set_lot = set_lot($connect, $lot);
+
+        if ($is_set_lot) {
+            $lot_id = mysqli_insert_id($connect);
+            header('Location: lot.php?id=' . $lot_id);
+        }
+        else {
+            die(mysqli_error($connect));
+        }
+    }
+}
+else {
+    $page_content = include_template('add.php', [
+        'categories' => $categories,
+    ]);
 }
 
 $layout_content = include_template('layout.php', [

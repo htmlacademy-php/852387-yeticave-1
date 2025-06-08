@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('helpers.php');
+require_once('utilities/helpers.php');
 $db = require_once('config.php');
 
 /**
