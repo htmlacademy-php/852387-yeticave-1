@@ -9,6 +9,7 @@ require_once('init.php');
 require_once('models/categories.php');
 require_once ('models/lots.php');
 require_once('validate.php');
+require_once ('validate_upload_file.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -37,27 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = get_lot_fields();
     // получаем массив ошибок по данным полей из формы
     $errors = get_errors($lot, $cat_ids);
-    // проверка файла
-    if (empty($_FILES['lot_img']['name'])) {
-        $errors['file'] = 'Вы не загрузили файл';
-    } else {
+    // проверка загрузки файла
+    [$errors['file'], $lot['img_url']] = validate_upload_file($_FILES['lot_img']);
 
-        $tmp_name = $_FILES['lot_img']['tmp_name'];
-        $file_type = mime_content_type($tmp_name);
-
-        if ($file_type === 'image/jpeg' || $file_type === 'image/png') {
-
-            $path = $_FILES['lot_img']['name'];
-            $extension = pathinfo($path, PATHINFO_EXTENSION);
-            $file_name = uniqid() . '.' . $extension;
-
-            move_uploaded_file($_FILES['lot_img']['tmp_name'], 'uploads/' . $file_name);
-            $lot['img_url'] = '/uploads/' . $file_name;
-
-        } else {
-            $errors['file'] = 'Неверный формат файла. Загрузите файл в формате JPG, JPEG или PNG';
-        }
-    }
     if (count($errors)) {
         $page_content = include_template('add.php', [
             'lot' => $lot,
@@ -66,16 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
     else {
-
         $is_set_lot = set_lot($connect, $lot);
 
-        if ($is_set_lot) {
-            $lot_id = mysqli_insert_id($connect);
-            header('Location: lot.php?id=' . $lot_id);
-        }
-        else {
+        if (!$is_set_lot) {
             die(mysqli_error($connect));
         }
+        $lot_id = mysqli_insert_id($connect);
+        header('Location: lot.php?id=' . $lot_id);
     }
 }
 else {
