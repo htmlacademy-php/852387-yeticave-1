@@ -4,12 +4,14 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
+require_once ('utilities/date-time.php');
 require_once ('init.php');
-require_once ('model/categories.php');
-require_once ('model/lots.php');
+require_once ('models/categories.php');
+require_once ('models/lots.php');
 
 /**
+ * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
  * @var boolean|object $connect mysqli Ресурс соединения
  * @var int $is_auth
@@ -22,9 +24,9 @@ if (!$connect) {
     die(mysqli_connect_error());
 }
 // выполнение запроса на список категорий
-$categories = getCategories($connect);
+$categories = get_categories($connect);
 // выполнение запроса на список новых лотов
-$lots = getLots($connect);
+$lots = get_lots($connect);
 
 $page_content = include_template('main.php', [
     'categories' => $categories,
@@ -33,7 +35,7 @@ $page_content = include_template('main.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
-    'title' => 'Главная',
+    'title' => $title,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'categories' => $categories,

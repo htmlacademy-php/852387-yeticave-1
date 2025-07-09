@@ -4,13 +4,15 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
+require_once ('utilities/date-time.php');
 require_once ('init.php');
-require_once ('model/categories.php');
-require_once ('model/lots.php');
-require_once ('model/bets.php');
+require_once ('models/categories.php');
+require_once ('models/lots.php');
+require_once ('models/bets.php');
 
 /**
+ * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
  * @var boolean|object $connect mysqli Ресурс соединения
  * @var int $is_auth
@@ -23,8 +25,9 @@ require_once ('model/bets.php');
 if (!$connect) {
     die(mysqli_connect_error());
 }
+$title = 'Страница лота';
 // выполнение запроса на список категорий
-$categories = getCategories($connect);
+$categories = get_categories($connect);
 
 if (!isset($_GET['id'])) {
     http_response_code(404);
@@ -35,12 +38,12 @@ if (!isset($_GET['id'])) {
         http_response_code(404);
         $path = '404.php';
     } else {
-        $lot = getLotById($connect, $id);
+        $lot = get_lot_by_id($connect, $id);
         if (!$lot) {
             http_response_code(404);
             $path = '404.php';
         } else {
-            $bets = getBetsById($connect, $id);
+            $bets = get_bets_by_id($connect, $id);
             $path = 'lot.php';
         }
     }
@@ -54,7 +57,7 @@ $page_content = include_template($path, [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
-    'title' => 'Главная',
+    'title' => $title,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'categories' => $categories,

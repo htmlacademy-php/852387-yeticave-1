@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once('helpers.php');
+require_once('utilities/helpers.php');
 
 const LIMIT_BETS = 10;
 
@@ -13,7 +13,7 @@ const LIMIT_BETS = 10;
  * @return ?array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string}
  **/
 
-function getBetsById(mysqli $connect, int $id, int $limit = LIMIT_BETS): ?array
+function get_bets_by_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): ?array
 {
     $sql = 'SELECT user_id "customer_id",
                     lot_id,
