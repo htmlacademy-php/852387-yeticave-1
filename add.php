@@ -8,8 +8,8 @@ require_once('utilities/helpers.php');
 require_once('init.php');
 require_once('models/categories.php');
 require_once ('models/lots.php');
-require_once('validate.php');
-require_once ('validate_upload_file.php');
+require_once('validate/validate-lot.php');
+require_once('validate/validate-upload-file.php');
 
 /**
  * @var string $title заголовок страницы сайта

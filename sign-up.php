@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require_once('init.php');
 require_once('models/categories.php');
+require_once('models/users.php');
+require_once('validate/validate-sign-up.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -21,20 +23,36 @@ if (!$connect) {
 $title = 'Регистрация аккаунта';
 // выполнение запроса на список категорий
 $categories = get_categories($connect);
+// выполнение запроса на список всех пользователей
+$users = get_users($connect);
+// получаем список EMAIL всех пользователей
+$emails = array_column($users, 'email');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем данные из полей формы
+    $user = get_registration_fields();
     // получаем массив ошибок по данным полей из формы
+    $errors = get_errors($user, $emails);
+
     if (count($errors)) {
         $page_content = include_template('sign-up.php', [
+            'user' => $user,
             'errors' => $errors,
             'categories' => $categories
         ]);
     } else {
+        $is_set_user = set_user($connect, $user);
+
+        if (!$is_set_user) {
+            die(mysqli_error($connect));
+        }
+
         $page_content = include_template('login.php', [
             'categories' => $categories
         ]);
     }
-} else {
+}
+else {
     $page_content = include_template('sign-up.php', [
         'categories' => $categories,
     ]);
