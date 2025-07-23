@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+require_once('init.php');
+require_once('models/categories.php');
+
 /**
  * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
@@ -8,10 +11,7 @@ declare(strict_types=1);
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var array $errors все ошибки заполнения формы пользователем
- * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
- * * все новые лота из БД
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
- * @var ?array $lot заполненные пользователем поля формы
  */
 
 
