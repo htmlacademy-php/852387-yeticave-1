@@ -47,9 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die(mysqli_error($connect));
         }
 
-        $page_content = include_template('login.php', [
-            'categories' => $categories
-        ]);
+        header("Location: /login.php");
+        exit();
+//        $page_content = include_template('login.php', [
+//            'categories' => $categories
+//        ]);
     }
 }
 else {
