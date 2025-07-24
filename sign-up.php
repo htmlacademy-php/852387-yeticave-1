@@ -16,6 +16,11 @@ require_once('validate/validate-sign-up.php');
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
+if($_SESSION) {
+    http_response_code(403);
+    exit;
+}
+
 $title = 'Регистрация аккаунта';
 // выполнение запроса на список всех пользователей
 $users = get_users($connect);

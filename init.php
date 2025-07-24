@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 session_start();
 
-// define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
-// define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
+ define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
+ define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
 
 require_once ('utilities/helpers.php');
 require_once ('models/categories.php');
