@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require_once('init.php');
-require_once('models/categories.php');
-require_once('models/users.php');
-require_once('validate/validate-sign-up.php');
+require_once ('init.php');
+require_once ('models/categories.php');
+require_once ('models/users.php');
+require_once ('validate/validate-login.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -16,44 +16,48 @@ require_once('validate/validate-sign-up.php');
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-if($_SESSION) {
-    http_response_code(403);
-    exit;
-}
+//  $email = (int)filter_input(INPUT_POSt, 'email', FILTER_VALIDATE_EMAIL);
+//  if ($email) { $user_in_bd = get_user_by_email(mysqli $connect, string $email); }
 
-$title = 'Регистрация аккаунта';
-// выполнение запроса на список всех пользователей
-$users = get_users($connect);
-// получаем список EMAIL всех пользователей
-$emails = array_column($users, 'email');
+$title = 'Вход на сайт';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем данные из полей формы
-    $form = get_registration_fields();
+    $form = get_fields();
+    // получаем данные пользователя (или null) по email
+    $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     // получаем массив ошибок по данным полей из формы
-    $errors = get_errors($form, $emails);
+    $errors = get_errors($form, $user);
 
+    if (!count($errors) and $user) {
+        if (password_verify($form['password'], $user['password'])) {
+            $_SESSION['user'] = $user;
+        }
+        else {
+            $errors['password'] = 'Вы ввели неверный пароль';
+        }
+    }
     if (count($errors)) {
-        $page_content = include_template('sign-up.php', [
+        $page_content = include_template('login.php', [
             'form' => $form,
             'errors' => $errors,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
-    } else {
-        $is_set_user = set_user($connect, $form);
-
-        if (!$is_set_user) {
-            die(mysqli_error($connect));
-        }
-
-        header("Location: /login.php");
+    }
+    else {
+        header("Location: /index.php");
         exit();
     }
 }
 else {
-    $page_content = include_template('sign-up.php', [
+    $page_content = include_template('login.php', [
         'categories' => $categories,
     ]);
+
+    if (isset($_SESSION['user'])) {
+        header("Location: /index.php");
+        exit();
+    }
 }
 
 $layout_content = include_template('layout.php', [
