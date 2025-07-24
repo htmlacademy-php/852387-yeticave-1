@@ -26,22 +26,13 @@ function get_fields(): ?array
 }
 
 /**
- *  Получаем строковое пояснение ошибки, если EMAIL не найден среди списка EMAIL-ов пользователей из БД
- * @param string $email введенный EMAIL пользователя
- * @return bool
- */
-function has_email(string $email): bool
-{
-
-}
-/**
- * Получаем строковое пояснение ошибки, если EMAIL найден среди списка EMAIL-ов пользователей из БД
- * @param ?array $data_bd список всех EMAIL-ов зарегистрированных пользователей из БД
+ * Получаем строковое пояснение ошибки, если данные пользователя не найдены в БД
+ * @param ?array $data данные зарегистрированного пользователя из БД
  * @return ?string
  **/
-function validate_email( ?array $data_bd) : ?string
+function validate_email( ?array $data) : ?string
 {
-    if(!$data_bd) {
+    if(!$data) {
         return 'Такой пользователь не найден';
     }
     return null;
