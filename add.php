@@ -14,7 +14,7 @@ require_once('validate/validate-upload-file.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
- * @var boolean|object $connect mysqli Ресурс соединения
+ * @var false|mysqli $connect mysqli Ресурс соединения
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var array $errors все ошибки заполнения формы пользователем
@@ -24,12 +24,7 @@ require_once('validate/validate-upload-file.php');
  * @var ?array $lot заполненные пользователем поля формы
  */
 
-if (!$connect) {
-    die(mysqli_connect_error());
-}
 $title = 'Добавление лота';
-// выполнение запроса на список категорий
-$categories = get_categories($connect);
 // получаем список ID всех категорий
 $cat_ids = array_column($categories, 'id');
 

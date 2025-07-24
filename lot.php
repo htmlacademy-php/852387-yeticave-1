@@ -14,7 +14,7 @@ require_once ('models/bets.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
- * @var boolean|object $connect mysqli Ресурс соединения
+ * @var false|mysqli $connect mysqli Ресурс соединения
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array{id: string, author_id: string, date_end: string, lot_name: string, cat_name: string, price_start: string, img_url: string, description: string, step_bet: string} $lot
@@ -22,12 +22,9 @@ require_once ('models/bets.php');
  * @var ?array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
  */
 
-if (!$connect) {
-    die(mysqli_connect_error());
-}
+var_dump($_SESSION);
+
 $title = 'Страница лота';
-// выполнение запроса на список категорий
-$categories = get_categories($connect);
 
 if (!isset($_GET['id'])) {
     http_response_code(404);

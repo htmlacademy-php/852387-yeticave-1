@@ -1,7 +1,13 @@
 <?php
 declare(strict_types=1);
 
-require_once('utilities/helpers.php');
+session_start();
+
+// define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
+// define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
+
+require_once ('utilities/helpers.php');
+require_once ('models/categories.php');
 $db = require_once('config.php');
 
 /**
@@ -16,11 +22,16 @@ $db = require_once('config.php');
 $connect = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
 mysqli_set_charset($connect, 'utf8');
 
+if (!$connect) {
+    die(mysqli_connect_error());
+}
+
 // начальные данные
 $title = 'Главная';
 $user_name = 'Татьяна';
 $is_auth = rand(0, 1);
-$categories = null;
+// выполнение запроса на список категорий
+$categories = get_categories($connect);
 $lots = null;
 $bets = null;
 $lot = null;

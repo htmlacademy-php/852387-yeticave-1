@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once ('utilities/helpers.php');
+
 /**
  * Получает список пользователей или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
@@ -26,6 +28,18 @@ function set_user(mysqli $connect, array $data): bool
     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
     return mysqli_stmt_execute($stmt);
+}
+
+/**
+ * Получает данные пользователя по EMAIL из таблицы БД
+ * @param mysqli $connect Ресурс соединения
+ * @param string $email EMAIL лота
+ * @return ?array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
+ **/
+function get_user_by_email(mysqli $connect, string $email): ?array
+{
+    $sql = "SELECT * FROM users WHERE email = ?";
+    return get_item($connect, $sql, $email);
 }
 
 //stora@internet.ru  пароль 111111

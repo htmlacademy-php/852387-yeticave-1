@@ -13,18 +13,14 @@ require_once ('models/lots.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
- * @var boolean|object $connect mysqli Ресурс соединения
+ * @var false|mysqli $connect mysqli Ресурс соединения
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * * все новые лота из БД
  */
 
-if (!$connect) {
-    die(mysqli_connect_error());
-}
-// выполнение запроса на список категорий
-$categories = get_categories($connect);
+var_dump($_SESSION);
 // выполнение запроса на список новых лотов
 $lots = get_lots($connect);
 
