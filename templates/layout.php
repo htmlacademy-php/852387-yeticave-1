@@ -25,10 +25,10 @@ declare(strict_types=1);
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo">
+            <a class="main-header__logo" href="<?=create_new_url('index.php'); ?>">
                 <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
-            <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
+            <form class="main-header__search" method="get" action="<?=create_new_url('search.php', $_GET)?>" autocomplete="off">
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
