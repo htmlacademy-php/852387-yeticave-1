@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once('utilities/helpers.php');
 
-const LIMIT_LOTS = 10;
+const LIMIT_LOTS = 9;
 
 /**
  * Получает список лотов или завершаем код с ошибкой
@@ -63,4 +63,21 @@ function set_lot(mysqli $connect, array $data): bool
                 VALUES (3, ?, ?, ?, ?, ?, ?, ?)';
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
     return mysqli_stmt_execute($stmt);
+}
+
+function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_LOTS): ?array
+{
+    $sql ='SELECT l.id,
+        l.user_id "author_id",
+        l.date_end,
+        l.name "lot_name",
+        l.img_url,
+        l.description,
+        l.price "price_start",
+        l.step_bet,
+        c.name "cat_name" FROM lots l
+            INNER JOIN categories c ON l.cat_id = c.id
+            WHERE MATCH(l.name, description) AGAINST(?)
+            ORDER BY l.date_add DESC LIMIT ?';
+    return get_items($connect, $sql, $search, $limit);
 }

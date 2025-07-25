@@ -32,7 +32,10 @@ $user_name = 'Татьяна';
 $is_auth = rand(0, 1);
 // выполнение запроса на список категорий
 $categories = get_categories($connect);
-$lots = null;
+$lots = [];
 $bets = null;
 $lot = null;
 $page_content = '';
+$pages = null;
+$pages_count = null;
+$cur_page = null;

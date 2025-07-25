@@ -22,8 +22,6 @@ require_once ('models/bets.php');
  * @var ?array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
  */
 
-var_dump($_SESSION);
-
 $title = 'Страница лота';
 
 if (!isset($_GET['id'])) {

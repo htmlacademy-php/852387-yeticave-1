@@ -23,8 +23,7 @@ function filter_errors(?array $data, array $rules, array $required, array $empty
             $errors[$key] = $empty_fields[$key];
         }
     }
-    // убираем все значения типа null, валидные значения
-    return array_filter($errors);
+    return $errors;
 }
 
 /**

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 <main>
     <?=include_template('_category.php', ['categories' => $categories]); ?>
-    <?php $class_form = isset($errors) ? 'form--invalid' : ''; ?>
+    <?php $class_form = !empty($errors) ? 'form--invalid' : ''; ?>
     <form class="form form--add-lot container <?=$class_form; ?>" action="" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">

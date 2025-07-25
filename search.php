@@ -1,14 +1,9 @@
 <?php
 declare(strict_types=1);
 
-date_default_timezone_set("Europe/Moscow");
-setlocale(LC_ALL, 'ru_RU');
-
-require_once('utilities/helpers.php');
-require_once ('utilities/date-time.php');
 require_once ('init.php');
-require_once ('models/categories.php');
 require_once ('models/lots.php');
+require_once ('utilities/date-time.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -16,16 +11,26 @@ require_once ('models/lots.php');
  * @var false|mysqli $connect mysqli Ресурс соединения
  * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
- * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
- * * все новые лота из БД
+ * @var array $lots
+ * @var int $pages
+ * @var int $pages_count
+ * @var int $cur_page
+ * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-// выполнение запроса на список новых лотов
-$lots = get_lots($connect);
+$title = 'Поиск лотов';
 
-$page_content = include_template('main.php', [
+$search = $_GET['search'] ?? '';
+if ($search) {
+    $lots = search_lots($connect, $search);
+}
+
+$page_content = include_template('search.php', [
     'categories' => $categories,
     'lots' => $lots,
+    'pages' => $pages,
+    'pages_count' => $pages_count,
+    'cur_page' => $cur_page
 ]);
 
 $layout_content = include_template('layout.php', [

@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = get_errors($lot, $cat_ids);
     // проверка загрузки файла
     [$errors['file'], $lot['img_url']] = validate_upload_file($_FILES['lot_img']);
+    // убираем все значения типа null, валидные значения
+    $errors = array_filter($errors);
 
     if (count($errors)) {
         $page_content = include_template('add.php', [
