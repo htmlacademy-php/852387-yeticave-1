@@ -3,7 +3,6 @@ declare(strict_types=1);
 /**
  * @var string $title
  * @var int $is_auth
- * @var string $user_name
  * @var string[] $categories
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  * @var string $content
@@ -25,11 +24,11 @@ declare(strict_types=1);
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo">
+            <a class="main-header__logo" href="<?=create_new_url('index.php'); ?>">
                 <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
-            <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
-                <input type="search" name="search" placeholder="Поиск лота">
+            <form class="main-header__search" method="get" action="<?=create_new_url('search.php'); ?>" autocomplete="off">
+                <input type="search" name="search" placeholder="Поиск лота" value="<?=isset($_GET['search']) ? trim($_GET['search']) : null; ?>">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
             <a class="main-header__add-lot button" href="<?=create_new_url('add.php'); ?>">Добавить лот</a>
@@ -63,7 +62,7 @@ declare(strict_types=1);
         <ul class="nav__list container">
             <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=htmlspecialchars($category['name']); ?></a>
+                    <a href="<?=create_new_url('all-lots.php', ['category' => $category['id']]); ?>"><?=htmlspecialchars($category['name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -17,3 +17,9 @@ function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
     return get_items($connect, $sql, $limit);
 }
 
+function get_category_name(mysqli $connect, $id)
+{
+    $sql = 'SELECT name FROM categories WHERE id =' . $id;
+    $result = mysqli_query($connect, $sql);
+    return mysqli_fetch_assoc($result)['name'];
+}

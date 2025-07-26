@@ -15,7 +15,6 @@ require_once('validate/validate-upload-file.php');
  * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
  * @var false|mysqli $connect mysqli Ресурс соединения
- * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var array $errors все ошибки заполнения формы пользователем
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
@@ -40,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = get_errors($lot, $cat_ids);
     // проверка загрузки файла
     [$errors['file'], $lot['img_url']] = validate_upload_file($_FILES['lot_img']);
+    // убираем все значения типа null, валидные значения
+    $errors = array_filter($errors);
 
     if (count($errors)) {
         $page_content = include_template('add.php', [
@@ -67,8 +68,6 @@ else {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 

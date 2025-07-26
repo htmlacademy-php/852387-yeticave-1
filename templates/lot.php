@@ -10,15 +10,7 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach ($categories as $category): ?>
-            <li class="nav__item">
-                <a href="all-lots.html"><?=htmlspecialchars($category['name']); ?></a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-    </nav>
+    <?=include_template('_category.php', ['categories' => $categories]); ?>
     <section class="lot-item container">
         <h2><?= $lot['lot_name']; ?></h2>
         <div class="lot-item__content">
