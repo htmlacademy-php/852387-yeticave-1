@@ -20,6 +20,8 @@ require_once ('models/lots.php');
  * * все новые лота из БД
  */
 
+$_GET = [];
+
 // выполнение запроса на список новых лотов
 $lots = get_lots($connect);
 

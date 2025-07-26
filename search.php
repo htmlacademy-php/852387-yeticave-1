@@ -20,9 +20,20 @@ require_once ('utilities/date-time.php');
 
 $title = 'Поиск лотов';
 
-$search = $_GET['search'] ?? '';
+$search = trim($_GET['search']) ?? '';
 if ($search) {
-    $lots = search_lots($connect, $search);
+
+    $cur_page = $_GET['page'] ?? 1;
+    $page_items = 6;
+//узнаем общее число лотов
+    $items_count = count_lots($connect);
+//считаем кол-во страниц и смещение
+    $pages_count = ceil($items_count / $page_items);
+    $offset = ($cur_page - 1) * $page_items;
+//заполняем массив номерами всех страниц
+    $pages = range(1, $pages_count);
+
+    $lots = search_lots($connect, $search, $page_items, $offset);
 }
 
 $page_content = include_template('search.php', [
