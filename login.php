@@ -8,9 +8,7 @@ require_once ('validate/validate-login.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var string $user_name имя авторизованного пользователя
  * @var false|mysqli $connect mysqli Ресурс соединения
- * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var array $errors все ошибки заполнения формы пользователем
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
@@ -63,8 +61,6 @@ else {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 

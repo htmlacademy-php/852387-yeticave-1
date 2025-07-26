@@ -13,9 +13,7 @@ require_once ('models/bets.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var string $user_name имя авторизованного пользователя
  * @var false|mysqli $connect mysqli Ресурс соединения
- * @var int $is_auth
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array{id: string, author_id: string, date_end: string, lot_name: string, cat_name: string, price_start: string, img_url: string, description: string, step_bet: string} $lot
  * * все данные по ID лота из БД
@@ -53,8 +51,6 @@ $page_content = include_template($path, [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 

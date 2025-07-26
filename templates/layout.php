@@ -3,7 +3,6 @@ declare(strict_types=1);
 /**
  * @var string $title
  * @var int $is_auth
- * @var string $user_name
  * @var string[] $categories
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  * @var string $content
@@ -63,7 +62,7 @@ declare(strict_types=1);
         <ul class="nav__list container">
             <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=htmlspecialchars($category['name']); ?></a>
+                    <a href="<?=create_new_url('all-lots.php', ['category' => $category['id']]); ?>"><?=htmlspecialchars($category['name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
