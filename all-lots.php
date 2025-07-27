@@ -20,7 +20,8 @@ require_once ('utilities/helpers.php');
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-$ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 3;
+const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Все лоты в категории';
 
@@ -32,9 +33,9 @@ if ($cat_id) {
 //узнаем общее число лотов в категории
     $items_count = count_lots_by_category($connect, $cat_id);
 
-    [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, $ITEMS_PER_PAGE);
+    [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, ITEMS_PER_PAGE);
 
-    $lots = get_lots_by_category($connect, $cat_id, $ITEMS_PER_PAGE, $offset);
+    $lots = get_lots_by_category($connect, $cat_id, ITEMS_PER_PAGE, $offset);
 
     $cat_name = get_category_name($connect ,$cat_id);
 }
@@ -46,7 +47,8 @@ $page_content = include_template('all-lots.php', [
     'count_lots' => $items_count,
     'pages' => $pages,
     'pages_count' => $pages_count,
-    'cur_page' => $cur_page
+    'cur_page' => $cur_page,
+    'symbol' => RUB_UPPER_CASE,
 ]);
 
 $layout_content = include_template('layout.php', [

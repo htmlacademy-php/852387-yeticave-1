@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $user);
-
     if (!count($errors) and $user) {
         if (password_verify($form['password'], $user['password'])) {
             $_SESSION['user'] = $user;
@@ -52,7 +51,7 @@ else {
         'categories' => $categories,
     ]);
 
-    if (isset($_SESSION['user'])) {
+    if (!empty($_SESSION['user'])) {
         header("Location: /index.php");
         exit();
     }

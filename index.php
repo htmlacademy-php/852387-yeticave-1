@@ -18,6 +18,8 @@ require_once ('models/lots.php');
  * * все новые лота из БД
  */
 
+const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
+
 $_GET = [];
 
 // выполнение запроса на список новых лотов
@@ -26,6 +28,7 @@ $lots = get_lots($connect);
 $page_content = include_template('main.php', [
     'categories' => $categories,
     'lots' => $lots,
+    'symbol' => RUB_UPPER_CASE,
 ]);
 
 $layout_content = include_template('layout.php', [

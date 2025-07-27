@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+const CURRENCY = [
+  'RUB_UPPER_CASE' => '₽',
+  'RUB_LOWER_CASE' => 'р',
+];
+
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
@@ -126,12 +131,14 @@ function include_template($name, array $data = []) {
 
 /**
  * Форматирует сумму и добавляет к ней знак рубля
- * @param int $price
+ * @param string|int $price
  * @return string
  */
-function price_format(int $price): string
+function price_format(string|int $price, $symbol = ''): string
 {
-    return number_format($price, 0, ',', ' ') . ' ₽';
+    $price = intval($price);
+    $symbol = $symbol ? CURRENCY[$symbol] : '';
+    return number_format($price, 0, ',', ' ') . ' ' . $symbol;
 }
 
 /**
@@ -233,4 +240,9 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
 //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
     return [$pages_count, $offset, $pages];
+}
+
+function is_identity($id_1, $id_2 ): bool
+{
+    return $id_1 === $id_2;
 }
