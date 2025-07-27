@@ -22,7 +22,7 @@ declare(strict_types=1);
                         <span class="lot__cost"><?=price_format($lot['price_start'], $symbol) ?? 0; ?></span>
                     </div>
                     <div class="lot__timer timer <?=$timer['hours'] === 0 ? 'timer--finishing' : ''?>">
-                        <?=time_format($timer); ?>
+                        <?=timer_format([$timer['hours'], $timer['minutes']]); ?>
                     </div>
                 </div>
             </div>

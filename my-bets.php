@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 require_once ('init.php');
 require_once ('models/bets.php');
-require_once ('models/lots.php');
 require_once ('utilities/date-time.php');
 
 /**
@@ -12,12 +11,13 @@ require_once ('utilities/date-time.php');
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array $bets
  * @var ?array $lots
+ * @var ?int $user_id
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
 
-if($_SESSION) {
+if(!$_SESSION) {
     http_response_code(403);
     exit;
 }
@@ -34,6 +34,7 @@ if ($user_id) {
 $page_content = include_template('my-bets.php', [
     'categories' => $categories,
     'bets' => $bets,
+    'user_id' => $user_id,
     'symbol' => RUB_LOWER_CASE,
 ]);
 

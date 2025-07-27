@@ -2,7 +2,8 @@
 declare(strict_types=1);
 /**
  * @var string[] $categories список категорий лотов
- * @var array{id: string, author_id: string, date_end: string, lot_name: string, cat_name: string, price_start: string, img_url: string, description: string, step_bet: string} $lot
+ * @var array{id: string, author_id: string, date_end: string, lot_name: string,
+ *     cat_name: string, price_start: string, img_url: string, description: string, step_bet: string} $lot
  * * все данные по ID лота из БД
  * @var string[] $form заполненные пользователем поля формы
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
@@ -26,7 +27,7 @@ declare(strict_types=1);
                 <div class="lot-item__state">
                     <?php $timer=get_dt_range($lot['date_end']); ?>
                     <div class="lot-item__timer timer <?=$timer['hours'] === 0 ? 'timer--finishing' : ''?>">
-                        <?=time_format($timer); ?>
+                        <?=timer_format([$timer['hours'], $timer['minutes']]); ?>
                     </div>
                     <div class="lot-item__cost-state">
 

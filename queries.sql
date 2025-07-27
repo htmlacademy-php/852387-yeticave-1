@@ -134,14 +134,13 @@ SELECT l.id,
                                            INNER JOIN users u ON l.user_id = u.id
 WHERE l.id IN (4, 6);
 
-SELECT b.lot_id, MAX(b.cost), b.date_add "date_add",
-       l.date_end "date_end_lot", l.name "lot_name",
-       l.img_url, l.user_win_id,
+SELECT b.lot_id, MAX(b.cost) AS "cost", b.date_add "date_add",
+       l.date_end "date_end_lot", l.name "lot_name", l.img_url, l.user_win_id,
        c.name "cat_name",
        u.contact "author_contact" FROM bets b
-                                            INNER JOIN lots l on b.lot_id = l.id
-                                            INNER JOIN categories c on l.cat_id = c.id
-                                            INNER JOIN users u ON l.user_id = u.id
-WHERE b.user_id = 4
+                                           INNER JOIN lots l on b.lot_id = l.id
+                                           INNER JOIN categories c on l.cat_id = c.id
+                                           INNER JOIN users u ON l.user_id = u.id
+WHERE b.user_id = 5
 GROUP BY b.lot_id , b.date_add
 ORDER BY b.date_add DESC;
