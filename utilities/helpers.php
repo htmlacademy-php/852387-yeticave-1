@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+const CURRENCY = [
+  'RUB_UPPER_CASE' => '₽',
+  'RUB_LOWER_CASE' => 'р',
+];
+
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
@@ -126,12 +131,14 @@ function include_template($name, array $data = []) {
 
 /**
  * Форматирует сумму и добавляет к ней знак рубля
- * @param int $price
+ * @param string|int $price
  * @return string
  */
-function price_format(int $price): string
+function price_format(string|int $price, $symbol = ''): string
 {
-    return number_format($price, 0, ',', ' ') . ' ₽';
+    $price = intval($price);
+    $symbol = $symbol ? CURRENCY[$symbol] : '';
+    return number_format($price, 0, ',', ' ') . ' ' . $symbol;
 }
 
 /**
@@ -233,4 +240,45 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
 //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
     return [$pages_count, $offset, $pages];
+}
+
+
+/**
+ * Возвращает TRUE, если ID пользователей совпадают
+ *
+ * @param ?int $user_id_1 ID одного пользователя
+ * @param ?int $user_id_2 ID второго пользователя
+ *
+ * @return boolean
+**/
+function is_identity(?int $user_id_1, ?int $user_id_2): bool
+{
+    return $user_id_1 === $user_id_2;
+}
+
+/**
+ * Возвращает опции таймера ставок для страницы ставок авторизованного пользователя
+ *
+ * @param string $date_end дата завершения ставок по лоту
+ * @param ?int $user_id ID авторизованного пользователя
+ * @param ?int $user_win_id ID пользователя выигрышной ставки
+ * @return string[] [флаг для класса CSS, информационное определение таймера]
+ */
+function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id) : array
+{
+    $timer = get_dt_range($date_end, false);
+
+    if (is_expiration_date($timer)) {
+        if (is_identity($user_id, $user_win_id)) {
+            $flag = 'win';
+            $button = 'Ставка выиграла';
+        } else {
+            $flag = 'end';
+            $button = 'Торги окончены';
+        }
+    } else {
+        $flag = $timer['hours'] < 1 ? 'finishing' : '';
+        $button = timer_format($timer);
+    }
+    return [$flag, $button];
 }

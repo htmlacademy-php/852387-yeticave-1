@@ -17,7 +17,7 @@ declare(strict_types=1);
         <section class="lots">
             <h2>Все лоты в категории <span>«<?=$cat_name; ?>»</span></h2>
             <?php if ($count_lots > 0): ?>
-                <?=include_template('_lot.php', ['lots' => $lots]); ?>
+                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
             <?php else: ?>
                 <p>В этой категории нет лотов</p>
             <?php endif; ?>

@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+date_default_timezone_set("Europe/Moscow");
+setlocale(LC_ALL, 'ru_RU');
+
 session_start();
 
  define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
@@ -32,6 +35,7 @@ $categories = get_categories($connect);
 $lots = [];
 $bets = null;
 $lot = null;
+$errors = null;
 $page_content = '';
 $pages = null;
 $pages_count = null;
