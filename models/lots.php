@@ -67,9 +67,16 @@ function set_lot(mysqli $connect, array $data): bool
     return mysqli_stmt_execute($stmt);
 }
 
+
 /**
- * Поиск лотов по заданным словам в описании и названии лотов
- **/
+ * Получает список лотов по заданным словам в описании и названии лотов
+ *
+ * @param mysqli $connect
+ * @param string $search
+ * @param int $limit
+ * @param int $offset
+ * @return array|null
+ */
 function search_lots(mysqli $connect, string $search, int $limit = LIMIT_LOTS, int $offset = 0): ?array
 {
     $sql = 'SELECT l.id,
@@ -88,7 +95,14 @@ function search_lots(mysqli $connect, string $search, int $limit = LIMIT_LOTS, i
 }
 
 
-function count_lots_by_search(mysqli $connect, string $search): int
+/**
+ * Получает количество лотов по поисковому запросу
+ *
+ * @param mysqli $connect
+ * @param string $search
+ * @return ?int
+ */
+function count_lots_by_search(mysqli $connect, string $search): ?int
 {
     $sql = 'SELECT COUNT(*) AS count FROM lots
             WHERE MATCH(name, description) AGAINST(?)';
@@ -96,14 +110,30 @@ function count_lots_by_search(mysqli $connect, string $search): int
     return $result['count'];
 }
 
-function count_lots_by_category(mysqli $connect, $cat_id)
+/**
+ * Возвращает количество лотов в данной категории
+ *
+ * @param mysqli $connect
+ * @param int $cat_id
+ * @return ?int
+ */
+function count_lots_by_category(mysqli $connect, int $cat_id) : ?int
 {
     $sql = 'SELECT COUNT(*) AS count FROM lots WHERE cat_id = ?';
     $result = get_item($connect, $sql, $cat_id);
     return $result['count'];
 }
 
-function get_lots_by_category(mysqli $connect, $cat_id, int $limit = LIMIT_LOTS, int $offset = 0): ?array
+/**
+ * Возвращает все лоты по ID категории из БД
+ *
+ * @param mysqli $connect
+ * @param int $cat_id
+ * @param int $limit
+ * @param int $offset
+ * @return array|null
+ */
+function get_lots_by_category(mysqli $connect, int $cat_id, int $limit = LIMIT_LOTS, int $offset = 0): ?array
 {
     $sql = 'SELECT l.id,
         l.user_id AS "author_id",

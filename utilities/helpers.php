@@ -136,6 +136,7 @@ function include_template($name, array $data = [])
 /**
  * Форматирует сумму и добавляет к ней знак рубля
  * @param string|int $price
+ * @param string $symbol
  * @return string
  */
 function price_format(string|int $price, $symbol = ''): string
@@ -190,10 +191,10 @@ function get_item(mysqli $link, string $sql, ...$data): ?array
 }
 
 /**
- * Находит елемент(ассоциативный массив) с данными по максимальной ставе
+ * Находит елемент (ассоциативный массив) с данными по максимальной ставе
  *
- **@return array{customer_id: string, lot_id: string, date_add: string, cost: string}
  * @var array $bets все ставки по лоту
+ * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
  */
 
 function find_max_bet(array $bets): array
@@ -205,9 +206,10 @@ function find_max_bet(array $bets): array
 
 /**
  * Создает новую ссылку с данными параметрами
- * @return string новый адрес ссылки: адрес страницы + строка запроса
- **@var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ *
  * @var string $path адрес данной страницы
+ * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @return string новый адрес ссылки: адрес страницы + строка запроса
  */
 
 function create_new_url(string $path, array $data = []): string
@@ -285,4 +287,33 @@ function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_
         $button = timer_format($timer);
     }
     return [$flag, $button];
+}
+
+/**
+ * Проверяет входящий ID и возвращает ID лота и его данные из БД
+ *
+ * @param mysqli $connect mysqli Ресурс соединения
+ * @param string $id ID лота из строки запроса $_GET['id']
+ * @return null|array{$id: string, $lot: array} массив с данными [ID лота и данные лота по ID из БД]
+ *
+**/
+function check_id(string $id, mysqli $connect) : ?array
+{
+    if (!isset($id)) {
+        return null;
+    }
+
+    $id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    if (!$id) {
+        return null;
+    }
+
+    $lot = get_lot_by_id($connect, $id);
+
+    if (empty($lot)) {
+        return null;
+    }
+
+    return [$id, $lot];
 }

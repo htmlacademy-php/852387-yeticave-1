@@ -31,7 +31,7 @@ function get_bets_by_lot_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): 
  * Формирует и выполняет SQL-запрос на добавление нового лота
  * @param mysqli $connect Ресурс соединения
  * @param mixed ...$data данные для добавления лота в БД
- * @return boolean
+ * @return boolean true|false
  */
 
 function set_bet(mysqli $connect, mixed ...$data): bool
@@ -43,12 +43,17 @@ function set_bet(mysqli $connect, mixed ...$data): bool
 }
 
 /**
- * ??????
+ * Возвращает ID пользователя максимальной ставки по лоту
+ *
+ * @param mysqli $connect Ресурс соединения
+ * @param int $lot_id ID лота
+ * @return ?int ID пользователя
  **/
-function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?array
+function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?int
 {
     $sql = "SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = ?)";
-    return get_item($connect, $sql, $lot_id);
+    $user = get_item($connect, $sql, $lot_id);
+    return $user['user_id'] ?? null;
 }
 
 /**
@@ -76,6 +81,7 @@ function get_bets_by_user_id(mysqli $connect, int $user_id): ?array
 
 /**
  * Возвращает список последних ставок по ID переданных лотов
+ *
  * @param mysqli $connect ресурс соединения
  * @param int[] $lots_ids
  * @return ?array<int,array{user_id: int, lot_id: int, date_add: string, cost: int} массив ставок

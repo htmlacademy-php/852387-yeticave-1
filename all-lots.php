@@ -30,13 +30,13 @@ if ($cat_id) {
 
     $cur_page = $_GET['page'] ?? 1;
 //узнаем общее число лотов в категории
-    $items_count = count_lots_by_category($connect, $cat_id);
+    $items_count = count_lots_by_category($connect, intval($cat_id));
 
     [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, ITEMS_PER_PAGE);
 
-    $lots = get_lots_by_category($connect, $cat_id, ITEMS_PER_PAGE, $offset);
+    $lots = get_lots_by_category($connect, intval($cat_id), ITEMS_PER_PAGE, $offset);
 
-    $cat_name = get_category_name($connect, $cat_id);
+    $cat_name = get_category_name($connect, intval($cat_id));
 }
 
 $page_content = include_template('all-lots.php', [

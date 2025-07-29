@@ -11,10 +11,12 @@ const EMPTY_FIELDS = [
     'cost' => 'Введите вашу ставку',
 ];
 
-/** Получаем отфильтрованный массив полей формы заполненных пользователем
+/**
+ * Получаем отфильтрованный массив полей формы заполненных пользователем
+ *
  * @return ?array
  **/
-function get_fields(): ?array
+function get_bet_fields(): ?array
 {
     return filter_input_array(INPUT_POST, [
         'cost' => FILTER_SANITIZE_NUMBER_INT,
@@ -31,7 +33,6 @@ function validate_cost($value, $min_cost): ?string
     }
     return null;
 }
-
 
 /**
  * Возвращает массив строковых значений ошибок по полученным данным

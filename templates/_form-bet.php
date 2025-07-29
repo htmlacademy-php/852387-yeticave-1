@@ -2,14 +2,15 @@
 declare(strict_types=1);
 /**
  * @var string[] $form заполненные пользователем поля формы
- * @var string[] $errors все ошибки заполнения формы пользователем
- * @var int $min_cost
- * @var int $user_id
- * @var int $lot_id
+ * @var ?string[] $errors все ошибки заполнения формы пользователем
+ * @var int $min_cost минимальная ставка по лоту
+ * @var int $user_id ID пользователя максимальной ставки по лоту
+ * @var int $lot_id ID лота
+ * @var int[] $timer остаток времени до данной даты в виде массива часов и минут и секунд
  */
 ?>
 
-<?php if ($_SESSION and !is_expiration_date($timer) and !is_identity($user_id,
+<?php if (isset($_SESSION['user']) and !is_expiration_date($timer) and !is_identity($user_id,
         $_SESSION['user']['id']) and !is_identity($_SESSION['user']['lot_id'], $lot_id)) : ?>
     <form class="lot-item__form" action="" method="post" autocomplete="off">
         <?php $class_form = isset($errors) ? 'form__item--invalid' : ''; ?>
