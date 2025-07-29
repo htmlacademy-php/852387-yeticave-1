@@ -4,10 +4,9 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-require_once('utilities/helpers.php');
 require_once('init.php');
-require_once('models/categories.php');
-require_once ('models/lots.php');
+require_once('utilities/helpers.php');
+require_once('models/lots.php');
 require_once('validate/validate-lot.php');
 require_once('validate/validate-upload-file.php');
 
@@ -23,7 +22,7 @@ require_once('validate/validate-upload-file.php');
  * @var ?array $lot заполненные пользователем поля формы
  */
 
-if(!$_SESSION) {
+if (!$_SESSION) {
     http_response_code(403);
     exit;
 }
@@ -50,8 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'errors' => $errors,
             'categories' => $categories
         ]);
-    }
-    else {
+    } else {
         $is_set_lot = set_lot($connect, $lot);
 
         if (!$is_set_lot) {
@@ -60,8 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $lot_id = mysqli_insert_id($connect);
         header('Location: lot.php?id=' . $lot_id);
     }
-}
-else {
+} else {
     $page_content = include_template('add.php', [
         'categories' => $categories,
     ]);

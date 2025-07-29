@@ -12,17 +12,17 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories]); ?>
+    <?= include_template('_category.php', ['categories' => $categories]); ?>
     <div class="container">
         <section class="lots">
-            <h2>Все лоты в категории <span>«<?=$cat_name; ?>»</span></h2>
+            <h2>Все лоты в категории <span>«<?= $cat_name; ?>»</span></h2>
             <?php if ($count_lots > 0): ?>
-                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
+                <?= include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
             <?php else: ?>
                 <p>В этой категории нет лотов</p>
             <?php endif; ?>
         </section>
-        <?=include_template('_pagination.php', [
+        <?= include_template('_pagination.php', [
             'pages' => $pages,
             'pages_count' => $pages_count,
             'cur_page' => $cur_page

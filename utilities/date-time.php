@@ -23,7 +23,8 @@ const NOUN_PLURAL_FORM = [
  *
  * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
  */
-function is_date_valid(string $date) : bool {
+function is_date_valid(string $date): bool
+{
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
 
@@ -48,7 +49,7 @@ function timer_format(array $time): string
  * Возвращает интервал между переданной датой и сегодняшним днем в секундах
  * @param string $datetime дата в формате строки // 2025-05-30 // 2018-10-02 21:03:17
  * @return false|int может быть как положительное число или отрицательное число
-**/
+ **/
 function get_interval_in_second(string $datetime): false|int
 {
     $ts = time();
@@ -65,7 +66,7 @@ function get_interval_in_second(string $datetime): false|int
 function get_dt_range(string $date_end, bool $is_bet = true): array
 {
     $ts_diff = get_interval_in_second($date_end);
-    $ts_diff = $is_bet ? abs($ts_diff): $ts_diff;
+    $ts_diff = $is_bet ? abs($ts_diff) : $ts_diff;
     if ($ts_diff < 0) {
         return [
             'hours' => 0,
@@ -89,19 +90,18 @@ function get_dt_range(string $date_end, bool $is_bet = true): array
  * Возвращает разницу в днях
  * @param string $date дата в формате «ГГГГ-ММ-ДД»
  * @return float
-**/
-function diff_date(string $date) : float
+ **/
+function diff_date(string $date): float
 {
     return floor((strtotime('now') - strtotime($date)) / SECS_IN_HOUR);
 }
-
 
 
 /**
  * Возвращает строковое представление таймера ставки
  * @param string $datetime дата ставки в формате строки // 2025-05-30 // 2018-10-02 21:03:17
  * @return string // 18 часов назад // 7 минут назад // 25.07.2025 в 02:55
-**/
+ **/
 function bet_time_format(string $datetime): string
 {
     $timer = get_dt_range($datetime);
@@ -122,8 +122,8 @@ function bet_time_format(string $datetime): string
  * Возвращает TRUE если, срок по лоту завершился - 0 часов и 0 минут и 0 секунд
  * @param array $timer массив кол-ва часов, минут и секунд
  * @return bool
-**/
-function is_expiration_date(array $timer) : bool
+ **/
+function is_expiration_date(array $timer): bool
 {
     if ($timer['hours'] === 0 and $timer['minutes'] === 0 and $timer['seconds'] === 0) {
         return true;

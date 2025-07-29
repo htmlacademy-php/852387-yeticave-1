@@ -10,7 +10,8 @@ const LIMIT_CATEGORIES = 10;
  * @param mysqli $connect Ресурс соединения
  * @param int $limit Количество категорий, которые можно получить в БД
  * @return ?array<int,array{id: string, name: string, code: string}
-**/
+ *
+ */
 function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
 {
     $sql = 'SELECT id, name, code FROM categories LIMIT ?';

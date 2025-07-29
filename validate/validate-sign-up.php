@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/validation.php');
+require_once('utilities/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['email', 'password', 'name', 'message'];
@@ -35,9 +35,9 @@ function get_registration_fields(): ?array
  * @param array $emails список всех EMAIL-ов зарегистрированных пользователей из БД
  * @return ?string
  **/
-function validate_email(?string $email, array $emails) : ?string
+function validate_email(?string $email, array $emails): ?string
 {
-    if(in_array($email, $emails)) {
+    if (in_array($email, $emails)) {
         return 'Указанный email уже используется другим пользователем';
     }
     return null;

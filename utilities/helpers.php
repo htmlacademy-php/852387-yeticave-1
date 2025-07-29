@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 const CURRENCY = [
-  'RUB_UPPER_CASE' => '₽',
-  'RUB_LOWER_CASE' => 'р',
+    'RUB_UPPER_CASE' => '₽',
+    'RUB_LOWER_CASE' => 'р',
 ];
 
 /**
@@ -15,7 +15,8 @@ const CURRENCY = [
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = []) {
+function db_get_prepare_stmt($link, $sql, $data = [])
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -32,12 +33,14 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_string($value)) {
-                $type = 's';
-            }
-            else if (is_double($value)) {
-                $type = 'd';
+            } else {
+                if (is_string($value)) {
+                    $type = 's';
+                } else {
+                    if (is_double($value)) {
+                        $type = 'd';
+                    }
+                }
             }
 
             if ($type) {
@@ -82,9 +85,9 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
-    $number = (int) $number;
+    $number = (int)$number;
     $mod10 = $number % 10;
     $mod100 = $number % 100;
 
@@ -112,7 +115,8 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template($name, array $data = [])
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -149,7 +153,7 @@ function price_format(string|int $price, $symbol = ''): string
  * @param mixed $data Данные для вставки на место плейсхолдеров
  *
  * @return ?array
-**/
+ **/
 
 function get_items(mysqli $link, string $sql, ...$data): ?array
 {
@@ -188,8 +192,8 @@ function get_item(mysqli $link, string $sql, ...$data): ?array
 /**
  * Находит елемент(ассоциативный массив) с данными по максимальной ставе
  *
- **@var array $bets все ставки по лоту
- * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
+ **@return array{customer_id: string, lot_id: string, date_add: string, cost: string}
+ * @var array $bets все ставки по лоту
  */
 
 function find_max_bet(array $bets): array
@@ -201,10 +205,10 @@ function find_max_bet(array $bets): array
 
 /**
  * Создает новую ссылку с данными параметрами
- * @var string $path адрес данной страницы
- * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
  * @return string новый адрес ссылки: адрес страницы + строка запроса
- **/
+ **@var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @var string $path адрес данной страницы
+ */
 
 function create_new_url(string $path, array $data = []): string
 {
@@ -225,7 +229,7 @@ function create_new_url(string $path, array $data = []): string
  * @param string $name данное имя поля
  * @return mixed
  *
-**/
+ **/
 
 function get_post_value(string $name): mixed
 {
@@ -250,7 +254,7 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
  * @param ?int $user_id_2 ID второго пользователя
  *
  * @return boolean
-**/
+ **/
 function is_identity(?int $user_id_1, ?int $user_id_2): bool
 {
     return $user_id_1 === $user_id_2;
@@ -264,7 +268,7 @@ function is_identity(?int $user_id_1, ?int $user_id_2): bool
  * @param ?int $user_win_id ID пользователя выигрышной ставки
  * @return string[] [флаг для класса CSS, информационное определение таймера]
  */
-function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id) : array
+function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id): array
 {
     $timer = get_dt_range($date_end, false);
 

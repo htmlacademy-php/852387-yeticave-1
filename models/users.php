@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/helpers.php');
+require_once('utilities/helpers.php');
 
 /**
  * Получает список пользователей или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
- * @return ?array<int,array{id: string, date_add: string, name: string, password: string, contact: string}
- **/
+ * @return ?array<int,array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
+ *
+ */
 function get_users(mysqli $connect): ?array
 {
     $sql = 'SELECT * FROM `users`';
@@ -35,7 +36,8 @@ function set_user(mysqli $connect, array $data): bool
  * @param mysqli $connect Ресурс соединения
  * @param string $email EMAIL лота
  * @return ?array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
- **/
+ *
+ */
 function get_user_by_email(mysqli $connect, string $email): ?array
 {
     $sql = "SELECT u.id,
@@ -44,10 +46,23 @@ function get_user_by_email(mysqli $connect, string $email): ?array
                 u.email,
                 u.password,
                 u.contact,
-                l.id 'lot_id' FROM users u
+                l.id AS 'lot_id' FROM users u
                     INNER JOIN lots l on u.id = l.user_id 
                               WHERE email = ?";
     return get_item($connect, $sql, $email);
+}
+
+
+/**
+ * Получает список пользователей по IDs или завершаем код с ошибкой
+ * @param mysqli $connect Ресурс соединения
+ * @return ?array<int,array{user_name: string, email: string, contact: string} данные пользователя (имя, email, другие контакты)
+ *
+ */
+function get_user_by_id(mysqli $connect, int $id): ?array
+{
+    $sql = 'SELECT name AS "user_name", email, contact FROM users WHERE id = ?';
+    return get_item($connect, $sql, $id);
 }
 
 //stora@internet.ru  пароль 111111

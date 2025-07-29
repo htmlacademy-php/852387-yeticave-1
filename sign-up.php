@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once('init.php');
-require_once('models/categories.php');
 require_once('models/users.php');
 require_once('validate/validate-sign-up.php');
 
@@ -14,7 +13,7 @@ require_once('validate/validate-sign-up.php');
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-if($_SESSION) {
+if ($_SESSION) {
     http_response_code(403);
     exit;
 }
@@ -47,8 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: /login.php");
         exit();
     }
-}
-else {
+} else {
     $page_content = include_template('sign-up.php', [
         'categories' => $categories,
     ]);

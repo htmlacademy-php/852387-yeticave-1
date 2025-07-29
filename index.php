@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
+require_once('init.php');
 require_once('utilities/helpers.php');
-require_once ('utilities/date-time.php');
-require_once ('init.php');
-require_once ('models/categories.php');
-require_once ('models/lots.php');
+require_once('utilities/date-time.php');
+require_once('models/lots.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -17,7 +16,7 @@ require_once ('models/lots.php');
 
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
-$_GET = [];
+$_GET = []; // ???
 
 // выполнение запроса на список новых лотов
 $lots = get_lots($connect);
@@ -35,3 +34,5 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
+
+require('getwinner.php');

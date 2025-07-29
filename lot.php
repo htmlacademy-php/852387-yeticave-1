@@ -4,13 +4,12 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
+require_once('init.php');
 require_once('utilities/helpers.php');
-require_once ('utilities/date-time.php');
-require_once ('init.php');
-require_once ('models/categories.php');
-require_once ('models/lots.php');
-require_once ('models/bets.php');
-require_once ('validate/validate-bet.php');
+require_once('utilities/date-time.php');
+require_once('models/lots.php');
+require_once('models/bets.php');
+require_once('validate/validate-bet.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -22,8 +21,6 @@ require_once ('validate/validate-bet.php');
  */
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
-
-var_dump($_SESSION);
 
 $title = 'Страница лота';
 
@@ -46,7 +43,6 @@ if (!isset($_GET['id'])) {
             $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
             $min_cost = intval($cost) + intval($lot['step_bet']);
             $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $id)['user_id'] ?? 0;
-            var_dump($user_id_max_bet);
             $path = 'lot.php';
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,8 +64,7 @@ if (!isset($_GET['id'])) {
                         die(mysqli_error($connect));
                     }
 
-                }
-                else {
+                } else {
                     $page_content = include_template($path, [
                         'categories' => $categories,
                         'lot' => $lot,
@@ -85,9 +80,6 @@ if (!isset($_GET['id'])) {
         }
     }
 }
-
-var_dump($bets);
-var_dump($lot);
 
 $page_content = include_template($path, [
     'categories' => $categories,

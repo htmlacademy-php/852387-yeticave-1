@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/validation.php');
+require_once('utilities/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['cost'];
@@ -21,7 +21,7 @@ function get_fields(): ?array
     ]);
 }
 
-function validate_cost($value, $min_cost) : ?string
+function validate_cost($value, $min_cost): ?string
 {
     if (is_int($value)) {
         return 'Введите целое число';

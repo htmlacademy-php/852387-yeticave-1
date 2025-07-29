@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/validation.php');
+require_once('utilities/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['email', 'password'];
@@ -30,9 +30,9 @@ function get_fields(): ?array
  * @param ?array $data данные зарегистрированного пользователя из БД
  * @return ?string
  **/
-function validate_email( ?array $data) : ?string
+function validate_email(?array $data): ?string
 {
-    if(!$data) {
+    if (!$data) {
         return 'Такой пользователь не найден';
     }
     return null;

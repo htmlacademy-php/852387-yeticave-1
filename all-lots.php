@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('models/lots.php');
-require_once ('models/categories.php');
-require_once ('utilities/date-time.php');
-require_once ('utilities/helpers.php');
+require_once('init.php');
+require_once('models/lots.php');
+require_once('utilities/date-time.php');
+require_once('utilities/helpers.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -37,7 +36,7 @@ if ($cat_id) {
 
     $lots = get_lots_by_category($connect, $cat_id, ITEMS_PER_PAGE, $offset);
 
-    $cat_name = get_category_name($connect ,$cat_id);
+    $cat_name = get_category_name($connect, $cat_id);
 }
 
 $page_content = include_template('all-lots.php', [
