@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('models/bets.php');
-require_once ('utilities/date-time.php');
+require_once('init.php');
+require_once('models/bets.php');
+require_once('utilities/date-time.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -17,12 +17,12 @@ require_once ('utilities/date-time.php');
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
 
-if(!$_SESSION) {
+if (!isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }
 
-$title ='Мои ставки';
+$title = 'Мои ставки';
 
 $user_id = $_SESSION['user']['id'] ?? null;
 

@@ -6,16 +6,15 @@ setlocale(LC_ALL, 'ru_RU');
 
 session_start();
 
- define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
- define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
+define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
+define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
 
-require_once ('utilities/helpers.php');
-require_once ('models/categories.php');
 $db = require_once('config.php');
+require_once('models/categories.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var string $user_name имя авторизованного пользователя
+ * @var
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * * все новые лота из БД
@@ -30,13 +29,11 @@ if (!$connect) {
 
 // начальные данные
 $title = 'Главная';
-// выполнение запроса на список категорий
 $categories = get_categories($connect);
 $lots = [];
 $bets = null;
 $lot = null;
 $errors = null;
-$page_content = '';
 $pages = null;
 $pages_count = null;
 $cur_page = null;

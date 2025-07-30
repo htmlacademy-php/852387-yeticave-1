@@ -34,9 +34,9 @@ function filter_errors(?array $data, array $rules, array $required, array $empty
  * @param int $min минимальное значение длины строки
  * @return ?string
  **/
-function validate_length(string $str, int $min, int $max) : ?string
+function validate_length(string $str, int $min, int $max): ?string
 {
-    if((strlen($str) > 0 && strlen($str) < $min) || strlen($str) > $max) {
+    if ((strlen($str) > 0 && strlen($str) < $min) || strlen($str) > $max) {
         return "Значение должно быть от $min до $max символов";
     }
     return null;

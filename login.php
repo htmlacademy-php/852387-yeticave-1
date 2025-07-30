@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('models/categories.php');
-require_once ('models/users.php');
-require_once ('validate/validate-login.php');
+require_once('init.php');
+require_once('models/users.php');
+require_once('validate/validate-login.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -21,7 +20,7 @@ $title = 'Вход на сайт';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем данные из полей формы
-    $form = get_fields();
+    $form = get_login_fields();
     // получаем данные пользователя (или null) по email
     $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     // получаем массив ошибок по данным полей из формы
@@ -29,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!count($errors) and $user) {
         if (password_verify($form['password'], $user['password'])) {
             $_SESSION['user'] = $user;
-        }
-        else {
+        } else {
             $errors['password'] = 'Вы ввели неверный пароль';
         }
     }
@@ -40,13 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'errors' => $errors,
             'categories' => $categories,
         ]);
-    }
-    else {
+    } else {
         header("Location: /index.php");
         exit();
     }
-}
-else {
+} else {
     $page_content = include_template('login.php', [
         'categories' => $categories,
     ]);

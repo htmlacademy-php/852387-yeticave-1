@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/date-time.php');
-require_once ('utilities/validation.php');
+require_once('utilities/date-time.php');
+require_once('utilities/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
@@ -22,7 +22,7 @@ const EMPTY_FIELDS = [
 function get_lot_fields(): ?array
 {
     $lot_fields = filter_input_array(INPUT_POST, [
-        'name' =>  FILTER_SANITIZE_SPECIAL_CHARS,
+        'name' => FILTER_SANITIZE_SPECIAL_CHARS,
         'description' => FILTER_SANITIZE_SPECIAL_CHARS,
         'price' => FILTER_SANITIZE_NUMBER_INT,
         'date_end' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -37,7 +37,7 @@ function get_lot_fields(): ?array
  * @param string $date полученная дата
  * @return ?string
  **/
-function validate_date(string $date) : ?string
+function validate_date(string $date): ?string
 {
     if (!is_date_valid($date)) {
         return 'Не верный формат даты. «Дата завершения торгов» должна быть датой в формате «ГГГГ-ММ-ДД»';
@@ -51,11 +51,11 @@ function validate_date(string $date) : ?string
 /**
  * Проверка, что входящие данные целое число и больше 0 и получаем строковое пояснение ошибки, если есть
  *
- * @var mixed $value
  * @return ?string
-**/
+ **@var mixed $value
+ */
 
-function validate_price(mixed $value) : ?string
+function validate_price(mixed $value): ?string
 {
     if (is_int($value)) {
         return 'Введите целое число';
@@ -71,10 +71,10 @@ function validate_price(mixed $value) : ?string
  * @param ?string $id данный ID элемента
  * @param array $ids список всех ID по элементам из БД
  * @return ?string
-**/
-function validate_id(?string $id, array $ids) : ?string
+ **/
+function validate_id(?string $id, array $ids): ?string
 {
-    if(!in_array($id, $ids)) {
+    if (!in_array($id, $ids)) {
         return 'Указана не существующая категория';
     }
     return null;
@@ -85,7 +85,7 @@ function validate_id(?string $id, array $ids) : ?string
  * @param ?array $data ассоциативный массив с данными (полученных из формы на странице добавления нового лота)
  * @param array $ids список ID из БД по нужным элементам
  * @return array
-**/
+ **/
 function get_errors(?array $data, array $ids): array
 {
     $rules = [
