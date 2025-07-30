@@ -14,7 +14,7 @@ require_once('vendor/autoload.php');
  * @param string $user_name имя пользователя
  * @param int $lot_id ID лота, по выигрышной ставке пользователя
  * @param string $lot_name название лота
- * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+ *
  */
 function sent_mail(string $email, string $user_name, int $lot_id, string $lot_name): void
 {

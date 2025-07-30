@@ -19,11 +19,11 @@ function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
 }
 
 /**
- * Возвращает наименований категории из БД
+ * Возвращает по ID категории наименование категории из БД
  *
  * @param mysqli $connect Ресурс соединения
- * @param int $id
- * @return ?array
+ * @param int $id ID категории
+ * @return ?string  название категории
  */
 function get_category_name(mysqli $connect, int $id) : ?string
 {

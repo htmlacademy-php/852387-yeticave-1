@@ -34,10 +34,14 @@ $errors = null;
 $cost = null;
 $user_id_max_bet = null;
 $min_cost = null;
+$is_logged = false;
+$user_id = null;
 
-$title = 'Страница лота';
+if (isset($_SESSION['user'])) {
+    $is_logged = true;
+    $user_id = $_SESSION['user']['id'] ?? null;
+}
 
-$user = $_SESSION['user'] ?? null;
 $data = check_id($_GET['id'], $connect);
 
 if (!$data) {
@@ -49,6 +53,7 @@ if (!$data) {
     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
     $min_cost = intval($cost) + intval($lot['step_bet']);
     $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $lot_id);
+    $title = $lot['lot_name'];
     $path = 'lot.php';
 }
 
@@ -81,7 +86,8 @@ $page_content = include_template($path, [
     'min_cost' => $min_cost,
     'symbol' => RUB_LOWER_CASE,
     'errors' => $errors,
-    'user_logged' => $user,
+    'is_logged' => $is_logged,
+    'user_id' => $user_id,
 ]);
 
 $layout_content = include_template('layout.php', [

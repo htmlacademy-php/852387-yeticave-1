@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $emails);
 
-    if (count($errors)) {
+    if (empty($errors)) {
         $page_content = include_template('sign-up.php', [
             'form' => $form,
             'errors' => $errors,
@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$is_set_user) {
             die(mysqli_error($connect));
         }
-
         header("Location: /login.php");
         exit();
     }

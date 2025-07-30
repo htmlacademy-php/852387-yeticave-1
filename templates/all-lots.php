@@ -10,7 +10,8 @@ declare(strict_types=1);
  * @var int $cur_page текущая (открытая) страница
  * @var string $tab
  * @var string $path
- * @var $cat_id
+ * @var int $cat_id
+ * @var string $symbol
  */
 ?>
 

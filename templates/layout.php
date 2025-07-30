@@ -65,7 +65,7 @@ declare(strict_types=1);
             <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
                     <a href="<?= create_new_url('all-lots.php',
-                        ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
+                        ['category' => $category['id']]); ?>"><?= $category['name']; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -13,6 +13,8 @@ declare(strict_types=1);
  * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  * @var ?string[] $errors массив ошибок по данным из формы
  * @var int $user_id ID пользователя максимальной ставки по лоту
+ * @var int $user_id_max_bet
+ * @var bool $is_logged
  */
 ?>
 
@@ -51,7 +53,8 @@ declare(strict_types=1);
                         'timer' => $timer,
                         'user_id_max_bet' => $user_id_max_bet,
                         'author_id' => $lot['user_id'],
-                        'user_logged' => $user_logged,
+                        'is_logged' => $is_logged,
+                        'user_id' => $user_id
                     ]); ?>
                 </div>
                 <?= include_template('_history-bets.php', [

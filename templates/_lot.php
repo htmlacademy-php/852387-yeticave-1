@@ -3,6 +3,7 @@ declare(strict_types=1);
 /**
  * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var string $symbol
  */
 ?>
 

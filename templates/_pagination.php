@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @var int $cur_page текущая (открытая) страница
  * @var string $tab
  * @var string $path
- * @var $value
+ * @var ?string $value
  */
 ?>
 

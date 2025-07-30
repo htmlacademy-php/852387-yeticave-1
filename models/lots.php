@@ -7,6 +7,7 @@ const LIMIT_LOTS = 9;
 
 /**
  * Получает список лотов или завершаем код с ошибкой
+ *
  * @param mysqli $connect Ресурс соединения
  * @param int $limit Количество новых лотов, которые можно получить в БД
  * @param int $offset смещение
@@ -34,7 +35,7 @@ function get_lots(mysqli $connect, int $limit = LIMIT_LOTS, int $offset = 0): ?a
  * Получает данные лота по ID из таблицы БД
  * @param mysqli $connect Ресурс соединения
  * @param int $id ID лота
- * @return ?array{id: int, date_end: string, lot_name: string, img_url: string, description: string, price_start: int, step_bet: int, cat_name: string}
+ * @return ?array{id: int, user_id: int, date_end: string, lot_name: string, img_url: string, description: string, price_start: int, step_bet: int, cat_name: string}
  *
  */
 function get_lot_by_id(mysqli $connect, int $id): ?array
@@ -72,10 +73,10 @@ function set_lot(mysqli $connect, array $data): bool
 /**
  * Получает список лотов по заданным словам в описании и названии лотов
  *
- * @param mysqli $connect
- * @param string $search
- * @param int $limit
- * @param int $offset
+ * @param mysqli $connect Ресурс соединения
+ * @param string $search строка которую необходимо найти
+ * @param int $limit лимит на количество получения лотов
+ * @param int $offset смещение
  * @return array|null
  */
 function search_lots(mysqli $connect, string $search, int $limit = LIMIT_LOTS, int $offset = 0): ?array

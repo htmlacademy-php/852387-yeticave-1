@@ -22,7 +22,7 @@ require_once('validate/validate-upload-file.php');
  * @var ?array $lot заполненные пользователем поля формы
  */
 
-if (!$_SESSION) {
+if (!isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }
