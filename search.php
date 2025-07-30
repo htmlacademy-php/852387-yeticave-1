@@ -16,12 +16,13 @@ require_once('utilities/date-time.php');
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-const ITEMS_PER_PAGE = 3;
-const RUB_UPPER_CASE = 'RUB_UPPER_CASE';;
+const ITEMS_PER_PAGE = 9;
+const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Поиск лотов';
 
-$search = trim($_GET['search']) ?? '';
+$search = htmlspecialchars(trim($_GET['search'])) ?? '';
+
 if ($search) {
 
     $cur_page = $_GET['page'] ?? 1;
@@ -31,6 +32,9 @@ if ($search) {
     [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, ITEMS_PER_PAGE);
 
     $lots = search_lots($connect, $search, ITEMS_PER_PAGE, $offset);
+
+    $tab = 'search';
+    $path = 'search.php';
 }
 
 $page_content = include_template('search.php', [
@@ -39,6 +43,9 @@ $page_content = include_template('search.php', [
     'pages' => $pages,
     'pages_count' => $pages_count,
     'cur_page' => $cur_page,
+    'search' => $search,
+    'tab' => $tab,
+    'path' => $path,
     'symbol' => RUB_UPPER_CASE
 ]);
 

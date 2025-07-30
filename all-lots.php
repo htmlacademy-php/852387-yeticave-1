@@ -9,22 +9,22 @@ require_once('utilities/helpers.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var false|mysqli $connect mysqli Ресурс соединения
- * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
  * @var array $lots
  * @var string $cat_name
  * @var int $pages
  * @var int $pages_count
- * @var int $cur_page
+ * @var  $cur_page
  * @var ?int $items_count
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 9;
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Все лоты в категории';
 
-$cat_id = $_GET['category'] ?? null;
+$cat_id = htmlspecialchars(trim($_GET['category'])) ?? null;
 
 if ($cat_id) {
 
@@ -37,6 +37,9 @@ if ($cat_id) {
     $lots = get_lots_by_category($connect, intval($cat_id), ITEMS_PER_PAGE, $offset);
 
     $cat_name = get_category_name($connect, intval($cat_id));
+
+    $tab = 'category';
+    $path = 'all-lots.php';
 }
 
 $page_content = include_template('all-lots.php', [
@@ -46,7 +49,10 @@ $page_content = include_template('all-lots.php', [
     'count_lots' => $items_count,
     'pages' => $pages,
     'pages_count' => $pages_count,
-    'cur_page' => $cur_page,
+    'cur_page' => (int)$cur_page,
+    'tab' => $tab,
+    'path' => $path,
+    'cat_id' => $cat_id,
     'symbol' => RUB_UPPER_CASE,
 ]);
 

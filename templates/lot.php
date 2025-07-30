@@ -30,7 +30,7 @@ declare(strict_types=1);
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
-                    <?php $timer = get_dt_range($lot['date_end']); ?>
+                    <?php $timer = get_dt_range($lot['date_end'], false); ?>
                     <div class="lot-item__timer timer <?= $timer['hours'] === 0 ? 'timer--finishing' : '' ?>">
                         <?= timer_format([$timer['hours'], $timer['minutes']]); ?>
                     </div>
@@ -49,8 +49,9 @@ declare(strict_types=1);
                         'errors' => $errors,
                         'min_cost' => $min_cost,
                         'timer' => $timer,
-                        'user_id' => $user_id,
-                        'lot_id' => $lot['id'],
+                        'user_id_max_bet' => $user_id_max_bet,
+                        'author_id' => $lot['user_id'],
+                        'user_logged' => $user_logged,
                     ]); ?>
                 </div>
                 <?= include_template('_history-bets.php', [

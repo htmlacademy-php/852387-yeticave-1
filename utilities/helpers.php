@@ -214,7 +214,7 @@ function find_max_bet(array $bets): array
 
 function create_new_url(string $path, array $data = []): string
 {
-    $params = $_GET;
+    $params = [];
 
     if (empty($data)) {
         return "/$path";
@@ -241,11 +241,11 @@ function get_post_value(string $name): mixed
 function get_data_pagination($cur_page, $items_count, $page_items): array
 {
 //считаем кол-во страниц и смещение
-    $pages_count = ceil($items_count / $page_items);
+    $pages_count = (int)ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
 //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
-    return [$pages_count, $offset, $pages];
+    return [(int)$pages_count, $offset, $pages];
 }
 
 
@@ -293,11 +293,11 @@ function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_
  * Проверяет входящий ID и возвращает ID лота и его данные из БД
  *
  * @param mysqli $connect mysqli Ресурс соединения
- * @param string $id ID лота из строки запроса $_GET['id']
+ * @param ?string $id ID лота из строки запроса $_GET['id']
  * @return null|array{$id: string, $lot: array} массив с данными [ID лота и данные лота по ID из БД]
  *
 **/
-function check_id(string $id, mysqli $connect) : ?array
+function check_id(?string $id, mysqli $connect) : ?array
 {
     if (!isset($id)) {
         return null;

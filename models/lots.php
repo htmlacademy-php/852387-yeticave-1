@@ -40,6 +40,7 @@ function get_lots(mysqli $connect, int $limit = LIMIT_LOTS, int $offset = 0): ?a
 function get_lot_by_id(mysqli $connect, int $id): ?array
 {
     $sql = 'SELECT l.id,
+        l.user_id,
         l.date_end,
         l.name AS "lot_name",
         l.img_url,

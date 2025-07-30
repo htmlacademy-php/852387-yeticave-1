@@ -17,7 +17,7 @@ declare(strict_types=1);
                 <li class="promo__item promo__item--<?= $category['code'] ?? '' ?>">
                     <a class="promo__link"
                        href="<?= create_new_url('all-lots.php',
-                           ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
+                           ['category' => $category['id']]); ?>"><?= $category['name']; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

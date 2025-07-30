@@ -35,20 +35,12 @@ function set_user(mysqli $connect, array $data): bool
  * Получает данные пользователя по EMAIL из таблицы БД
  * @param mysqli $connect Ресурс соединения
  * @param string $email EMAIL лота
- * @return ?array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
+ * @return ?array{id: int, date_add: string, name: string, email: string, password: string, contact: string}
  *
  */
 function get_user_by_email(mysqli $connect, string $email): ?array
 {
-    $sql = "SELECT u.id,
-                u.date_add,
-                u.name,
-                u.email,
-                u.password,
-                u.contact,
-                l.id AS 'lot_id' FROM users u
-                    INNER JOIN lots l on u.id = l.user_id 
-                              WHERE email = ?";
+    $sql = 'SELECT * FROM users WHERE email = ?';
     return get_item($connect, $sql, $email);
 }
 

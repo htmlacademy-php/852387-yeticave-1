@@ -37,16 +37,18 @@ $min_cost = null;
 
 $title = 'Страница лота';
 
+$user = $_SESSION['user'] ?? null;
 $data = check_id($_GET['id'], $connect);
+
 if (!$data) {
     http_response_code(404);
     $path = '404.php';
 } else {
-    [$id, $lot] = $data;
-    $bets = get_bets_by_lot_id($connect, $id);
+    [$lot_id, $lot] = $data;
+    $bets = get_bets_by_lot_id($connect, $lot_id);
     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
     $min_cost = intval($cost) + intval($lot['step_bet']);
-    $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $id);
+    $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $lot_id);
     $path = 'lot.php';
 }
 
@@ -58,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         $is_set_bet = set_bet($connect, $_SESSION['user']['id'], $lot['id'], $form['cost']);
-        $bets = get_bets_by_lot_id($connect, $id);
+        $bets = get_bets_by_lot_id($connect, $lot_id);
         $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
         $min_cost = intval($cost) + intval($lot['step_bet']);
 
@@ -75,10 +77,11 @@ $page_content = include_template($path, [
     'form' => $form,
     'bets' => $bets,
     'cost' => $cost,
-    'user_id' => $user_id_max_bet,
+    'user_id_max_bet' => $user_id_max_bet,
     'min_cost' => $min_cost,
     'symbol' => RUB_LOWER_CASE,
     'errors' => $errors,
+    'user_logged' => $user,
 ]);
 
 $layout_content = include_template('layout.php', [

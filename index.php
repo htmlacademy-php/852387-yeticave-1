@@ -16,8 +16,6 @@ require_once('models/lots.php');
 
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
-$_GET = []; // ???
-
 // выполнение запроса на список новых лотов
 $lots = get_lots($connect);
 
