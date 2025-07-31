@@ -6,8 +6,8 @@ require_once('utilities/helpers.php');
 /**
  * Получает список пользователей или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
- * @return ?array<int,array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
- *
+ * @return ?array<int,array{id: string, date_add: string, name: string,
+ *     email: string, password: string, contact: string}
  */
 function get_users(mysqli $connect): ?array
 {
@@ -21,14 +21,17 @@ function get_users(mysqli $connect): ?array
  * @param string[] $data данные для добавления лота в БД
  * @return boolean
  **/
-
 function set_user(mysqli $connect, array $data): bool
 {
     $sql = 'INSERT INTO users(name, email, password, contact)
                 VALUES (?, ?, ?, ?)';
     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
-    return mysqli_stmt_execute($stmt);
+
+    if (!mysqli_stmt_execute($stmt)) {
+        die(mysqli_error($connect));
+    }
+    return true;
 }
 
 /**
@@ -36,7 +39,6 @@ function set_user(mysqli $connect, array $data): bool
  * @param mysqli $connect Ресурс соединения
  * @param string $email EMAIL лота
  * @return ?array{id: int, date_add: string, name: string, email: string, password: string, contact: string}
- *
  */
 function get_user_by_email(mysqli $connect, string $email): ?array
 {
@@ -49,13 +51,9 @@ function get_user_by_email(mysqli $connect, string $email): ?array
  * Получает список пользователей по IDs или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
  * @return ?array<int,array{user_name: string, email: string, contact: string} данные пользователя (имя, email, другие контакты)
- *
  */
 function get_user_by_id(mysqli $connect, int $id): ?array
 {
     $sql = 'SELECT name AS "user_name", email, contact FROM users WHERE id = ?';
     return get_item($connect, $sql, $id);
 }
-
-// stora@internet.ru  пароль 111111
-// frika@mail.ru пароль 1111111

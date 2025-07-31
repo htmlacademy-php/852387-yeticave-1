@@ -14,7 +14,6 @@ require_once('models/categories.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * * все новые лота из БД
@@ -27,13 +26,6 @@ if (!$connect) {
     die(mysqli_connect_error());
 }
 
-// начальные данные
 $title = 'Главная';
 $categories = get_categories($connect);
-$lots = [];
-$bets = null;
-$lot = null;
 $errors = null;
-$pages = null;
-$pages_count = null;
-$cur_page = null;

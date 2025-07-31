@@ -10,13 +10,12 @@ require_once('models/lots.php');
  * @var string $title заголовок страницы сайта
  * @var false|mysqli $connect mysqli Ресурс соединения
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
- * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
- * * все новые лота из БД
+ * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string,
+ *     price_start: string, img_url: ?string, date_end: string} $lots все новые лота из БД
  */
 
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
-// выполнение запроса на список новых лотов
 $lots = get_lots($connect);
 
 $page_content = include_template('main.php', [

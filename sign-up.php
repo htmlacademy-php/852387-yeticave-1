@@ -9,47 +9,39 @@ require_once('validate/validate-sign-up.php');
  * @var string $title заголовок страницы сайта
  * @var false|mysqli $connect mysqli Ресурс соединения
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
- * @var array $errors все ошибки заполнения формы пользователем
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
+ * @var ?array{name: string, email: string, password: string, message: string} $form заполненные пользователем поля формы
+ * @var ?array{name: string, email: string, password: string, message: string} $errors массив ошибок по данным из формы
  */
 
-if ($_SESSION) {
+if (isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }
 
 $title = 'Регистрация аккаунта';
-// выполнение запроса на список всех пользователей
+$form = [];
 $users = get_users($connect);
-// получаем список EMAIL всех пользователей
 $emails = array_column($users, 'email');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // получаем данные из полей формы
+
     $form = get_registration_fields();
-    // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $emails);
 
-    if (empty($errors)) {
-        $page_content = include_template('sign-up.php', [
-            'form' => $form,
-            'errors' => $errors,
-            'categories' => $categories
-        ]);
-    } else {
-        $is_set_user = set_user($connect, $form);
-
-        if (!$is_set_user) {
-            die(mysqli_error($connect));
-        }
+    if (count($errors) === 0) {
+        set_user($connect, $form);
         header("Location: /login.php");
         exit();
     }
-} else {
-    $page_content = include_template('sign-up.php', [
-        'categories' => $categories,
-    ]);
 }
+
+$page_content = include_template('sign-up.php', [
+    'categories' => $categories,
+    'form' => $form,
+    'errors' => $errors,
+]);
+
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

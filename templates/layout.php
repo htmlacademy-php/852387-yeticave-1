@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 /**
- * @var string $title
- * @var int $is_auth
- * @var string[] $categories
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
- * @var string $content
+ * @var string $title заголовок страницы сайта
+ * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
+ * @var array<int,array{id: int, date_end: string, lot_name: string, price_start: int,
+ *      img_url: string, cost: int, cat_name: string} $lots массив данных лотов из БД
+ * @var string $content содержимое шаблона страницы HTML
  */
 ?>
 
@@ -30,7 +30,7 @@ declare(strict_types=1);
             <form class="main-header__search" method="get" action="<?= create_new_url('search.php'); ?>"
                   autocomplete="off">
                 <input type="search" name="search" placeholder="Поиск лота"
-                       value="<?= isset($_GET['search']) ? trim($_GET['search']) : null; ?>">
+                       value="<?= isset($_GET['search']) ? htmlspecialchars(trim($_GET['search'])) : null; ?>">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
             <a class="main-header__add-lot button" href="<?= create_new_url('add.php'); ?>">Добавить лот</a>
@@ -65,7 +65,7 @@ declare(strict_types=1);
             <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
                     <a href="<?= create_new_url('all-lots.php',
-                        ['category' => $category['id']]); ?>"><?= $category['name']; ?></a>
+                        ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

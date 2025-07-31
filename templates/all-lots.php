@@ -1,17 +1,18 @@
 <?php
 declare(strict_types=1);
 /**
- * @var int[] $categories список категорий лотов
+ * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var string $cat_name название категории
- * @var string[] $lots
- * @var int $count_lots
- * @var int[] $pages_count количество страниц
- * @var int[] $pages
+ * @var ?array<int,array{id: int, author_id: int, date_end: string, lot_name: string, img_url: string,
+ *      decription: string, price_start: int, step_bet: int, cat_name: string} $lots массив данных лотов из БД
+ * @var int $count_lots количество лотов
+ * @var int $pages_count количество страниц
+ * @var int[] $pages массив с номерами страниц
  * @var int $cur_page текущая (открытая) страница
- * @var string $tab
- * @var string $path
- * @var int $cat_id
- * @var string $symbol
+ * @var string $tab название параметра для строки запроса ('category' or 'search')
+ * @var string $path путь на нужную страницу для строки запроса ('all-lots.php' or 'search.php')
+ * @var int $cat_id ID категории
+ * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  */
 ?>
 
