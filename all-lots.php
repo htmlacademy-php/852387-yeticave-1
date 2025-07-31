@@ -30,6 +30,9 @@ $cat_name = null;
 $items_count = null;
 $path = 'all-lots.php';
 $lots = null;
+$pages = null;
+$pages_count = 0;
+$cur_page = 1;
 
 $cat_id = htmlspecialchars(trim($_GET['category'] ?? '')) ?? null;
 
