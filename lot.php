@@ -37,6 +37,8 @@ $user_id = null;
 $is_author = false;
 $is_user_max_bet = false;
 $path = 'lot.php';
+$lot = null;
+$bets = [];
 
 if (isset($_SESSION['user'])) {
     $is_logged = true;

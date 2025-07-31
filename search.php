@@ -26,6 +26,10 @@ const TAB = 'search';
 const PATH = 'search.php';
 
 $title = 'Поиск лотов';
+$lots = [];
+$pages = null;
+$pages_count = 0;
+$cur_page = 1;
 
 $search = htmlspecialchars(trim($_GET['search'] ?? '')) ?? null;
 
