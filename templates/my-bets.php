@@ -2,12 +2,7 @@
 declare(strict_types=1);
 
 /**
- * название лота (ссылка на страницу);
- * сумма ставки;
- * дата/время.
- * Выигравшие ставки должны выделяться
- * отдельным цветом, а также там должны быть размещены контакты владельца лота.
- * @var string[] $categories список категорий лотов
+ * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  * @var string $symbol знак валюты для строкового форматирования цена
  * @var ?int $user_id авторизованный пользователь
@@ -29,21 +24,21 @@ declare(strict_types=1);
                         $bet['user_win_id']) ? 'rates__item--win' : ''; ?>">
                         <td class="rates__info">
                             <div class="rates__img">
-                                <img src="<?= $bet['img_url'] ?? ''; ?>" width="54" height="40"
-                                     alt="<?= $bet['lot_name']; ?>">
+                                <img src="<?= htmlspecialchars($bet['img_url'] ?? ''); ?>" width="54" height="40"
+                                     alt="<?= htmlspecialchars($bet['lot_name'] ?? ''); ?>">
                             </div>
                             <div>
                                 <h3 class="rates__title"><a
                                             href="<?= create_new_url('lot.php',
-                                                ['id' => $bet['lot_id']]); ?>"><?= $bet['lot_name']; ?></a>
+                                                ['id' => $bet['lot_id']]); ?>"><?= htmlspecialchars($bet['lot_name'] ?? ''); ?></a>
                                 </h3>
                                 <?php if (is_identity($user_id, $bet['user_win_id'])): ?>
-                                    <p><?= $bet['author_contact']; ?></p>
+                                    <p><?= htmlspecialchars($bet['author_contact'] ?? ''); ?></p>
                                 <?php endif; ?>
                             </div>
                         </td>
                         <td class="rates__category">
-                            <?= $bet['cat_name']; ?>
+                            <?= htmlspecialchars($bet['cat_name'] ?? ''); ?>
                         </td>
                         <td class="rates__timer">
                             <?php [$flag, $button] = get_bets_timer_options($bet['date_end_lot'], $user_id,

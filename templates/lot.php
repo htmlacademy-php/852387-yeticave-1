@@ -5,30 +5,32 @@ declare(strict_types=1);
  * @var array{id: int, date_end: string, lot_name: string, img_url: string,
  *     description: string, price_start: int, step_bet: int, cat_name: string} $lot
  * * все данные лота по ID лота из БД
- * @var string[] $form заполненные пользователем поля формы
+ * @var ?array{cost: int} $form заполненные пользователем поля формы
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  * @var array{customer_id: int, lot_id: int, date_add: string, cost: int} $bets все ставки по ID лота из БД
  * @var ?int $cost текущая цена лота
  * @var int $min_cost минимальная ставка по лоту
  * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
- * @var ?string[] $errors массив ошибок по данным из формы
- * @var int $user_id ID пользователя максимальной ставки по лоту
- * @var int $user_id_max_bet
- * @var bool $is_logged
+ * @var ?array{cost: string} $errors все ошибки заполнения формы пользователем
+ * @var bool $is_logged пользователь авторизован на сайте
+ * @var bool $is_author пользователь является автором лота
+ * @var bool $is_user_max_bet пользователь является автором последней ставки по лоту
  */
 ?>
 
 <main>
     <?= include_template('_category.php', ['categories' => $categories]); ?>
     <section class="lot-item container">
-        <h2><?= $lot['lot_name']; ?></h2>
+        <h2><?= htmlspecialchars($lot['lot_name'] ?? ''); ?></h2>
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="..<?= $lot['img_url']; ?>" width="730" height="548" alt="<?= $lot['lot_name']; ?>']?>">
+                    <img src="..<?= htmlspecialchars($lot['img_url'] ?? ''); ?>" width="730" height="548"
+                         alt="<?= htmlspecialchars($lot['lot_name'] ?? ''); ?>']?>">
                 </div>
-                <p class="lot-item__category">Категория: <span><?= $lot['cat_name']; ?></span></p>
-                <p class="lot-item__description"><?= $lot['description'] ?? ''; ?></p>
+                <p class="lot-item__category">Категория: <span><?= htmlspecialchars($lot['cat_name'] ?? ''); ?></span>
+                </p>
+                <p class="lot-item__description"><?= htmlspecialchars($lot['description'] ?? ''); ?></p>
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
@@ -47,14 +49,13 @@ declare(strict_types=1);
                         </div>
                     </div>
                     <?= include_template('_form-bet.php', [
-                        'form' => $form ?? null,
+                        'form' => $form,
                         'errors' => $errors,
                         'min_cost' => $min_cost,
                         'timer' => $timer,
-                        'user_id_max_bet' => $user_id_max_bet,
-                        'author_id' => $lot['user_id'],
+                        'is_author' => $is_author,
                         'is_logged' => $is_logged,
-                        'user_id' => $user_id
+                        'is_user_max_bet' => $is_user_max_bet,
                     ]); ?>
                 </div>
                 <?= include_template('_history-bets.php', [

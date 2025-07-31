@@ -19,7 +19,8 @@ require_once('validate/validate-upload-file.php');
  * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * * все новые лота из БД
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
- * @var ?array $lot заполненные пользователем поля формы
+ * @var ?array{user_id: int, name: string, dessription: string, price: string, date_end: string, step_ben: string, cat_id: int} $form заполненные пользователем поля формы
+ * @var ?array{user_id: int, name: string, dessription: string, price: string, date_end: string, step_ben: string, cat_id: int} $errors массив ошибок по данным из формы
  */
 
 if (!isset($_SESSION['user'])) {
@@ -28,41 +29,30 @@ if (!isset($_SESSION['user'])) {
 }
 
 $title = 'Добавление лота';
-// получаем список ID всех категорий
 $cat_ids = array_column($categories, 'id');
+$form = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $lot['user_id'] = (int)$_SESSION['user']['id'];
-    // получаем данные из полей формы
-    $lot = [...$lot, ...get_lot_fields()];
 
-    // получаем массив ошибок по данным полей из формы
-    $errors = get_errors($lot, $cat_ids);
-    // проверка загрузки файла
-    [$errors['file'], $lot['img_url']] = validate_upload_file($_FILES['lot_img']);
-    // убираем все значения типа null, валидные значения
+    $user_id = $_SESSION['user']['id'] ?? null;
+    $form = get_lot_fields();
+    $errors = get_errors($form, $cat_ids);
+    [$errors['file'], $form['img_url']] = validate_upload_file($_FILES['lot_img']);
     $errors = array_filter($errors);
 
-    if (count($errors)) {
-        $page_content = include_template('add.php', [
-            'lot' => $lot,
-            'errors' => $errors,
-            'categories' => $categories
-        ]);
-    } else {
-        $is_set_lot = set_lot($connect, $lot);
-
-        if (!$is_set_lot) {
-            die(mysqli_error($connect));
-        }
+    if (count($errors) === 0) {
+        var_dump($form);
+        set_lot($connect, [$user_id, ...$form]);
         $lot_id = mysqli_insert_id($connect);
         header('Location: lot.php?id=' . $lot_id);
     }
-} else {
-    $page_content = include_template('add.php', [
-        'categories' => $categories,
-    ]);
 }
+
+$page_content = include_template('add.php', [
+    'categories' => $categories,
+    'form' => $form,
+    'errors' => $errors,
+]);
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

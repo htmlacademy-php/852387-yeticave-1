@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * @var string[] $categories список категорий лотов
+ * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
  */
 ?>
 

@@ -12,6 +12,7 @@
     ],
     "require": {
         "symfony/mailer": "^7.3",
-        "ext-mysqli": "*"
+        "ext-mysqli": "*",
+        "ext-fileinfo": "*"
     }
 }

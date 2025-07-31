@@ -11,47 +11,36 @@ require_once('validate/validate-login.php');
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var array $errors все ошибки заполнения формы пользователем
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
+ * @var ?array{email: string, password: string} $form заполненные пользователем поля формы
+ * @var ?array{email: string, password: string} $errors массив ошибок по данным из формы
  */
 
-//  $email = (int)filter_input(INPUT_POSt, 'email', FILTER_VALIDATE_EMAIL);
-//  if ($email) { $user_in_bd = get_user_by_email(mysqli $connect, string $email); }
-
 $title = 'Вход на сайт';
+$form = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // получаем данные из полей формы
-    $form = get_login_fields();
-    // получаем данные пользователя (или null) по email
-    $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
-    // получаем массив ошибок по данным полей из формы
-    $errors = get_errors($form, $user);
-    if (!count($errors) and $user) {
-        if (password_verify($form['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
-        } else {
-            $errors['password'] = 'Вы ввели неверный пароль';
-        }
-    }
-    if (count($errors)) {
-        $page_content = include_template('login.php', [
-            'form' => $form,
-            'errors' => $errors,
-            'categories' => $categories,
-        ]);
-    } else {
-        header("Location: /index.php");
-        exit();
-    }
-} else {
-    $page_content = include_template('login.php', [
-        'categories' => $categories,
-    ]);
 
-    if (!empty($_SESSION['user'])) {
-        header("Location: /index.php");
-        exit();
+    $form = get_login_fields();
+    $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
+    $errors = get_errors($form, $user);
+
+    if ($user and password_verify($form['password'], $user['password'])) {
+        $_SESSION['user'] = $user;
+    } else {
+        $errors['password'] = 'Вы ввели неверный пароль';
     }
 }
+
+if (!empty($_SESSION['user']) and count($errors) === 0) {
+    header("Location: /index.php");
+    exit();
+}
+
+$page_content = include_template('login.php', [
+    'categories' => $categories,
+    'form' => $form,
+    'errors' => $errors,
+]);
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

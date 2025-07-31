@@ -5,7 +5,6 @@ require_once('utilities/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['cost'];
-
 // ошибки при не заполненном поле формы
 const EMPTY_FIELDS = [
     'cost' => 'Введите вашу ставку',
@@ -13,7 +12,6 @@ const EMPTY_FIELDS = [
 
 /**
  * Получаем отфильтрованный массив полей формы заполненных пользователем
- *
  * @return ?array
  **/
 function get_bet_fields(): ?array
@@ -23,12 +21,15 @@ function get_bet_fields(): ?array
     ]);
 }
 
-function validate_cost($value, $min_cost): ?string
+/**
+ * Получаем строковое пояснение ошибки, если значение ставки не введено или меньше минимальной ставки
+ * @param string|int $value значение введённое пользователем
+ * @param int $min_cost минимальное значение ставки
+ * @return string|null
+ */
+function validate_cost(string|int $value, int $min_cost): ?string
 {
-    if (is_int($value)) {
-        return 'Введите целое число';
-    }
-    if ($value < $min_cost) {
+    if (intval($value) <= $min_cost) {
         return 'Ваша ставка меньше ' . $min_cost;
     }
     return null;
@@ -44,7 +45,7 @@ function get_errors(?array $data, ?int $data_bd): array
 {
     $rules = [
         'cost' => function ($value) use ($data_bd) {
-            return validate_cost($value, $data_bd);
+            return validate_cost((int)$value, $data_bd);
         },
     ];
 

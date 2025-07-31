@@ -66,5 +66,5 @@ function get_errors(?array $data, array $emails): array
         },
     ];
 
-    return filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS);
+    return array_filter(filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS));
 }

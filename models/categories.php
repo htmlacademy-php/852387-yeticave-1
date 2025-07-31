@@ -10,7 +10,6 @@ const LIMIT_CATEGORIES = 10;
  * @param mysqli $connect Ресурс соединения
  * @param int $limit Количество категорий, которые можно получить в БД
  * @return ?array<int,array{id: int, name: string, code: string}
- *
  */
 function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
 {
@@ -20,14 +19,14 @@ function get_categories(mysqli $connect, int $limit = LIMIT_CATEGORIES): ?array
 
 /**
  * Возвращает по ID категории наименование категории из БД
- *
  * @param mysqli $connect Ресурс соединения
  * @param int $id ID категории
  * @return ?string  название категории
  */
-function get_category_name(mysqli $connect, int $id) : ?string
+function get_category_name(mysqli $connect, int $id): ?string
 {
     $sql = 'SELECT name FROM categories WHERE id =' . $id;
-    $result = mysqli_query($connect, $sql);
-    return mysqli_fetch_assoc($result)['name'];
+    $query = mysqli_query($connect, $sql);
+    $result = mysqli_fetch_assoc($query);
+    return $result ? $result['name'] : null;
 }

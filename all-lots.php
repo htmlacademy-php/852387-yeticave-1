@@ -10,39 +10,42 @@ require_once('utilities/helpers.php');
  * @var string $title заголовок страницы сайта
  * @var false|mysqli $connect mysqli Ресурс соединения
  * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
- * @var array $lots
- * @var string $cat_name
- * @var int $pages
- * @var int $pages_count
- * @var  $cur_page
- * @var ?int $items_count
+ * @var array<int,array{id: int, author_id: int, date_end: string, lot_name: string, img_url: string,
+ *     decription: string, price_start: int, step_bet: int, cat_name: string, cost: int} массив данных лотов из БД
+ * @var string $cat_name название категории
+ * @var int[] $pages массив с номерами страниц
+ * @var int $pages_count количество страниц
+ * @var int $cur_page текущая (открытая) страница
+ * @var int $items_count кол-во лотов по значению поиска
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  */
 
 const ITEMS_PER_PAGE = 9;
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
+const TAB = 'category';
+const PATH = 'all-lots.php';
 
 $title = 'Все лоты в категории';
+$cat_name = null;
+$items_count = null;
+$path = 'all-lots.php';
+$lots = null;
 
-$cat_id = htmlspecialchars(trim($_GET['category'])) ?? null;
+$cat_id = htmlspecialchars(trim($_GET['category'] ?? '')) ?? null;
 
 if ($cat_id) {
-
     $cur_page = $_GET['page'] ?? 1;
-//узнаем общее число лотов в категории
     $items_count = count_lots_by_category($connect, intval($cat_id));
-
-    [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, ITEMS_PER_PAGE);
-
+    [$pages_count, $offset, $pages] = get_data_pagination((int)$cur_page, $items_count, ITEMS_PER_PAGE);
     $lots = get_lots_by_category($connect, intval($cat_id), ITEMS_PER_PAGE, $offset);
-
     $cat_name = get_category_name($connect, intval($cat_id));
-
-    $tab = 'category';
-    $path = 'all-lots.php';
+    if (!$cat_name) {
+        http_response_code(404);
+        $path = '404.php';
+    }
 }
 
-$page_content = include_template('all-lots.php', [
+$page_content = include_template($path, [
     'categories' => $categories,
     'cat_name' => $cat_name,
     'lots' => $lots,
@@ -50,8 +53,8 @@ $page_content = include_template('all-lots.php', [
     'pages' => $pages,
     'pages_count' => $pages_count,
     'cur_page' => (int)$cur_page,
-    'tab' => $tab,
-    'path' => $path,
+    'tab' => TAB,
+    'path' => PATH,
     'cat_id' => $cat_id,
     'symbol' => RUB_UPPER_CASE,
 ]);

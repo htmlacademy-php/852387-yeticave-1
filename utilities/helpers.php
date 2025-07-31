@@ -148,14 +148,11 @@ function price_format(string|int $price, $symbol = ''): string
 
 /**
  * Получаем данные из БД в виде ассоциативного массива или завершаем код с ошибкой
- *
  * @param $link mysqli Ресурс соединения
  * @param $sql string SQL запрос с плейсхолдерами вместо значений
  * @param mixed $data Данные для вставки на место плейсхолдеров
- *
  * @return ?array
  **/
-
 function get_items(mysqli $link, string $sql, ...$data): ?array
 {
     $stmt = db_get_prepare_stmt($link, $sql, $data);
@@ -170,14 +167,11 @@ function get_items(mysqli $link, string $sql, ...$data): ?array
 
 /**
  * Получаем данные из БД в виде ассоциативного массива или завершаем код с ошибкой
- *
  * @param $link mysqli Ресурс соединения
  * @param $sql string SQL запрос с плейсхолдерами вместо значений
  * @param mixed $data Данные для вставки на место плейсхолдеров
- *
  * @return ?array
  **/
-
 function get_item(mysqli $link, string $sql, ...$data): ?array
 {
     $stmt = db_get_prepare_stmt($link, $sql, $data);
@@ -191,12 +185,10 @@ function get_item(mysqli $link, string $sql, ...$data): ?array
 }
 
 /**
- * Находит елемент (ассоциативный массив) с данными по максимальной ставе
- *
+ * Возвращает элемент(ставку) с данными по максимальной цене
+ * @return array{customer_id: string, lot_id: string, date_add: string, cost: int}
  * @var array $bets все ставки по лоту
- * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
  */
-
 function find_max_bet(array $bets): array
 {
     return array_reduce($bets, function ($acc, $bet) {
@@ -206,12 +198,10 @@ function find_max_bet(array $bets): array
 
 /**
  * Создает новую ссылку с данными параметрами
- *
- * @var string $path адрес данной страницы
- * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
  * @return string новый адрес ссылки: адрес страницы + строка запроса
+ * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @var string $path адрес данной страницы
  */
-
 function create_new_url(string $path, array $data = []): string
 {
     $params = [];
@@ -230,15 +220,20 @@ function create_new_url(string $path, array $data = []): string
  * Возвращает отфильтрованный массив значений заданных в случае успеха или false в случае неудачи
  * @param string $name данное имя поля
  * @return mixed
- *
  **/
-
 function get_post_value(string $name): mixed
 {
     return filter_input(INPUT_POST, $name, FILTER_SANITIZE_SPECIAL_CHARS);
 }
 
-function get_data_pagination($cur_page, $items_count, $page_items): array
+/**
+ * Возвращает массив с данными [кол-во страниц, смещение, массив с номерами страниц]
+ * @param int $cur_page номер текущей страницы
+ * @param int $items_count количество элементов
+ * @param int $page_items количество элементов на странице
+ * @return int[] [кол-во страниц, смещение, массив с номерами страниц]
+ */
+function get_data_pagination(int $cur_page, int $items_count, int $page_items): array
 {
 //считаем кол-во страниц и смещение
     $pages_count = (int)ceil($items_count / $page_items);
@@ -251,10 +246,8 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
 
 /**
  * Возвращает TRUE, если ID пользователей совпадают
- *
  * @param ?int $user_id_1 ID одного пользователя
  * @param ?int $user_id_2 ID второго пользователя
- *
  * @return boolean
  **/
 function is_identity(?int $user_id_1, ?int $user_id_2): bool
@@ -264,7 +257,6 @@ function is_identity(?int $user_id_1, ?int $user_id_2): bool
 
 /**
  * Возвращает опции таймера ставок для страницы ставок авторизованного пользователя
- *
  * @param string $date_end дата завершения ставок по лоту
  * @param ?int $user_id ID авторизованного пользователя
  * @param ?int $user_win_id ID пользователя выигрышной ставки
@@ -272,16 +264,16 @@ function is_identity(?int $user_id_1, ?int $user_id_2): bool
  */
 function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id): array
 {
+    $options = [
+        'win' => ['win', 'Ставка выиграла'],
+        'lose' => ['end', 'Торги окончены'],
+    ];
     $timer = get_dt_range($date_end, false);
 
     if (is_expiration_date($timer)) {
-        if (is_identity($user_id, $user_win_id)) {
-            $flag = 'win';
-            $button = 'Ставка выиграла';
-        } else {
-            $flag = 'end';
-            $button = 'Торги окончены';
-        }
+
+        [$flag, $button] = is_identity($user_id, $user_win_id) ? $options['win'] : $options['lose'];
+
     } else {
         $flag = $timer['hours'] < 1 ? 'finishing' : '';
         $button = timer_format($timer);
@@ -291,13 +283,11 @@ function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_
 
 /**
  * Проверяет входящий ID и возвращает ID лота и его данные из БД
- *
  * @param mysqli $connect mysqli Ресурс соединения
  * @param ?string $id ID лота из строки запроса $_GET['id']
  * @return null|array{$id: string, $lot: array} массив с данными [ID лота и данные лота по ID из БД]
- *
-**/
-function check_id(?string $id, mysqli $connect) : ?array
+ **/
+function check_id(?string $id, mysqli $connect): ?array
 {
     if (!isset($id)) {
         return null;

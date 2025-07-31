@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 /**
- * @var string[] $categories список категорий лотов
- * @var array<int,array{name: string, category: string, price: int, img_url: ?string, date_end: string} $lots
+ * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
+ * @var ?array<int,array{id: int, date_end: string, lot_name: string, price_start: int,
+ *       img_url: string, cost: int, cat_name: string} $lots
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  */
 ?>
 
@@ -14,10 +16,10 @@ declare(strict_types=1);
             снаряжение.</p>
         <ul class="promo__list">
             <?php foreach ($categories as $category): ?>
-                <li class="promo__item promo__item--<?= $category['code'] ?? '' ?>">
+                <li class="promo__item promo__item--<?= htmlspecialchars($category['code'] ?? ''); ?>">
                     <a class="promo__link"
                        href="<?= create_new_url('all-lots.php',
-                           ['category' => $category['id']]); ?>"><?= $category['name']; ?></a>
+                           ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name'] ?? ''); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

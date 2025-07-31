@@ -13,7 +13,7 @@ const EMPTY_FIELDS = [
 ];
 
 /** Получаем отфильтрованный массив полей формы заполненных пользователем
- * @return ?array
+ * @return ?array{email: string, password: string} заполненные пользователем поля формы
  **/
 function get_login_fields(): ?array
 {
