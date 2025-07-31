@@ -61,7 +61,7 @@ function get_lot_by_id(mysqli $connect, int $id): ?array
  **/
 function set_lot(mysqli $connect, array $data): ?bool
 {
-    $sql = 'INSERT INTO lots(user_id, name, description, price, date_end, step_bet, cat_id, img_url)
+    $sql = 'INSERT INTO lots(name, description, price, date_end, step_bet, cat_id, img_url, user_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
     if (!mysqli_stmt_execute($stmt)) {
