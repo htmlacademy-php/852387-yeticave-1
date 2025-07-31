@@ -34,15 +34,14 @@ $form = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $user_id = $_SESSION['user']['id'] ?? null;
     $form = get_lot_fields();
     $errors = get_errors($form, $cat_ids);
     [$errors['file'], $form['img_url']] = validate_upload_file($_FILES['lot_img']);
+    $form['user_id'] = $_SESSION['user']['id'] ?? null;
     $errors = array_filter($errors);
 
     if (count($errors) === 0) {
-        var_dump($form);
-        set_lot($connect, [$user_id, ...$form]);
+        set_lot($connect, $form);
         $lot_id = mysqli_insert_id($connect);
         header('Location: lot.php?id=' . $lot_id);
     }
