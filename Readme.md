@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Татьяна Смирнова](https://up.htmlacademy.ru/php-individual/1/user/852387).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Парфенов](https://up.htmlacademy.ru/php-individual/1/user/926645).
 
 ---
 
