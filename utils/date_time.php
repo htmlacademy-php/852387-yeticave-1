@@ -16,7 +16,7 @@ const SECS_IN_MINUTE = 60;
  * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
  *                                                           'minutes' => количество минут]
  */
-function time_diff(string $date): array
+function time_diff(string $date) : array
 {
     $ts = time();
     $ts_end_time = strtotime($date);

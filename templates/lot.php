@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once ('utils/price.php');
+require_once ('utils/date_time.php');
 
 /**
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
@@ -9,6 +10,7 @@ require_once ('utils/price.php');
 ?>
 
 <?php foreach ($lots as $lot): ?>
+<?php $time = time_diff($lot['date_end']); ?>
     <li class="lots__item lot">
         <div class="lot__image">
             <img src="<?= htmlspecialchars($lot['url'] ?? ''); ?>" width="350" height="260" alt="">
@@ -21,8 +23,8 @@ require_once ('utils/price.php');
                     <span class="lot__amount">Стартовая цена</span>
                     <span class="lot__cost"><?= price_format($lot['price'] ?? 0); ?></span>
                 </div>
-                <div class="lot__timer timer">
-                    12:23
+                <div class="lot__timer timer <?=$time['hours'] <= 0 ? 'timer--finishing' : ''; ?>">
+                    <?= time_format($time); ?>
                 </div>
             </div>
         </div>
