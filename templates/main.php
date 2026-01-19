@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 /**
  * @var string[] $categories массив названий категорий
- * @var array<int,array{name: string, category: string, price: int, url: string} $lots массив с параметрами лотов
+ * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
  */
 
 ?>
