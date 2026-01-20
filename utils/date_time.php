@@ -52,7 +52,3 @@ function time_format(array $time): string
 
     return "{$hours_format}:{$minutes_format}";
 }
-
-
-var_export(time_diff('2026-01-21 02:02'));
-var_dump(time_format(time_diff('2026-01-19 02:02')));
