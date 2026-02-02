@@ -4,8 +4,9 @@
  * @var string $title имя странице
  * @var int $is_auth рандомно число 1 или 0
  * @var string $user_name имя авторизованного пользователя
- * @var array<array{name: string, code: string} $categories список категорий лотов
+ * @var ?array<array{name: string, code: string} $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
+ * @var ?array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
  * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
  * @var string $main_content HTML-код - контент страницы
  */
@@ -18,5 +19,6 @@ $is_auth = rand(0, 1);
 $user_name = 'Татьяна';
 $categories = [];
 $lots = [];
+$lot = [];
 $bets = [];
 $main_content = '';

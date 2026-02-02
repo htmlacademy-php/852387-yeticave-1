@@ -5,6 +5,9 @@ require_once ('utils/helpers.php');
 require_once ('data.php');
 require_once ('init.php');
 require_once ('utils/db.php');
+require_once ('models/categories.php');
+require_once ('models/lots.php');
+require_once ('models/bets.php');
 
 /**
  * @var string $title имя странице
@@ -21,64 +24,43 @@ require_once ('utils/db.php');
 if (!$connect) {
     die(mysqli_connect_error());
 }
-// выполнение запроса на список категорий
-$sql = 'SELECT *  FROM categories LIMIT ?';
-$categories = get_items($connect, $sql, LIMIT_ITEMS);
+
+$categories = get_categories($connect);
 
 if (!isset($_GET['id'])) {
 
     http_response_code(404);
-    $main_content = include_template('404.php', ['categories' => $categories ]);
+    $path = '404.php';
 
 } else {
 
-    $id = mysqli_real_escape_string($connect, $_GET['id']);
-
-
-    $sql = 'SELECT l.id,
-           l.user_id "author_id",
-           l.date_end,
-           l.name,
-           l.description,
-           l.img_url,
-           price "price_start",
-           l.step_bet,
-           c.name "cat_name" FROM lots l
-               INNER JOIN categories c ON l.cat_id = c.id
-                                      WHERE l.id = %s';
-
-    $sql = sprintf($sql, $id);
-    $result = mysqli_query($connect, $sql);
-    $lot = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-    if (!isset($lot)) {
-
+    $id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    if (!$id) {
         http_response_code(404);
-        $main_content = include_template('404.php', [
-            'categories' => $categories
-        ]);;
+        $path = '404.php';
 
     } else {
 
-        $sql = 'SELECT user_id "customer_id",
-            lot_id,
-            date_add,
-            cost FROM bets
-                 WHERE lot_id = %s
-                 ORDER BY bets.date_add
-                 LIMIT %s';
+        $lot = get_lot_by_id($connect, $id);
+        if (!$lot) {
 
-        $sql = sprintf($sql, $id, LIMIT_ITEMS);
-        $result = mysqli_query($connect, $sql);
-        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            http_response_code(404);
+            $path = '404.php';
 
-        $main_content = include_template('lot.php', [
-            'categories' => $categories,
-            'lot' => $lot,
-            'bets' => $bets
-        ]);
+        } else {
+
+            $bets = get_bets_by_id($connect, $id);
+            $path = 'lot.php';
+
+        }
     }
 }
+
+$main_content = include_template('lot.php', [
+    'categories' => $categories,
+    'lot' => $lot,
+    'bets' => $bets
+]);
 
 $page = include_template('layout.php', [
     'main_content' => $main_content,
