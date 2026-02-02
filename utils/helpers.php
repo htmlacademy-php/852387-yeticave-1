@@ -1,25 +1,5 @@
 <?php
-/**
- * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
- *
- * Примеры использования:
- * is_date_valid('2019-01-01'); // true
- * is_date_valid('2016-02-29'); // true
- * is_date_valid('2019-04-31'); // false
- * is_date_valid('10.10.2010'); // false
- * is_date_valid('10/10/2010'); // false
- *
- * @param string $date Дата в виде строки
- *
- * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
- */
-function is_date_valid(string $date) : bool {
-    $format_to_check = 'Y-m-d';
-    $dateTimeObj = date_create_from_format($format_to_check, $date);
-
-    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
-}
-
+declare(strict_types=1);
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
@@ -134,22 +114,35 @@ function include_template(string $name, array $data = []): string
     return ob_get_clean();
 }
 
-
-
 /**
  * Создает новую ссылку с данными параметрами
  * @var string $path адрес данной страницы
- * @var mixed $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
  * @return string новый адрес ссылки: адрес страницы + строка запроса
  **/
-function create_new_url(string $path, ...$data): string
+function create_new_url(string $path, array $data = []): string
 {
     $params = $_GET;
+
+    if (empty($data)) {
+        return "/$path";
+    }
 
     foreach ($data as $key => $value) {
         $params[$key] = $value;
     }
 
-    $query = http_build_query(...$params);
+    $query = http_build_query($params);
     return "/{$path}?{$query}";
+}
+
+/**
+ * Возвращает отфильтрованный массив значений заданных в случае успеха или false в случае неудачи
+ *
+ * @param string $name данное имя поля
+ * @return mixed
+ **/
+function get_post_value(string $name): mixed
+{
+    return filter_input(INPUT_POST, $name, FILTER_SANITIZE_SPECIAL_CHARS);
 }
