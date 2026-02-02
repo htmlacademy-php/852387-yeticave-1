@@ -139,17 +139,21 @@ function include_template(string $name, array $data = []): string
 /**
  * Создает новую ссылку с данными параметрами
  * @var string $path адрес данной страницы
- * @var mixed $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @var array $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
  * @return string новый адрес ссылки: адрес страницы + строка запроса
  **/
-function create_new_url(string $path, ...$data): string
+function create_new_url(string $path, array $data = []): string
 {
     $params = $_GET;
+
+    if (empty($data)) {
+        return "/$path";
+    }
 
     foreach ($data as $key => $value) {
         $params[$key] = $value;
     }
 
-    $query = http_build_query(...$params);
+    $query = http_build_query($params);
     return "/{$path}?{$query}";
 }

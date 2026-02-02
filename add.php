@@ -8,13 +8,15 @@ require_once ('models/categories.php');
 
 /**
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
- * @var string $title имя странице
+ * @var string $title заголовок страницы сайта
  * @var string $user_name имя авторизованного пользователя
  * @var int $is_auth рандомно число 1 или 0
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var string $main_content HTML-код - контент страницы
  * @var string $page весь HTML-код страницы с подвалом и шапкой
  */
+
+$title = 'Добавление лота';
 
 if (!$connect) {
     die(mysqli_connect_error());
