@@ -6,11 +6,12 @@ require_once ('utils/date_time.php');
 
 /**
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
+ * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  */
 ?>
 
 <?php foreach ($lots as $lot): ?>
-<?php $time = time_diff($lot['date_end']); ?>
+<?php $timer = time_diff($lot['date_end']); ?>
     <li class="lots__item lot">
         <div class="lot__image">
             <img src="<?= htmlspecialchars($lot['img_url'] ?? ''); ?>" width="350" height="260" alt="">
@@ -23,8 +24,8 @@ require_once ('utils/date_time.php');
                     <span class="lot__amount">Стартовая цена</span>
                     <span class="lot__cost"><?= price_format(intval($lot['price_start'] )?? 0); ?></span>
                 </div>
-                <div class="lot__timer timer <?=$time['hours'] <= 0 ? 'timer--finishing' : ''; ?>">
-                    <?= time_format($time); ?>
+                <div class="lot__timer timer <?=$timer['hours'] <= 0 ? 'timer--finishing' : ''; ?>">
+                    <?= time_format($timer); ?>
                 </div>
             </div>
         </div>

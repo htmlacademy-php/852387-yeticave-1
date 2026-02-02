@@ -4,8 +4,6 @@ declare(strict_types=1);
  * @var string[] $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: ?string, img_url: string, price_start: int, cat_name: string} $lot
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
- * @var int $hours
- * @var int $minutes
  */
 ?>
 
@@ -31,8 +29,9 @@ declare(strict_types=1);
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
-                    <div class="lot-item__timer timer">
-                        10:54
+                    <?php $timer = time_diff($lot['date_end']); ?>
+                    <div class="lot-item__timer timer <?= $timer['hours'] === 0 ? 'timer--finishing' : ''?>">
+                        <?= time_format($timer); ?>
                     </div>
                     <div class="lot-item__cost-state">
                         <div class="lot-item__rate">
