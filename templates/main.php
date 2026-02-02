@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * @var string[] $categories массив названий категорий
+ * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
  */
 
@@ -24,7 +24,7 @@ declare(strict_types=1);
             <h2>Открытые лоты</h2>
         </div>
         <ul class="lots__list">
-           <?=include_template('lot.php', ['lots' => $lots]); ?>
+           <?=include_template('lots.php', ['lots' => $lots]); ?>
         </ul>
     </section>
 </main>

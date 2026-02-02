@@ -106,7 +106,10 @@ WHERE l.id = 4;
 
 
 -- получаем список ставок для лота по его id (например id = 6)с сортировкой по дате.
-SELECT * FROM bets
+SELECT user_id "customer_id",
+       lot_id,
+       date_add,
+       cost FROM bets
 WHERE lot_id = 6
 ORDER BY bets.date_add;
 -- тоже получаем список ставок для лота по его id (например id = 3)

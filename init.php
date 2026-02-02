@@ -6,7 +6,7 @@ setlocale(LC_ALL, 'ru_RU');
 
 /**
  * @var array{host: string, user: string, pass: string, db: string} $db параметры для подключения БД
- * @var boolean|mysqli|object $connect соединение с сервером БД
+ * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
 */
 
 $db = require_once('config_db.php');

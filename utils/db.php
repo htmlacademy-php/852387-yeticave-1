@@ -24,3 +24,39 @@ function get_items(mysqli $link, string $sql, ...$data) : ?array
     }
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+/**
+ * Получаем данные из БД в виде ассоциативного массива или завершаем код с ошибкой
+ *
+ * @param $link mysqli Ресурс соединения
+ * @param $sql string SQL запрос с плейсхолдерами вместо значений
+ * @param mixed $data Данные для вставки на место плейсхолдеров
+ *
+ * @return ?array
+ **/
+
+function get_item(mysqli $link, string $sql, ...$data): ?array
+{
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (!$result) {
+        return null;
+    }
+    return mysqli_fetch_assoc($result);
+}
+
+/**
+ * Находит элемент(ассоциативный массив) с данными по максимальной ставе
+ *
+ * @var array $bets все ставки по лоту
+ * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
+ */
+
+function find_max_bet(array $bets): array
+{
+    return array_reduce($bets, function ($acc, $bet) {
+        return $acc['cost'] < $bet['cost'] ? $bet : $acc;
+    }, $bets[0]);
+}
