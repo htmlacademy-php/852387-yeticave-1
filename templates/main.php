@@ -24,7 +24,7 @@ declare(strict_types=1);
             <h2>Открытые лоты</h2>
         </div>
         <ul class="lots__list">
-           <?=include_template('lot.php', ['lots' => $lots]); ?>
+           <?=include_template('lots.php', ['lots' => $lots]); ?>
         </ul>
     </section>
 </main>
