@@ -1,9 +1,6 @@
 <?php
 declare(strict_types=1);
 
-date_default_timezone_set("Europe/Moscow");
-setlocale(LC_ALL, 'ru_RU');
-
 // Количество секунд в одном часе
 const SECS_IN_HOUR = 3600;
 // Количество секунд в одной минуте

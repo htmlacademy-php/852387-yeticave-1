@@ -8,7 +8,6 @@ declare(strict_types=1);
  * @var string[] $categories массив названий категорий
  * @var string $main_content HTML-код - контент страницы
  */
-
 ?>
 
 <!DOCTYPE html>
@@ -56,9 +55,9 @@ declare(strict_types=1);
             </nav>
         </div>
     </header>
-    <main class="container">
-        <?= $main_content; ?>
-    </main>
+
+    <?= $main_content; ?>
+
 
 </div>
 
@@ -67,7 +66,7 @@ declare(strict_types=1);
         <ul class="nav__list container">
             <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= $category; ?></a>
+                    <a href="pages/all-lots.html"><?= htmlspecialchars($category['name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -114,7 +113,7 @@ declare(strict_types=1);
     </div>
 </footer>
 
-<script src="flatpickr.js"></script>
-<script src="script.js"></script>
+<script src="../flatpickr.js"></script>
+<script src="../script.js"></script>
 </body>
 </html>

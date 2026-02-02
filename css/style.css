@@ -433,8 +433,7 @@ main.container {
 }
 
 .promo__title {
-  margin: 0;
-  margin-bottom: 18px;
+  margin: 0 0 18px;
   font-family: "Open Sans", sans-serif;
   font-size: 48px;
   line-height: 53px;

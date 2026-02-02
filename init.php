@@ -1,0 +1,15 @@
+<?php
+declare(strict_types=1);
+
+date_default_timezone_set("Europe/Moscow");
+setlocale(LC_ALL, 'ru_RU');
+
+/**
+ * @var array{host: string, user: string, pass: string, db: string} $db параметры для подключения БД
+ * @var boolean|mysqli|object $connect соединение с сервером БД
+*/
+
+$db = require_once('config_db.php');
+
+$connect = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['database']);
+mysqli_set_charset($connect, 'utf8');
