@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * @var string[] $categories массив названий категорий
+ * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
  */
 

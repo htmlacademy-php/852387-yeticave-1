@@ -1,7 +1,11 @@
 <?php
 declare(strict_types=1);
+
+require_once ('utils/price.php');
+require_once ('utils/date_time.php');
+
 /**
- * @var string[] $categories список категорий лотов
+ * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: ?string, img_url: string, price_start: int, cat_name: string} $lot
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  */

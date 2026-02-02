@@ -5,7 +5,7 @@ declare(strict_types=1);
  * @var string $title имя странице
  * @var int $is_auth рандомно число 1 или 0
  * @var string $user_name имя пользователя
- * @var string[] $categories массив названий категорий
+ * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var string $main_content HTML-код - контент страницы
  */
 ?>
