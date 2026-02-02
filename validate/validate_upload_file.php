@@ -24,7 +24,7 @@ function validate_upload_file(array $file) : array
         } else {
 
             $extension = pathinfo($tmp_name, PATHINFO_EXTENSION);
-            $file_name = uniqid() . '.' . $extension;
+            $file_name = uniqid() . '852387-yeticave-1' . $extension;
 
             move_uploaded_file($tmp_name, 'uploads/' . $file_name);
             $path_file = '/uploads/' . $file_name;
