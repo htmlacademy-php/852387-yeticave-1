@@ -26,7 +26,7 @@ require_once ('utils/helpers.php');
                     <span class="lot__cost"><?= price_format(intval($lot['price_start'] )?? 0); ?></span>
                 </div>
                 <div class="lot__timer timer <?=$timer['hours'] <= 0 ? 'timer--finishing' : ''; ?>">
-                    <?= time_format($timer); ?>
+                    <?=time_format($timer); ?>
                 </div>
             </div>
         </div>

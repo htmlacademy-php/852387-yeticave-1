@@ -5,6 +5,9 @@ require_once ('data.php');
 require_once ('init.php');
 require_once ('utils/helpers.php');
 require_once ('models/categories.php');
+require_once ('models/lots.php');
+require_once ('validate.php');
+require_once ('validate_upload_file.php');
 
 /**
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
@@ -12,48 +15,39 @@ require_once ('models/categories.php');
  * @var string $user_name имя авторизованного пользователя
  * @var int $is_auth рандомно число 1 или 0
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var ?array $errors все ошибки заполнения формы пользователем
+ * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
+ * @var ?array $lot заполненные пользователем поля формы
  * @var string $main_content HTML-код - контент страницы
  * @var string $page весь HTML-код страницы с подвалом и шапкой
  */
 
 $title = 'Добавление лота';
-
-if (!$connect) {
-    die(mysqli_connect_error());
-}
-// выполнение запроса на список категорий
-$categories = get_categories($connect);
-
-$main_content = include_template('add.php', [
-    'categories' => $categories,
-]);
+// получаем список ID всех категорий
+$cat_ids = array_column($categories, 'id');
+$form = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // получаем данные из полей формы
+    $form = get_lot_fields();
+    // получаем массив ошибок по данным полей из формы
+    $errors = get_errors($form, $cat_ids);
 
-    $lot = $_POST;
-    $filename = $_FILES['lot_img']['name'];
-    $extension = pathinfo($filename, PATHINFO_EXTENSION);
-    $filename = uniqid() . $extension;
-    $lot['img_url'] = $filename;
+    [$errors['file'], $form['img_url']] = validate_upload_file($_FILES['lot_img']);
+    $errors = array_filter($errors);
 
-    move_uploaded_file($_FILES['lot_img']['tmp_name'], 'uploads/' . $filename);
-
-    $sql = 'INSERT INTO lots(user_id, name, description, img_url, price, date_end, step_bet, cat_id)
-            VALUES (3, ?, ?, ?, ?, ?, ?, ?)';
-
-    $stmt = db_get_prepare_stmt($connect, $sql, $lot);
-    $result = mysqli_stmt_execute($stmt);
-
-    if (!$result) {
+    if (!$errors) {
+        set_lot($connect, $form);
         $lot_id = mysqli_insert_id($connect);
-        header('Location: add.php?id=' . $lot_id);
-    } else {
-        // выводим страницу 404.php? и пропадают введенные данные
-        // выводим ошибку (отсутствия соединения с БД, отсутствие интернета, или другой форс-мажор)? и пропадают веденные данные
-        // или возвращаем страницу с формой и с заполненными полями и просим загрузить ещё раз данные (сейчас или позже)?
-        // смотрим код ошибки и выводим соответствующую страницу
+        header('Location: /lot.php?id=' . $lot_id);
     }
 }
+
+$main_content = include_template('add.php', [
+    'form' => $form,
+    'errors' => $errors,
+    'categories' => $categories
+]);
 
 $page = include_template('layout.php', [
     'main_content' => $main_content,

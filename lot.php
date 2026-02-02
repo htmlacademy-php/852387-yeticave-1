@@ -5,7 +5,6 @@ require_once ('utils/helpers.php');
 require_once ('data.php');
 require_once ('init.php');
 require_once ('utils/db.php');
-require_once ('models/categories.php');
 require_once ('models/lots.php');
 require_once ('models/bets.php');
 
@@ -26,8 +25,6 @@ $title = 'Страница лота';
 if (!$connect) {
     die(mysqli_connect_error());
 }
-
-$categories = get_categories($connect);
 
 if (!isset($_GET['id'])) {
 

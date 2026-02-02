@@ -27,6 +27,13 @@ function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
     return get_items($connect, $sql, $limit);
 }
 
+/**
+ * Получает данные лота по ID из таблицы БД
+ * @param mysqli $connect Ресурс соединения
+ * @param int $id ID лота
+ * @return ?array{id: string, author_id: string, date_end: string, lot_name: string, img_url: string, description: string, price_start: string, last_bet: string, cat_name: string}
+ **/
+
 function get_lot_by_id(mysqli $connect, int $id): ?array
 {
     $sql = 'SELECT l.id,
@@ -41,4 +48,21 @@ function get_lot_by_id(mysqli $connect, int $id): ?array
             INNER JOIN categories c ON l.cat_id = c.id
                               WHERE l.id = ?';
     return get_item($connect, $sql, $id);
+}
+
+
+
+/**
+ * Формирует и выполняет SQL-запрос на добавление нового лота
+ * @param mysqli $connect Ресурс соединения
+ * @param string[] $data данные для добавления лота в БД
+ * @return boolean
+ **/
+function set_lot(mysqli $connect, array $data): bool
+{
+    $sql = 'INSERT INTO lots(user_id, name, description, price, date_end, step_bet, cat_id, img_url)
+                VALUES (3, ?, ?, ?, ?, ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, $data);
+    return mysqli_stmt_execute($stmt);
 }
