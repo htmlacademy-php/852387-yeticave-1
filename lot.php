@@ -8,11 +8,12 @@ require_once ('utils/db.php');
 
 /**
  * @var string $title имя странице
- * @var boolean|mysqli|object $connect
+ * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
  * @var int $is_auth рандомно число 1 или 0
- * @var string $user_name имя пользователя
+ * @var string $user_name имя авторизованного пользователя
  * @var array<array{name: string, code: string} $categories список категорий лотов
- * @var array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, cat_name: string} $lot
+ * @var array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
+ * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
  * @var string $main_content HTML-код - контент страницы
  * @var string $page весь HTML-код страницы с подвалом и шапкой
  */
@@ -41,6 +42,7 @@ if (!isset($_GET['id'])) {
            l.description,
            l.img_url,
            price "price_start",
+           l.step_bet,
            c.name "cat_name" FROM lots l
                INNER JOIN categories c ON l.cat_id = c.id
                                       WHERE l.id = %s';
@@ -58,9 +60,22 @@ if (!isset($_GET['id'])) {
 
     } else {
 
+        $sql = 'SELECT user_id "customer_id",
+            lot_id,
+            date_add,
+            cost FROM bets
+                 WHERE lot_id = %s
+                 ORDER BY bets.date_add
+                 LIMIT %s';
+
+        $sql = sprintf($sql, $id, LIMIT_ITEMS);
+        $result = mysqli_query($connect, $sql);
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
         $main_content = include_template('lot.php', [
             'categories' => $categories,
             'lot' => $lot,
+            'bets' => $bets
         ]);
     }
 }

@@ -29,7 +29,8 @@ function is_date_valid(string $date) : bool {
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = []) {
+function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysqli_stmt
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -94,7 +95,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  * @param string $two Форма множественного числа для 2, 3, 4: яблока, часа, минуты
  * @param string $many Форма множественного числа для остальных чисел
  *
- * @return string Рассчитанная форма множественнго числа
+ * @return string Рассчитанная форма множественного числа
  */
 function get_noun_plural_form (int $number, string $one, string $two, string $many): string
 {
@@ -102,22 +103,13 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
     $mod10 = $number % 10;
     $mod100 = $number % 100;
 
-    switch (true) {
-        case ($mod100 >= 11 && $mod100 <= 20):
-            return $many;
-
-        case ($mod10 > 5):
-            return $many;
-
-        case ($mod10 === 1):
-            return $one;
-
-        case ($mod10 >= 2 && $mod10 <= 4):
-            return $two;
-
-        default:
-            return $many;
-    }
+    return match (true) {
+        $mod100 >= 11 && $mod100 <= 20 => $many,
+        $mod10 > 5 => $many,
+        $mod10 === 1 => $one,
+        $mod10 >= 2 && $mod10 <= 4 => $two,
+        default => $many,
+    };
 }
 
 /**
@@ -126,7 +118,8 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template(string $name, array $data = []): string
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -138,9 +131,25 @@ function include_template($name, array $data = []) {
     extract($data);
     require $name;
 
-    $result = ob_get_clean();
-
-    return $result;
+    return ob_get_clean();
 }
 
 
+
+/**
+ * Создает новую ссылку с данными параметрами
+ * @var string $path адрес данной страницы
+ * @var mixed $data требуемые значения параметров, которые нужно заменить/добавить в $_GET
+ * @return string новый адрес ссылки: адрес страницы + строка запроса
+ **/
+function create_new_url(string $path, ...$data): string
+{
+    $params = $_GET;
+
+    foreach ($data as $key => $value) {
+        $params[$key] = $value;
+    }
+
+    $query = http_build_query(...$params);
+    return "/{$path}?{$query}";
+}
