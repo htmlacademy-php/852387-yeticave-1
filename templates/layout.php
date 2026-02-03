@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @var int $is_auth рандомно число 1 или 0
  * @var string $user_name имя пользователя
  * @var array<array{name: string, code: string} $categories список категорий лотов
- * @var string $main_content HTML-код - контент страницы
+ * @var string $content HTML-код - контент страницы
  */
 ?>
 
@@ -32,7 +32,7 @@ declare(strict_types=1);
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
-            <a class="main-header__add-lot button" href="<?=create_new_url('add.php'); ?>">Добавить лот</a>
+            <a class="main-header__add-lot button" href="<?=create_new_url('add-lot.php'); ?>">Добавить лот</a>
 
             <nav class="user-menu">
 
@@ -45,10 +45,10 @@ declare(strict_types=1);
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="#">Регистрация</a>
+                            <a href="<?=create_new_url('sing-up.php')?>">Регистрация</a>
                         </li>
                         <li class="user-menu__item">
-                            <a href="#">Вход</a>
+                            <a href="<?=create_new_url('login.php')?>">Вход</a>
                         </li>
                     </ul>
                 <?php endif; ?>
@@ -57,7 +57,7 @@ declare(strict_types=1);
         </div>
     </header>
 
-    <?= $main_content; ?>
+    <?= $content; ?>
 
 
 </div>

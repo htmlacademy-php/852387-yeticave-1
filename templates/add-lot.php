@@ -2,8 +2,8 @@
 declare(strict_types=1);
 /**
  * @var array<array{name: string, code: string} $categories список категорий лотов
- * @var string[] $errors все ошибки заполнения формы пользователем
- * @var string[] $form заполненные пользователем поля формы
+ * @var ?array $errors все ошибки заполнения формы пользователем
+ * @var ?array $form заполненные пользователем поля формы
  */
 ?>
 

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once ('utils/price.php');
-require_once ('utils/date_time.php');
+require_once('utils/date-time.php');
 require_once ('utils/helpers.php');
 
 /**
