@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once('utils/date-time.php');
+require_once ('utils/date-time.php');
+require_once ('utils/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
@@ -79,21 +80,6 @@ function validate_id(?string $id, array $ids) : ?string
     return null;
 }
 
-/**
- * Возвращает строковое представление ошибки, если длина строки меньше минимально допустимого значения
- * и больше максимально допустимого значения
- * @param string $str данная строка
- * @param int $max максимальное значение длины строки
- * @param int $min минимальное значение длины строки
- * @return ?string
- **/
-function validate_length(string $str, int $min, int $max) : ?string
-{
-    if((strlen($str) > 0 && strlen($str) < $min) || strlen($str) > $max) {
-        return "Значение должно быть от $min до $max символов";
-    }
-    return null;
-}
 
 /**
  * Возвращает массив строковых значений ошибок по полученным данным
@@ -124,16 +110,5 @@ function get_errors(?array $data, array $ids): array
         },
     ];
 
-    $errors = [];
-    foreach ($data as $key => $value) {
-        if (isset($rules[$key])) {
-            $rule = $rules[$key];
-            $errors[$key] = $rule($value);
-        }
-        if (in_array($key, REQUIRED) && (empty($value))) {
-            $errors[$key] = EMPTY_FIELDS[$key];
-        }
-    }
-    // убираем все значения типа null, валидные значения
-    return array_filter($errors);
+    return filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS);
 }
