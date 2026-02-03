@@ -39,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     } else {
         set_user($connect, $form);
-        $content = include_template('login.php', [
-            'categories' => $categories
-        ]);
+        header("Location: /login.php");
+        exit();
     }
 } else {
     $content = include_template('sing-up.php', [
