@@ -74,7 +74,7 @@ VALUES (2, 6, 5500),
 -- получаем все категории из таблицы categories;
 SELECT *  FROM categories;
 
--- получаем самые новые, открытые лоты. Каждый лот включает:
+-- Получаем самые новые, открытые лоты. Каждый лот включает:
 -- название, стартовую цену, ссылку на изображение, цену, название категории;
 SELECT  l.id,
         l.date_end,
@@ -90,7 +90,7 @@ WHERE l.date_end > DATE(NOW())
 group by l.id, l.date_add
 ORDER BY l.date_add DESC LIMIT 10;
 
--- показываем лот по его ID (например id = 1). Получаем также название категории, к которой принадлежит лот;
+-- Показываем лот по его ID (например id = 1). Получаем также название категории, к которой принадлежит лот;
 SELECT l.*, c.name 'cat_name' FROM lots l
                                        INNER JOIN categories c ON l.cat_id = c.id
 WHERE l.id = 1;
@@ -99,7 +99,7 @@ WHERE l.id = 1;
 UPDATE lots
 SET name = 'Ботинки'
 WHERE id = 4;
--- проверяем изминения в таблице
+-- проверяем изменения в таблице
 SELECT *, c.name 'cat_name' FROM lots l
     INNER JOIN categories c ON l.cat_id = c.id
 WHERE l.id = 4;

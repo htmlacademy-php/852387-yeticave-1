@@ -31,4 +31,4 @@ function validate_upload_file(array $file) : array
         }
     }
     return [$error_file, $path_file];
-};
+}

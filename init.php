@@ -12,7 +12,7 @@ require_once ('models/categories.php');
  * @var ?array<array{id: int, name: string, code: string} $categories список категорий лотов
 */
 
-$db = require_once('config_db.php');
+$db = require_once('config-db.php');
 
 $connect = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['database']);
 mysqli_set_charset($connect, 'utf8');

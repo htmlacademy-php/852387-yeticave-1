@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once('utils/date_time.php');
+require_once('utils/date-time.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
@@ -66,7 +66,7 @@ function validate_price(mixed $value) : ?string
 }
 
 /**
- * Получаем строковое пояснение ошибки, если ID елемента не найдено среди списка IDs из БД
+ * Получаем строковое пояснение ошибки, если ID элемента не найдено среди списка IDs из БД
  * @param ?string $id данный ID элемента
  * @param array $ids список всех ID по элементам из БД
  * @return ?string
