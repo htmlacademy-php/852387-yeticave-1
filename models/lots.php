@@ -8,9 +8,10 @@ require_once ('utils/db.php');
  * Получает список лотов или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
  * @param int $limit Количество новых лотов, которые можно получить в БД
+ * @param int $offset смещение
  * @return ?array<int,array{id: string, date_end: string, name: string, price_start: string, img_url: string, last_bet: string, cat_name: string}
  **/
-function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
+function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS, int $offset = 0): ?array
 {
     $sql = 'SELECT l.id,
        l.date_end,
@@ -23,8 +24,8 @@ function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
            JOIN categories c ON l.cat_id = c.id
                          WHERE l.date_end > DATE(NOW())
                          GROUP BY l.id, l.date_add
-                         ORDER BY l.date_add DESC LIMIT ?';
-    return get_items($connect, $sql, $limit);
+                         ORDER BY l.date_add DESC LIMIT ?  OFFSET ?';
+    return get_items($connect, $sql, $limit, $offset);
 }
 
 /**
@@ -65,7 +66,14 @@ function set_lot(mysqli $connect, array $data): bool
     return mysqli_stmt_execute($stmt);
 }
 
-function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS): ?array
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @param string $search
+ * @param int $limit
+ * @param int $offset смещение
+ * @return array|null
+ */
+function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS, int $offset = 0): ?array
 {
     $sql ='SELECT l.id,
         l.user_id "author_id",
@@ -78,6 +86,17 @@ function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS)
         c.name "cat_name" FROM lots l
             INNER JOIN categories c ON l.cat_id = c.id
             WHERE MATCH(l.name, description) AGAINST(?)
-            ORDER BY l.date_add DESC LIMIT ?';
-    return get_items($connect, $sql, $search, $limit);
+            ORDER BY l.date_add DESC LIMIT ?  OFFSET ?';
+    return get_items($connect, $sql, $search, $limit, $offset);
+}
+
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @return int
+ */
+function count_lots(mysqli $connect): int
+{
+    $sql = 'SELECT COUNT(*) as count FROM lots';
+    $result = mysqli_query($connect, $sql);
+    return mysqli_fetch_assoc($result)['count'];
 }
