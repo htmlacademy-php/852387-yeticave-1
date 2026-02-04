@@ -25,8 +25,8 @@ declare(strict_types=1);
             <a class="main-header__logo">
                 <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
-            <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
-                <input type="search" name="search" placeholder="Поиск лота">
+            <form class="main-header__search" method="get" action="<?=create_new_url('search.php', $_GET)?>" autocomplete="off">
+                <input type="search" name="search" placeholder="Поиск лота" value="<?=$_GET['search'] ?? null; ?>">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
             <a class="main-header__add-lot button" href="<?=create_new_url('add-lot.php'); ?>">Добавить лот</a>

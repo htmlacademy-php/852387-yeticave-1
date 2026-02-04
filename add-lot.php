@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once ('data.php');
 require_once ('init.php');
+require_once ('data.php');
 require_once ('utils/helpers.php');
-require_once ('models/categories.php');
 require_once ('models/lots.php');
 require_once('validate/add-lot.php');
 require_once('validate/upload-file.php');

@@ -15,7 +15,7 @@ declare(strict_types=1);
     <?=include_template('_category.php', ['categories' => $categories]); ?>
     <div class="container">
         <section class="lots">
-            <h2>Результаты поиска по запросу «<span><?=isset($_GET['search'])?></span>»</h2>
+            <h2>Результаты поиска по запросу «<span><?=$_GET['search']; ?></span>»</h2>
             <?php if (count($lots) > 0): ?>
                 <?=include_template('_lot.php', ['lots' => $lots]); ?>
             <?php else: ?>

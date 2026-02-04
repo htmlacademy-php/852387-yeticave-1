@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/helpers.php');
-require_once ('data.php');
 require_once ('init.php');
+require_once ('data.php');
+require_once ('utils/helpers.php');
 require_once ('utils/db.php');
 require_once ('models/lots.php');
 require_once ('models/bets.php');
@@ -19,8 +19,6 @@ require_once ('utils/price.php');
  * @var string $content HTML-код - контент страницы
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
-
-var_dump($_SESSION);
 
 $title = 'Страница лота';
 

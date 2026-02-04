@@ -8,13 +8,13 @@ require_once ('utils/db.php');
  * Получает список лотов или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
  * @param int $limit Количество новых лотов, которые можно получить в БД
- * @return ?array<int,array{id: string, date_end: string, lot_name: string, price_start: string, img_url: string, last_bet: string, cat_name: string}
+ * @return ?array<int,array{id: string, date_end: string, name: string, price_start: string, img_url: string, last_bet: string, cat_name: string}
  **/
 function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
 {
     $sql = 'SELECT l.id,
        l.date_end,
-       l.name "lot_name",
+       l.name,
        price "price_start",
        img_url,
        MAX(b.cost) "price_last",
@@ -31,7 +31,7 @@ function get_lots(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
  * Получает данные лота по ID из таблицы БД
  * @param mysqli $connect Ресурс соединения
  * @param int $id ID лота
- * @return ?array{id: string, author_id: string, date_end: string, lot_name: string, img_url: string, description: string, price_start: string, last_bet: string, cat_name: string}
+ * @return ?array{id: string, author_id: string, date_end: string, name: string, img_url: string, description: string, price_start: string, last_bet: string, cat_name: string}
  **/
 
 function get_lot_by_id(mysqli $connect, int $id): ?array
@@ -50,8 +50,6 @@ function get_lot_by_id(mysqli $connect, int $id): ?array
     return get_item($connect, $sql, $id);
 }
 
-
-
 /**
  * Формирует и выполняет SQL-запрос на добавление нового лота
  * @param mysqli $connect Ресурс соединения
@@ -65,4 +63,21 @@ function set_lot(mysqli $connect, array $data): bool
 
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
     return mysqli_stmt_execute($stmt);
+}
+
+function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS): ?array
+{
+    $sql ='SELECT l.id,
+        l.user_id "author_id",
+        l.date_end,
+        l.name,
+        l.img_url,
+        l.description,
+        l.price "price_start",
+        l.step_bet,
+        c.name "cat_name" FROM lots l
+            INNER JOIN categories c ON l.cat_id = c.id
+            WHERE MATCH(l.name, description) AGAINST(?)
+            ORDER BY l.date_add DESC LIMIT ?';
+    return get_items($connect, $sql, $search, $limit);
 }
