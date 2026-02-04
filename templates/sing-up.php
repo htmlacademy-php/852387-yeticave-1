@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * @var ?array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var ?array $form заполненные пользователем поля формы

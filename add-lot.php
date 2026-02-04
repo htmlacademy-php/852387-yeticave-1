@@ -12,8 +12,6 @@ require_once('validate/upload-file.php');
 /**
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
  * @var string $title заголовок страницы сайта
- * @var string $user_name имя авторизованного пользователя
- * @var int $is_auth рандомно число 1 или 0
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?array $form заполненные пользователем поля формы
  * @var ?array $errors все ошибки заполнения формы пользователем
@@ -22,6 +20,11 @@ require_once('validate/upload-file.php');
  * @var string $content HTML-код - контент страницы
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
+
+if(!$_SESSION) {
+    http_response_code(403);
+    exit;
+}
 
 $title = 'Добавление лота';
 // получаем список ID всех категорий
@@ -52,8 +55,6 @@ $content = include_template('add-lot.php', [
 $layout = include_template('layout.php', [
     'content' => $content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 

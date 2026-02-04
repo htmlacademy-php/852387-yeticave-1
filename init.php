@@ -4,6 +4,12 @@ declare(strict_types=1);
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
+session_start();
+
+define('CACHE_DIR', basename(__DIR__ . DIRECTORY_SEPARATOR . 'cache'));
+define('UPLOAD_PATH', basename(__DIR__ . DIRECTORY_SEPARATOR . 'uploads'));
+
+$db = require_once('config-db.php');
 require_once ('models/categories.php');
 
 /**
@@ -11,8 +17,6 @@ require_once ('models/categories.php');
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
  * @var ?array<array{id: int, name: string, code: string} $categories список категорий лотов
 */
-
-$db = require_once('config-db.php');
 
 $connect = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['database']);
 mysqli_set_charset($connect, 'utf8');

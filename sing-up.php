@@ -8,9 +8,7 @@ require_once ('validate/sing-up.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var string $user_name имя авторизованного пользователя
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
- * @var int $is_auth рандомно число 1 или 0
  * @var ?array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var ?array $errors все ошибки заполнения формы пользователем
  * @var string $content содержимое шаблона страницы, в который передаем нужные ему данные
@@ -31,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $emails);
 
-    if (count($errors)) {
+    if ($errors) {
         $content = include_template('sing-up.php', [
             'form' => $form,
             'errors' => $errors,
@@ -39,9 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     } else {
         set_user($connect, $form);
-        $content = include_template('login.php', [
-            'categories' => $categories
-        ]);
+        header("Location: /login.php");
+        exit();
     }
 } else {
     $content = include_template('sing-up.php', [
@@ -52,8 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout = include_template('layout.php', [
     'content' => $content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 
