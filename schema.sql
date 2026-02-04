@@ -67,3 +67,5 @@ CREATE TABLE bets (
         REFERENCES lots(id)
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=INNODB;
+
+CREATE FULLTEXT INDEX ft1 ON lots(name, description);
