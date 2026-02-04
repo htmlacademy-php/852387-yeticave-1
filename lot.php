@@ -7,6 +7,8 @@ require_once ('init.php');
 require_once ('utils/db.php');
 require_once ('models/lots.php');
 require_once ('models/bets.php');
+require_once ('utils/date-time.php');
+require_once ('utils/price.php');
 
 /**
  * @var string $title заголовок страницы сайта

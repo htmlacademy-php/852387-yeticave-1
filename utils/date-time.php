@@ -32,7 +32,7 @@ function is_date_valid(string $date) : bool {
  * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
  *                                                           'minutes' => количество минут]
  */
-function time_diff(string $date) : array
+function get_dt_range(string $date) : array
 {
     $ts = time();
     $ts_end_time = strtotime($date);
@@ -73,5 +73,5 @@ function time_format(array $time): string
     $hours_format = str_pad(strval($time['hours']), 2, "0", STR_PAD_LEFT);
     $minutes_format = str_pad(strval($time['minutes']), 2, "0", STR_PAD_LEFT);
 
-    return "{$hours_format}:{$minutes_format}";
+    return "$hours_format:$minutes_format";
 }

@@ -9,15 +9,7 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach ($categories as $category): ?>
-                <li class="nav__item">
-                    <a href="all-lots.html"><?=htmlspecialchars($category['name']); ?></a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </nav>
+    <?=include_template('_category.php', ['categories' => $categories]); ?>
     <?php $class_form = isset($errors) ? 'form--invalid' : ''; ?>
     <form class="form container <?=$class_form; ?>" action="" method="post" autocomplete="off"> <!-- form
     --invalid -->

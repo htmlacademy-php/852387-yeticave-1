@@ -1,18 +1,15 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/price.php');
-require_once('utils/date-time.php');
-require_once ('utils/helpers.php');
-
 /**
  * @var array<int,array{id:int, name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  */
 ?>
 
+<ul class="lots__list">
 <?php foreach ($lots as $lot): ?>
-<?php $timer = time_diff($lot['date_end']); ?>
+<?php $timer = get_dt_range($lot['date_end']); ?>
     <li class="lots__item lot">
         <div class="lot__image">
             <img src="<?= htmlspecialchars($lot['img_url'] ?? ''); ?>" width="350" height="260" alt="">
@@ -32,3 +29,4 @@ require_once ('utils/helpers.php');
         </div>
     </li>
 <?php endforeach; ?>
+</ul>
