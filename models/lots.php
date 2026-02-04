@@ -100,3 +100,53 @@ function count_lots(mysqli $connect): int
     $result = mysqli_query($connect, $sql);
     return mysqli_fetch_assoc($result)['count'];
 }
+
+
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @param string $search
+ * @return int
+ */
+function count_lots_by_search(mysqli $connect, string $search): int
+{
+    $sql = 'SELECT COUNT(*) as count FROM lots
+            WHERE MATCH(name, description) AGAINST(?)';
+    $result = get_item($connect, $sql, $search);
+    return $result['count'];
+}
+
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @param $cat_id
+ * @return mixed
+ */
+function count_lots_by_category(mysqli $connect, $cat_id)
+{
+    $sql = 'SELECT COUNT(*) as count FROM lots WHERE cat_id = ?';
+    $result = get_item($connect, $sql, $cat_id);
+    return $result['count'];
+}
+
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @param $cat_id
+ * @param int $limit
+ * @param int $offset смещение
+ * @return array|null
+ */
+function get_lots_by_category(mysqli $connect, $cat_id, int $limit = LIMIT_ITEMS, int $offset = 0): ?array
+{
+    $sql = 'SELECT l.id,
+        l.user_id "author_id",
+        l.date_end,
+        l.name,
+        l.img_url,
+        l.description,
+        l.price "price_start",
+        l.step_bet,
+        c.name "cat_name" FROM lots l
+            INNER JOIN categories c ON l.cat_id = c.id
+                              WHERE l.cat_id = ?
+                              ORDER BY l.date_add DESC LIMIT ? OFFSET ?';
+    return get_items($connect, $sql, $cat_id, $limit, $offset);
+}
