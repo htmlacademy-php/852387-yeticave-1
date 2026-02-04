@@ -30,4 +30,17 @@ function set_user(mysqli $connect, array $data): bool
     return mysqli_stmt_execute($stmt);
 }
 
+/**
+ * Получает данные пользователя по EMAIL из таблицы БД
+ *
+ * @param mysqli $connect Ресурс соединения
+ * @param string $email данный EMAIL
+ * @return ?array{id: string, date_add: string, name: string, email: string, password: string, contact: string}
+ **/
+function get_user_by_email(mysqli $connect, string $email): ?array
+{
+    $sql = "SELECT * FROM users WHERE email = ?";
+    return get_item($connect, $sql, $email);
+}
+
 //stora@internet.ru  пароль 111111

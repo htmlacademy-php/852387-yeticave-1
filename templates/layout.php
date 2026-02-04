@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 /**
  * @var string $title имя странице
- * @var int $is_auth рандомно число 1 или 0
- * @var string $user_name имя пользователя
  * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var string $content HTML-код - контент страницы
  */
@@ -36,19 +34,19 @@ declare(strict_types=1);
 
             <nav class="user-menu">
 
-                <?php if ($is_auth === 1): ?>
+                <?php if ($_SESSION): ?>
                     <div class="user-menu__logged">
-                        <p><?= htmlspecialchars($user_name); ?></p>
+                        <p><?=$_SESSION['user']['name']; ?></p>
                         <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
-                        <a class="user-menu__logout" href="#">Выход</a>
+                        <a class="user-menu__logout" href="<?=create_new_url('logout.php')?>">Выход</a>
                     </div>
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="<?=create_new_url('sing-up.php')?>">Регистрация</a>
+                            <a href="<?=create_new_url('sing-up.php'); ?>">Регистрация</a>
                         </li>
                         <li class="user-menu__item">
-                            <a href="<?=create_new_url('login.php')?>">Вход</a>
+                            <a href="<?=create_new_url('login.php'); ?>">Вход</a>
                         </li>
                     </ul>
                 <?php endif; ?>

@@ -11,8 +11,6 @@ require_once ('models/bets.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
- * @var int $is_auth рандомно число 1 или 0
- * @var string $user_name имя авторизованного пользователя
  * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
  * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
@@ -20,11 +18,9 @@ require_once ('models/bets.php');
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
-$title = 'Страница лота';
+var_dump($_SESSION);
 
-if (!$connect) {
-    die(mysqli_connect_error());
-}
+$title = 'Страница лота';
 
 if (!isset($_GET['id'])) {
 
@@ -64,8 +60,6 @@ $content = include_template('lot.php', [
 $layout = include_template('layout.php', [
     'content' => $content,
     'title' => $title,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'categories' => $categories,
 ]);
 
