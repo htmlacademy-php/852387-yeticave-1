@@ -146,3 +146,19 @@ function get_post_value(string $name): mixed
 {
     return filter_input(INPUT_POST, $name, FILTER_SANITIZE_SPECIAL_CHARS);
 }
+
+/**
+ * @param $cur_page
+ * @param $items_count
+ * @param $page_items
+ * @return array
+ */
+function get_data_pagination($cur_page, $items_count, $page_items): array
+{
+    //считаем кол-во страниц и смещение
+    $pages_count = ceil($items_count / $page_items);
+    $offset = ($cur_page - 1) * $page_items;
+    //заполняем массив номерами всех страниц
+    $pages = range(1, $pages_count);
+    return [$pages_count, $offset, $pages];
+}

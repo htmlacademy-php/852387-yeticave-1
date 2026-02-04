@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once ('data.php');
 require_once ('init.php');
-require_once ('models/categories.php');
+require_once ('data.php');
 require_once ('models/users.php');
 require_once ('validate/login.php');
 

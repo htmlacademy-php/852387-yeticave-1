@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/price.php');
-require_once('utils/date-time.php');
-require_once ('utils/db.php');
-
 /**
  * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: ?string, img_url: string, price_start: int, step_bet: string, cat_name: string} $lot все данные по ID лота из БД
@@ -14,15 +10,7 @@ require_once ('utils/db.php');
 ?>
 
 <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach ($categories as $category): ?>
-            <li class="nav__item">
-                <a href="all-lots.html"><?=htmlspecialchars($category['name']); ?></a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-    </nav>
+    <?=include_template('_category.php', ['categories' => $categories]); ?>
     <section class="lot-item container">
         <h2><?= $lot['name']; ?></h2>
         <div class="lot-item__content">
@@ -36,7 +24,7 @@ require_once ('utils/db.php');
             <div class="lot-item__right">
                 <?php if ($_SESSION): ?>
                 <div class="lot-item__state">
-                    <?php $timer = time_diff($lot['date_end']); ?>
+                    <?php $timer = get_dt_range($lot['date_end']); ?>
                     <div class="lot-item__timer timer <?= $timer['hours'] === 0 ? 'timer--finishing' : ''?>">
                         <?= time_format($timer); ?>
                     </div>

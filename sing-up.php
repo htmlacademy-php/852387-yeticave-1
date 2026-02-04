@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once ('data.php');
 require_once ('init.php');
+require_once ('data.php');
 require_once ('models/users.php');
 require_once ('validate/sing-up.php');
 
@@ -15,6 +15,7 @@ require_once ('validate/sing-up.php');
  * @var ?array $form заполненные пользователем поля формы
  * @var ?array<int,array{id: int, date_add: string, name: string, email: string, password: string, contact: string} $users массив с параметрами по всем users из БД
  * @var string[] $emails список всех emails зарегистрированных пользователей
+ * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
 $title = 'Регистрация аккаунта';

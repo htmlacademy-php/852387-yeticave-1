@@ -16,3 +16,17 @@ function get_categories(mysqli $connect, int $limit = LIMIT_ITEMS): ?array
     return get_items($connect, $sql, $limit);
 }
 
+
+/**
+ * @param mysqli $connect Ресурс соединения
+ * @param $id
+ * @return string
+ */
+function get_category_name(mysqli $connect, $id): string
+{
+    $sql = 'SELECT name FROM categories WHERE id =' . $id;
+    $result = mysqli_query($connect, $sql);
+    return mysqli_fetch_assoc($result)['name'];
+}
+
+

@@ -14,7 +14,7 @@ declare(strict_types=1);
         <ul class="promo__list">
             <?php foreach ($categories as $category): ?>
             <li class="promo__item promo__item--<?= htmlspecialchars($category['code']);?>">
-                <a class="promo__link" href="pages/all-lots.html"><?= htmlspecialchars($category['name']); ?></a>
+                <a class="promo__link" href="<?=create_new_url('all-lots.php', ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
             </li>
             <?php endforeach; ?>
         </ul>
@@ -23,8 +23,6 @@ declare(strict_types=1);
         <div class="lots__header">
             <h2>Открытые лоты</h2>
         </div>
-        <ul class="lots__list">
-           <?=include_template('lots.php', ['lots' => $lots]); ?>
-        </ul>
+        <?=include_template('_lot.php', ['lots' => $lots]); ?>
     </section>
 </main>
