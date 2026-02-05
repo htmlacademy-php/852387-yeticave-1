@@ -23,6 +23,6 @@ declare(strict_types=1);
         <div class="lots__header">
             <h2>Открытые лоты</h2>
         </div>
-        <?=include_template('_lot.php', ['lots' => $lots]); ?>
+        <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
     </section>
 </main>

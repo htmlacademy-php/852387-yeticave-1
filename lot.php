@@ -9,6 +9,7 @@ require_once ('models/lots.php');
 require_once ('models/bets.php');
 require_once ('utils/date-time.php');
 require_once ('utils/price.php');
+require_once ('validate/bet.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -19,6 +20,10 @@ require_once ('utils/price.php');
  * @var string $content HTML-код - контент страницы
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
+
+const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
+
+var_dump($_SESSION);
 
 $title = 'Страница лота';
 
@@ -43,18 +48,61 @@ if (!isset($_GET['id'])) {
             $path = '404.php';
 
         } else {
-
             $bets = get_bets_by_id($connect, $id);
+            $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
+            $min_cost = intval($cost) + intval($lot['step_bet']);
+            $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $id)['user_id'] ?? 0;
+            var_dump($user_id_max_bet);
             $path = 'lot.php';
 
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // получаем данные из полей формы
+                $form = get_fields();
+                // получаем массив ошибок по данным полей из формы
+                $errors = get_errors($form, $min_cost);
+                // убираем все значения типа null, валидные значения
+                $errors = array_filter($errors);
+
+                var_dump($errors);
+
+                if (!$errors) {
+                    $is_set_bet = set_bet($connect, $_SESSION['user']['id'], $lot['id'], $form['cost']);
+                    $bets = get_bets_by_id($connect, $id);
+                    $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
+                    $min_cost = intval($cost) + intval($lot['step_bet']);
+                    if (!$is_set_bet) {
+                        die(mysqli_error($connect));
+                    }
+                }
+                else {
+                    $page_content = include_template($path, [
+                        'categories' => $categories,
+                        'lot' => $lot,
+                        'form' => $form,
+                        'bets' => $bets,
+                        'cost' => $cost,
+                        'min_cost' => $min_cost,
+                        'symbol' => RUB_LOWER_CASE,
+                        'user_id' => $user_id_max_bet,
+                    ]);
+                }
+            }
         }
     }
 }
 
-$content = include_template('lot.php', [
+var_dump($bets);
+var_dump($lot);
+
+$content = include_template($path, [
     'categories' => $categories,
     'lot' => $lot,
-    'bets' => $bets
+    'bets' => $bets,
+    'cost' => $cost,
+    'user_id' => $user_id_max_bet,
+    'min_cost' => $min_cost,
+    'symbol' => RUB_LOWER_CASE,
+    'errors' => $errors,
 ]);
 
 $layout = include_template('layout.php', [

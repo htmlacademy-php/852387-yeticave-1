@@ -30,8 +30,9 @@ $title = 'Добавление лота';
 $cat_ids = array_column($categories, 'id');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $lot['user_id'] = (int)$_SESSION['user']['id'];
     // получаем данные из полей формы
-    $form = get_lot_fields();
+    $form = [...$lot, ...get_lot_fields()];
     // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $cat_ids);
 

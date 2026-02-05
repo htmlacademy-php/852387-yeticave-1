@@ -6,6 +6,11 @@ const SECS_IN_HOUR = 3600;
 // Количество секунд в одной минуте
 const SECS_IN_MINUTE = 60;
 
+const NOUN_PLURAL_FORM = [
+    'hours' => ['час', 'часа', 'часов'],
+    'minutes' => ['минута', 'минуты', 'минут'],
+];
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -74,4 +79,31 @@ function time_format(array $time): string
     $minutes_format = str_pad(strval($time['minutes']), 2, "0", STR_PAD_LEFT);
 
     return "$hours_format:$minutes_format";
+}
+
+function history_time_format(string $datetime): string
+{
+    $dt_add = date_create($datetime);
+    $dt_now = date_create('now');
+    $dt_diff = date_diff($dt_add, $dt_now);
+    if ($dt_diff->format("%a") < 1) {
+        $hours_diff = (int)$dt_diff->format("%h");
+        $minutes_diff = (int)$dt_diff->format("%i");
+        if ($hours_diff > 0) {
+            $noun_plural_form_hours = get_noun_plural_form($hours_diff, ...NOUN_PLURAL_FORM['hours']);
+            return "{$hours_diff} {$noun_plural_form_hours} назад";
+        }
+        $noun_plural_form_minutes = get_noun_plural_form($minutes_diff, ...NOUN_PLURAL_FORM['minutes']);
+        return "{$minutes_diff} {$noun_plural_form_minutes} назад";
+    } else {
+        return $dt_add->format("d.m.y в H:i");
+    }
+}
+
+function is_expiration_date($timer)
+{
+    if ($timer['hours'] === 0 || $timer['minutes'] === 0) {
+        return true;
+    }
+    return false;
 }

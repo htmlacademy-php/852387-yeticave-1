@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
@@ -161,4 +162,9 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
     //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
     return [$pages_count, $offset, $pages];
+}
+
+function is_identity($id_1, $id_2 ): bool
+{
+    return $id_1 === $id_2;
 }

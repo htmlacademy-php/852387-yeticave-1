@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * @var array<array{name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: ?string, img_url: string, price_start: int, step_bet: string, cat_name: string} $lot все данные по ID лота из БД
+ * @var string[] $form заполненные пользователем поля формы
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  * @var array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
  */
@@ -22,34 +23,34 @@ declare(strict_types=1);
                 <p class="lot-item__description"><?= $lot['description'] ?? ''; ?></p>
             </div>
             <div class="lot-item__right">
-                <?php if ($_SESSION): ?>
                 <div class="lot-item__state">
                     <?php $timer = get_dt_range($lot['date_end']); ?>
                     <div class="lot-item__timer timer <?= $timer['hours'] === 0 ? 'timer--finishing' : ''?>">
                         <?= time_format($timer); ?>
                     </div>
                     <div class="lot-item__cost-state">
-                        <?php if (!empty($bets)): ?>
-                        <?php $bet = find_max_bet($bets); ?>
                         <div class="lot-item__rate">
                             <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost"><?= price_format(intval($bet['cost'])); ?></span>
+                            <span class="lot-item__cost"><?= price_format($cost); ?></span>
                         </div>
                         <div class="lot-item__min-cost">
-                            Мин. ставка <span><?= price_format(intval($bet['cost']) + intval($lot['step_bet'])); ?></span>
+                            Мин. ставка <span><?= price_format($min_cost, $symbol); ?></span>
                         </div>
-                        <?php else: ?>
-                            <div class="lot-item__rate">
-                                <span class="lot-item__amount">Текущая цена</span>
-                                <span class="lot-item__cost"><?= price_format(intval($lot['price_start'])); ?></span>
-                            </div>
-                            <div class="lot-item__min-cost">
-                                Мин. ставка <span><?= price_format(intval($lot['price_start'] + intval($lot['step_bet']))) ?></span>
-                            </div>
-                        <?php endif; ?>
                     </div>
+                    <?=include_template('_form-bet.php', [
+                        'form' => $form ?? null,
+                        'errors' => $errors,
+                        'min_cost' => $min_cost,
+                        'timer' => $timer,
+                        'user_id' => $user_id,
+                        'lot_id' => $lot['id'],
+                    ]); ?>
                 </div>
-                <?php endif; ?>
+                <?=include_template('_history-bets.php', [
+                    'bets' => $bets,
+                    'min_cost' => $min_cost,
+                    'symbol' => $symbol,
+                ]); ?>
             </div>
     </section>
 </main>

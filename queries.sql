@@ -118,3 +118,5 @@ SELECT b.* FROM bets b
                     INNER JOIN lots l ON l.id = b.lot_id
 WHERE l.id = 6
 ORDER BY b.date_add;
+
+SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = 6);
