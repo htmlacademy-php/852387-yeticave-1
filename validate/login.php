@@ -64,5 +64,5 @@ function get_errors(?array $data, ?array $data_bd): array
         },
     ];
 
-    return array_filter(filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS);
+    return array_filter(filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS));
 }
