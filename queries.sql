@@ -120,3 +120,31 @@ WHERE l.id = 6
 ORDER BY b.date_add;
 
 SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = 6);
+
+SELECT lot_id, max(cost) as cost, date_add FROM bets
+WHERE user_id = 4
+GROUP BY lot_id , date_add
+ORDER BY date_add DESC;
+
+SELECT l.id,
+       l.date_end,
+       l.name,
+       l.img_url,
+       l.user_win_id,
+       c.name "cat_name",
+       u.contact "author_contact" FROM lots l
+                                         INNER JOIN categories c ON l.cat_id = c.id
+                                         INNER JOIN users u ON l.user_id = u.id
+WHERE l.id IN (4, 6);
+
+SELECT b.lot_id, MAX(b.cost), b.date_add "date_add",
+       l.date_end "date_end_lot", l.name "lot_name",
+       l.img_url, l.user_win_id,
+       c.name "cat_name",
+       u.contact "author_contact" FROM bets b
+                                         INNER JOIN lots l on b.lot_id = l.id
+                                         INNER JOIN categories c on l.cat_id = c.id
+                                         INNER JOIN users u ON l.user_id = u.id
+WHERE b.user_id = 4
+GROUP BY b.lot_id , b.date_add
+ORDER BY b.date_add DESC;

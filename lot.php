@@ -48,7 +48,7 @@ if (!isset($_GET['id'])) {
             $path = '404.php';
 
         } else {
-            $bets = get_bets_by_id($connect, $id);
+            $bets = get_bets_by_lot_id($connect, $id);
             $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
             $min_cost = intval($cost) + intval($lot['step_bet']);
             $user_id_max_bet = get_id_user_by_last_bet_on_lot($connect, $id)['user_id'] ?? 0;
