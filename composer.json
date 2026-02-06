@@ -1,0 +1,20 @@
+{
+    "name": "tankov/yeticave",
+    "description": "Website-marketplace ski equipment",
+    "type": "project",
+    "require": {
+        "symfony/mailer": "^8.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tankov\\Yeticave\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "2tankov2",
+            "email": "domino-82@mail.ru"
+        }
+    ]
+}
