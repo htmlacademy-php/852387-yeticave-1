@@ -5,6 +5,7 @@ require_once ('init.php');
 require_once ('data.php');
 require_once ('models/lots.php');
 require_once ('utils/date-time.php');
+require_once ('utils/price.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -21,6 +22,7 @@ require_once ('utils/date-time.php');
  */
 
 $ITEMS_PER_PAGE = 3;
+const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Поиск лотов';
 
@@ -40,7 +42,8 @@ $content = include_template('search.php', [
     'lots' => $lots,
     'pages' => $pages,
     'pages_count' => $pages_count,
-    'cur_page' => $cur_page
+    'cur_page' => $cur_page,
+    'symbol' => RUB_UPPER_CASE
 ]);
 
 $layout = include_template('layout.php', [

@@ -23,7 +23,8 @@ require_once ('utils/price.php');
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
-$ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 2;
+const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Все лоты в категории';
 $cat_id = $_GET['category'] ?? null;
@@ -32,8 +33,8 @@ if ($cat_id) {
     $cur_page = $_GET['page'] ?? 1;
     //узнаем общее число лотов в категории
     $items_count = count_lots_by_category($connect, $cat_id);
-    [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, $ITEMS_PER_PAGE);
-    $lots = get_lots_by_category($connect, $cat_id, $ITEMS_PER_PAGE, $offset);
+    [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, ITEMS_PER_PAGE);
+    $lots = get_lots_by_category($connect, $cat_id, ITEMS_PER_PAGE, $offset);
     $cat_name = get_category_name($connect ,$cat_id);
 }
 
@@ -44,7 +45,8 @@ $content = include_template('all-lots.php', [
     'count_lots' => $items_count,
     'pages' => $pages,
     'pages_count' => $pages_count,
-    'cur_page' => $cur_page
+    'cur_page' => $cur_page,
+    'symbol' => RUB_UPPER_CASE,
 ]);
 
 $layout = include_template('layout.php', [

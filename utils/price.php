@@ -1,13 +1,21 @@
 <?php
 declare(strict_types=1);
 
+const CURRENCY = [
+    'RUB_UPPER_CASE' => '₽',
+    'RUB_LOWER_CASE' => 'р',
+];
+
 /**
  * Функция возвращает отформатированную сумму вместе со знаком рубля
  *
- * @param int $price цена - целое число
+ * @param string|int $price цена - целое число
+ * @param string $symbol
  * @return string строка в виде числа с добавлением знака рубля
  */
-function price_format(int $price): string
+function price_format(string|int $price, string $symbol = ''): string
 {
-    return number_format($price, 0, ',', ' ') . ' ₽';
+    $price = intval($price);
+    $symbol = $symbol ? CURRENCY[$symbol] : '';
+    return number_format($price, 0, ',', ' ') . ' ' . $symbol;
 }
