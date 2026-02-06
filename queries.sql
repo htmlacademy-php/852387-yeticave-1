@@ -147,3 +147,31 @@ SELECT b.lot_id, MAX(b.cost) AS "cost", b.date_add,
 WHERE b.user_id = 4
 GROUP BY b.lot_id , b.date_add
 ORDER BY b.date_add DESC;
+
+
+SELECT b1.user_id, b1.lot_id, b1.date_add, b1.cost  From bets b1
+                                                           join (select lot_id, max(cost) as cost from bets group by lot_id) b2
+                                                                on (b1.lot_id = b2.lot_id and b1.cost = b2.cost)
+where b2.lot_id in (3, 5, NULL);
+
+
+SELECT name, email, contact FROM users WHERE id = 5;
+
+
+SELECT l.id "lot_id", l.name "lot_name", l.user_win_id FROM lots l
+                                                              join bets b on l.id = b.lot_id
+WHERE l.user_win_id IS NULL AND l.date_end <= DATE(NOW()) and b.cost is not null
+group by lot_id;
+
+
+SELECT l.id,
+       l.user_id AS "author_id",
+       l.date_end,
+       l.name AS "lot_name",
+       l.img_url,
+       l.description,
+       l.price AS "price_start",
+       l.step_bet,
+       c.name AS "cat_name" FROM lots l
+                                   INNER JOIN categories c ON l.cat_id = c.id
+WHERE l.id = 10;

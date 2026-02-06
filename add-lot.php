@@ -20,7 +20,7 @@ require_once('validate/upload-file.php');
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
-if(!$_SESSION) {
+if (!$_SESSION) {
     http_response_code(403);
     exit;
 }

@@ -18,6 +18,11 @@ require_once ('validate/sing-up.php');
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
+if ($_SESSION) {
+    http_response_code(403);
+    exit;
+}
+
 $title = 'Регистрация аккаунта';
 // выполнение запроса на список всех пользователей
 $users = get_users($connect);

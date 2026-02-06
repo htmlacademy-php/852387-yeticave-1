@@ -5,7 +5,6 @@ require_once ('init.php');
 require_once ('data.php');
 require_once ('utils/helpers.php');
 require_once ('models/lots.php');
-require_once ('models/categories.php');
 require_once ('utils/date-time.php');
 require_once ('utils/price.php');
 

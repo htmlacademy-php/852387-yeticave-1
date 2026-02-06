@@ -8,7 +8,7 @@ const FILE_TYPES = ['image/jpeg', 'image/png'];
  * @param array $file Переменные файла, загруженного по HTTP
  * @return null[]|string[] [ошибка, путь файла]
  */
-function validate_upload_file(array $file) : array
+function validate_upload_file(array $file): array
 {
     $error_file = null;
     $path_file = null;

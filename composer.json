@@ -3,14 +3,10 @@
     "description": "Website-marketplace ski equipment",
     "type": "project",
     "require": {
-        "symfony/mailer": "^8.0"
+        "symfony/mailer": "^8.0",
+        "ext-mysqli": "*"
     },
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Tankov\\Yeticave\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "2tankov2",

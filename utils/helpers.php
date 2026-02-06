@@ -185,7 +185,7 @@ function is_identity(?int $user_id_1, ?int $user_id_2): bool
  * @param ?int $user_win_id ID пользователя выигрышной ставки
  * @return string[] [флаг для класса CSS, информационное определение таймера]
  */
-function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id) : array
+function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id): array
 {
     $timer = get_dt_range($date_end, false);
     if (is_expiration_date($timer)) {

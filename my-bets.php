@@ -18,12 +18,12 @@ require_once ('utils/price.php');
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
 
-if(!$_SESSION) {
+if(!isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }
 
-$title ='Мои ставки';
+$title = 'Мои ставки';
 
 $user_id = $_SESSION['user']['id'] ?? null;
 

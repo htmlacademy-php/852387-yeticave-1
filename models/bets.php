@@ -64,12 +64,30 @@ function get_bets_by_user_id(mysqli $connect, int $user_id): ?array
                 l.date_end AS "date_end_lot", l.name AS "lot_name", l.img_url, l.user_win_id,
                 c.name AS "cat_name",
                 u.contact AS "author_contact" FROM bets b
-                                            INNER JOIN lots l on b.lot_id = l.id
-                                            INNER JOIN categories c on l.cat_id = c.id
+                                            INNER JOIN lots l ON b.lot_id = l.id
+                                            INNER JOIN categories c ON l.cat_id = c.id
                                             INNER JOIN users u ON l.user_id = u.id
                                   WHERE b.user_id = ?
                                   GROUP BY b.lot_id , b.date_add
                                   ORDER BY b.date_add DESC';
 
     return get_items($connect, $sql, $user_id);
+}
+
+/**
+ * Возвращает список последних ставок по ID переданных лотов
+ * @param mysqli $connect ресурс соединения
+ * @param int[] $lots_ids
+ * @return ?array<int,array{user_id: int, lot_id: int, date_add: string, cost: int} массив ставок
+ *
+ **/
+function get_last_bets_by_lots(mysqli $connect, array $lots_ids): ?array
+{
+    $insert = str_repeat('?, ', count($lots_ids) - 1) . '?';
+    $sql = "SELECT b1.user_id, b1.lot_id, b1.date_add, b1.cost FROM bets b1
+                    JOIN (SELECT lot_id, MAX(cost) AS cost FROM bets
+                                                           GROUP BY lot_id) b2
+                        ON (b1.lot_id = b2.lot_id AND b1.cost = b2.cost)
+                                                   WHERE b2.lot_id IN ({$insert})";
+    return get_items($connect, $sql, ...$lots_ids);
 }

@@ -24,7 +24,8 @@ const NOUN_PLURAL_FORM = [
  * @param string $date Дата в виде строки
  * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
  */
-function is_date_valid(string $date) : bool {
+function is_date_valid(string $date): bool
+{
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
     return $dateTimeObj !== false && array_sum([date_get_last_errors()]) === 0;
@@ -49,10 +50,10 @@ function get_interval_in_second(string $datetime): false|int
  * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
  *                                                           'minutes' => количество минут, 'second' => количество секунд]
  */
-function get_dt_range(string $date_end, bool $is_bet = true) : array
+function get_dt_range(string $date_end, bool $is_bet = true): array
 {
     $ts_diff = get_interval_in_second($date_end);
-    $ts_diff = $is_bet ? abs($ts_diff): $ts_diff;
+    $ts_diff = $is_bet ? abs($ts_diff) : $ts_diff;
     if ($ts_diff < 0) {
         return [
             'hours' => 0,
@@ -76,7 +77,7 @@ function get_dt_range(string $date_end, bool $is_bet = true) : array
  * @param string $date дата в формате «ГГГГ-ММ-ДД»
  * @return float
  **/
-function diff_date(string $date) : float
+function diff_date(string $date): float
 {
     return floor((strtotime('now') - strtotime($date)) / SECS_IN_HOUR);
 }
@@ -122,7 +123,7 @@ function bet_time_format(string $datetime): string
  * @param array $timer массив кол-ва часов, минут и секунд
  * @return bool
  **/
-function is_expiration_date(array $timer) : bool
+function is_expiration_date(array $timer): bool
 {
     if ($timer['hours'] === 0 and $timer['minutes'] === 0 and $timer['seconds'] === 0) {
         return true;

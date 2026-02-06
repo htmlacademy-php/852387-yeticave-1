@@ -33,3 +33,5 @@ $content = '';
 $pages = null;
 $pages_count = null;
 $cur_page = null;
+$cat_name = null;
+$items_count = null;

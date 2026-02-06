@@ -31,7 +31,8 @@ declare(strict_types=1);
                         <img src="<?=$bet['img_url'] ?? ''; ?>" width="54" height="40" alt="<?=$bet['lot_name']; ?>">
                     </div>
                     <div>
-                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php', ['id' => $bet['lot_id']]); ?>"><?=$bet['lot_name']; ?></a></h3>
+                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php',
+                                ['id' => $bet['lot_id']]); ?>"><?=$bet['lot_name']; ?></a></h3>
                         <?php if(is_identity($user_id, $bet['user_win_id'])): ?>
                             <p><?= $bet['author_contact']; ?></p>
                         <?php endif; ?>

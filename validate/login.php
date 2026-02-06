@@ -63,6 +63,5 @@ function get_errors(?array $data, ?array $data_bd): array
             return validate_length($value, 6, 12);
         },
     ];
-
     return array_filter(filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS));
 }

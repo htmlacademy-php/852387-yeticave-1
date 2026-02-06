@@ -21,7 +21,7 @@ function get_fields(): ?array
     ]);
 }
 
-function validate_cost($value, $min_cost) : ?string
+function validate_cost($value, $min_cost): ?string
 {
     if (is_int($value)) {
         return 'Введите целое число';
@@ -31,7 +31,6 @@ function validate_cost($value, $min_cost) : ?string
     }
     return null;
 }
-
 
 /**
  * Возвращает массив строковых значений ошибок по полученным данным
@@ -46,6 +45,5 @@ function get_errors(?array $data, ?int $data_bd): array
             return validate_cost($value, $data_bd);
         },
     ];
-
     return array_filter(filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS));
 }
