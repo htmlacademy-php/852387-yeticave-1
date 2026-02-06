@@ -67,7 +67,7 @@ if (!isset($_GET['id'])) {
 
                 if (!$errors) {
                     $is_set_bet = set_bet($connect, $_SESSION['user']['id'], $lot['id'], $form['cost']);
-                    $bets = get_bets_by_id($connect, $id);
+                    $bets = get_bets_by_user_id($connect, $id);
                     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
                     $min_cost = intval($cost) + intval($lot['step_bet']);
                     if (!$is_set_bet) {

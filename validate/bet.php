@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utilities/validation.php');
+require_once ('utils/validation.php');
 
 // обязательные поля формы для заполнения
 const REQUIRED = ['cost'];

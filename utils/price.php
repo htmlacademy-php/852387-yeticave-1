@@ -10,9 +10,10 @@ const CURRENCY = [
  * Функция возвращает отформатированную сумму вместе со знаком рубля
  *
  * @param string|int $price цена - целое число
+ * @param string $symbol
  * @return string строка в виде числа с добавлением знака рубля
  */
-function price_format(string|int $price, $symbol = ''): string
+function price_format(string|int $price, string $symbol = ''): string
 {
     $price = intval($price);
     $symbol = $symbol ? CURRENCY[$symbol] : '';

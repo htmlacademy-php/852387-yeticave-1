@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * @var array<array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
+ * @var string $symbol
  */
 
 ?>

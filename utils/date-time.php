@@ -31,27 +31,42 @@ function is_date_valid(string $date) : bool {
 }
 
 /**
- * Функция возвращает остаток времени до данной даты в виде массива
- *
- * @param string $date дата истечения лота
- * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
- *                                                           'minutes' => количество минут]
- */
-function get_dt_range(string $date) : array
+ * Возвращает интервал между переданной датой и сегодняшним днем в секундах
+ * @param string $datetime дата в формате строки // 2025-05-30 // 2018-10-02 21:03:17
+ * @return false|int может быть как положительное число или отрицательное число
+ **/
+function get_interval_in_second(string $datetime): false|int
 {
     $ts = time();
-    $ts_end_time = strtotime($date);
-    $ts_diff = $ts_end_time - $ts;
+    $end_ts = strtotime($datetime);
+    return $end_ts - $ts;
+}
+
+/**
+ * Функция возвращает остаток времени до данной даты в виде массива часов и минут и секунд
+ * @param string $date_end дата истечения лота
+ * @param bool $is_bet опция-флаг = передаваемая дата относиться к ставке TRUE, дата относится к лоту FALSE
+ * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
+ *                                                           'minutes' => количество минут, 'second' => количество секунд]
+ */
+function get_dt_range(string $date_end, bool $is_bet = true) : array
+{
+    $ts_diff = get_interval_in_second($date_end);
+    $ts_diff = $is_bet ? abs($ts_diff): $ts_diff;
     if ($ts_diff < 0) {
-        $hours = 0;
-        $minutes = 0;
-    } else {
+        return [
+            'hours' => 0,
+            'minutes' => 0,
+            'seconds' => 0,
+        ];
+    }
         $hours = floor($ts_diff/ SECS_IN_HOUR);
         $minutes = floor(($ts_diff % SECS_IN_HOUR) / SECS_IN_MINUTE);
-    }
+        $seconds = (int)floor($ts_diff % SECS_IN_MINUTE);
     return [
         'hours' => $hours,
-        'minutes' => $minutes
+        'minutes' => $minutes,
+        'seconds' => $seconds,
     ];
 }
 
@@ -69,40 +84,47 @@ function diff_date(string $date) : float
 /**
  * Функция форматирует массив времени в строку
  *
- * @param array{hours: float|int, minutes: float|int} $time массив ['hours' => количество часов,
- *                                                          'minutes' => количество минут]
+ * @param array{hours: float|int, minutes: float|int, second: float|int} $time массив ['hours' => количество часов,
+ *                                                          'minutes' => количество минут, 'second' => количество секунд]
  * @return string время в виде строки НН:ММ
  */
-function time_format(array $time): string
+function timer_format(array $time): string
 {
-    $hours_format = str_pad(strval($time['hours']), 2, "0", STR_PAD_LEFT);
-    $minutes_format = str_pad(strval($time['minutes']), 2, "0", STR_PAD_LEFT);
-
-    return "$hours_format:$minutes_format";
-}
-
-function history_time_format(string $datetime): string
-{
-    $dt_add = date_create($datetime);
-    $dt_now = date_create('now');
-    $dt_diff = date_diff($dt_add, $dt_now);
-    if ($dt_diff->format("%a") < 1) {
-        $hours_diff = (int)$dt_diff->format("%h");
-        $minutes_diff = (int)$dt_diff->format("%i");
-        if ($hours_diff > 0) {
-            $noun_plural_form_hours = get_noun_plural_form($hours_diff, ...NOUN_PLURAL_FORM['hours']);
-            return "{$hours_diff} {$noun_plural_form_hours} назад";
-        }
-        $noun_plural_form_minutes = get_noun_plural_form($minutes_diff, ...NOUN_PLURAL_FORM['minutes']);
-        return "{$minutes_diff} {$noun_plural_form_minutes} назад";
-    } else {
-        return $dt_add->format("d.m.y в H:i");
+    $result = [];
+    foreach ($time as $value) {
+        $result[] = str_pad(strval($value), 2, "0", STR_PAD_LEFT);
     }
+    return implode(':', $result);
 }
 
-function is_expiration_date($timer)
+/**
+ * Возвращает строковое представление таймера ставки
+ * @param string $datetime дата ставки в формате строки // 2025-05-30 // 2018-10-02 21:03:17
+ * @return string // 18 часов назад // 7 минут назад // 25.07.2025 в 02:55
+ **/
+function bet_time_format(string $datetime): string
 {
-    if ($timer['hours'] === 0 || $timer['minutes'] === 0) {
+    $timer = get_dt_range($datetime);
+    $hours = $timer['hours'];
+    $minutes = $timer['minutes'];
+    $days = $hours / 24;
+
+    if ($days < 1) {
+        [$timer_units, $units] = $hours > 0 ? [$hours, 'hours'] : [$minutes, 'minutes'];
+        $noun_plural_form_units = get_noun_plural_form((int)$timer_units, ...NOUN_PLURAL_FORM[$units]);
+        return "$timer_units $noun_plural_form_units назад";
+    }
+    return date('d.m.y в H:i', strtotime($datetime));//"d.m.y в H:i");
+}
+
+/**
+ * Возвращает TRUE если, срок по лоту завершился - 0 часов и 0 минут и 0 секунд
+ * @param array $timer массив кол-ва часов, минут и секунд
+ * @return bool
+ **/
+function is_expiration_date(array $timer) : bool
+{
+    if ($timer['hours'] === 0 and $timer['minutes'] === 0 and $timer['seconds'] === 0) {
         return true;
     }
     return false;

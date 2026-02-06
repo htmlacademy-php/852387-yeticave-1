@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if (!empty($_SESSION['user']) and !$errors) {
+if (!empty($_SESSION['user']) and count($errors) === 0) {
     header("Location: /index.php");
     exit();
 }

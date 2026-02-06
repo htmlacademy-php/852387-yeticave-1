@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 /**
  * @var array<int,array{id:int, name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
- * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var array{hours: int, minutes: int, seconds: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут, интервал секунд]
+ * @var string $symbol
  */
 ?>
 
 <ul class="lots__list">
 <?php foreach ($lots as $lot): ?>
-<?php $timer = get_dt_range($lot['date_end']); ?>
+<?php $timer = get_dt_range($lot['date_end'], false); ?>
     <li class="lots__item lot">
         <div class="lot__image">
             <img src="<?= htmlspecialchars($lot['img_url'] ?? ''); ?>" width="350" height="260" alt="">
@@ -23,7 +24,7 @@ declare(strict_types=1);
                     <span class="lot__cost"><?= price_format($lot['price_start'], $symbol)?? 0; ?></span>
                 </div>
                 <div class="lot__timer timer <?=$timer['hours'] <= 0 ? 'timer--finishing' : ''; ?>">
-                    <?=time_format($timer); ?>
+                    <?=timer_format([$timer['hours'], $timer['minutes']]); ?>
                 </div>
             </div>
         </div>

@@ -134,7 +134,7 @@ function create_new_url(string $path, array $data = []): string
     }
 
     $query = http_build_query($params);
-    return "/{$path}?{$query}";
+    return "/$path?$query";
 }
 
 /**
@@ -164,7 +164,41 @@ function get_data_pagination($cur_page, $items_count, $page_items): array
     return [$pages_count, $offset, $pages];
 }
 
-function is_identity($id_1, $id_2 ): bool
+/**
+ * Возвращает TRUE, если ID пользователей совпадают
+ *
+ * @param ?int $user_id_1 ID одного пользователя
+ * @param ?int $user_id_2 ID второго пользователя
+ *
+ * @return boolean
+ **/
+function is_identity(?int $user_id_1, ?int $user_id_2): bool
 {
-    return $id_1 === $id_2;
+    return $user_id_1 === $user_id_2;
+}
+
+/**
+ * Возвращает опции таймера ставок для страницы ставок авторизованного пользователя
+ *
+ * @param string $date_end дата завершения ставок по лоту
+ * @param ?int $user_id ID авторизованного пользователя
+ * @param ?int $user_win_id ID пользователя выигрышной ставки
+ * @return string[] [флаг для класса CSS, информационное определение таймера]
+ */
+function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id) : array
+{
+    $timer = get_dt_range($date_end, false);
+    if (is_expiration_date($timer)) {
+        if (is_identity($user_id, $user_win_id)) {
+            $flag = 'win';
+            $button = 'Ставка выиграла';
+        } else {
+            $flag = 'end';
+            $button = 'Торги окончены';
+        }
+    } else {
+        $flag = $timer['hours'] < 1 ? 'finishing' : '';
+        $button = timer_format($timer);
+    }
+    return [$flag, $button];
 }
