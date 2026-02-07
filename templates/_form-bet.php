@@ -5,7 +5,7 @@ declare(strict_types=1);
  * @var ?array{cost: int} $form заполненные пользователем поля формы
  * @var ?array{cost: string} $errors все ошибки заполнения формы пользователем
  * @var int $min_cost минимальная ставка по лоту
- * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
+ * @var array{hours: int, minutes: int, seconds: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут, интервал секунд]
  * @var bool $is_logged пользователь авторизован на сайте
  * @var bool $is_author пользователь является автором лота
  * @var bool $is_user_max_bet пользователь является автором последней ставки по лоту

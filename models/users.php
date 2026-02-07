@@ -56,3 +56,4 @@ function get_user_by_id(mysqli $connect, int $id): ?array
 }
 
 //stora@internet.ru  пароль 111111
+//frika@mail.ru пароль 1111111

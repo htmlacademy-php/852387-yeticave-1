@@ -23,7 +23,7 @@ $title = 'Вход на сайт';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // получаем данные из полей формы
-    $form = get_fields();
+    $form = get_login_fields();
     // получаем данные пользователя (или null) по email
     $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     // получаем массив ошибок по данным полей из формы

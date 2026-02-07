@@ -14,7 +14,7 @@ const EMPTY_FIELDS = [
 /** Получаем отфильтрованный массив полей формы заполненных пользователем
  * @return ?array
  **/
-function get_fields(): ?array
+function get_bet_fields(): ?array
 {
     return filter_input_array(INPUT_POST, [
         'cost' => FILTER_SANITIZE_NUMBER_INT,

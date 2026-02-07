@@ -12,7 +12,7 @@ const LIMIT_BETS = 20;
  * @param mysqli $connect Ресурс соединения
  * @param int $id ID лота, все ставки которого нужно найти в БД
  * @param int $limit Количество свежих ставок, которые можно получить в БД
- * @return ?array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string}
+ * @return ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int}
  **/
 
 function get_bets_by_lot_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): ?array
@@ -33,7 +33,7 @@ function get_bets_by_lot_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): 
  * Формирует и выполняет SQL-запрос на добавление нового лота
  * @param mysqli $connect Ресурс соединения
  * @param mixed ...$data данные для добавления лота в БД
- * @return boolean
+ * @return boolean true/false
  */
 function set_bet(mysqli $connect, mixed ...$data): bool
 {
@@ -44,11 +44,18 @@ function set_bet(mysqli $connect, mixed ...$data): bool
     return mysqli_stmt_execute($stmt);
 }
 
-function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?array
+
+/**
+ * Возвращает ID пользователя максимальной ставки по лоту
+ * @param mysqli $connect Ресурс соединения
+ * @param int $lot_id ID лота
+ * @return ?int ID пользователя
+ */
+function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?int
 {
     $sql = "SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = ?)";
-
-    return get_item($connect, $sql, $lot_id);
+    $user = get_item($connect, $sql, $lot_id);
+    return $user['user_id'] ?? null;
 }
 
 /**

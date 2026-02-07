@@ -66,7 +66,7 @@ function set_lot(mysqli $connect, array $data): bool
 }
 
 /**
- * Поиск лотов по заданным словам в описании и названии лотов
+ * Получает список лотов по заданным словам в описании и названии лотов
  * @param mysqli $connect Ресурс соединения
  * @param string $search
  * @param int $limit
@@ -102,11 +102,12 @@ function count_lots(mysqli $connect): int
 }
 
 /**
+ * Получает количество лотов по поисковому запросу
  * @param mysqli $connect Ресурс соединения
  * @param string $search
- * @return int
+ * @return ?int
  */
-function count_lots_by_search(mysqli $connect, string $search): int
+function count_lots_by_search(mysqli $connect, string $search): ?int
 {
     $sql = 'SELECT COUNT(*) AS count FROM lots
             WHERE MATCH(name, description) AGAINST(?)';
@@ -115,11 +116,12 @@ function count_lots_by_search(mysqli $connect, string $search): int
 }
 
 /**
+ * Возвращает количество лотов в данной категории
  * @param mysqli $connect Ресурс соединения
- * @param $cat_id
- * @return mixed
+ * @param int $cat_id
+ * @return ?int
  */
-function count_lots_by_category(mysqli $connect, $cat_id)
+function count_lots_by_category(mysqli $connect, int $cat_id): ?int
 {
     $sql = 'SELECT COUNT(*) AS count FROM lots WHERE cat_id = ?';
     $result = get_item($connect, $sql, $cat_id);
@@ -127,6 +129,7 @@ function count_lots_by_category(mysqli $connect, $cat_id)
 }
 
 /**
+ * Возвращает все лоты по ID категории из БД
  * @param mysqli $connect Ресурс соединения
  * @param $cat_id
  * @param int $limit

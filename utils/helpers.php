@@ -202,3 +202,28 @@ function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_
     }
     return [$flag, $button];
 }
+
+/**
+ * Проверяет входящий ID и возвращает ID лота и его данные из БД
+ * @param mysqli $connect mysqli Ресурс соединения
+ * @param ?string $id ID лота из строки запроса $_GET['id']
+ * @return null|array{$id: int, $lot: array} массив с данными [ID лота и данные лота по ID из БД]
+ **/
+function check_id(?string $id, mysqli $connect): ?array
+{
+    if (!isset($id)) {
+        return null;
+    }
+
+    $id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    if (!$id) {
+        return null;
+    }
+    $lot = get_lot_by_id($connect, $id);
+
+    if (empty($lot)) {
+        return null;
+    }
+    return [$id, $lot];
+}

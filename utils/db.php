@@ -49,7 +49,6 @@ function get_item(mysqli $link, string $sql, ...$data): ?array
 
 /**
  * Находит элемент(ассоциативный массив) с данными по максимальной ставе
- *
  * @var array $bets все ставки по лоту
  * @return array{customer_id: string, lot_id: string, date_add: string, cost: string}
  */

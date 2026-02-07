@@ -13,6 +13,10 @@ require_once ('models/categories.php');
  * @var ?array<int,array{id: int, date_add: string, name: string, email: string, password: string, contact: string} $users массив с параметрами по всем users из БД
  * @var ?array $form заполненные пользователем поля формы
  * @var ?array $errors все ошибки заполнения формы пользователем
+ * @var ?int $cost текущая цена лота
+ * @var ?array $data массив с данными [ID лота и данные лота по ID из БД]
+ * @var int $user_id_max_bet ID пользователя максимальной ставки по лоту
+ * @var int $min_cost минимальная ставка по лоту
  * @var string $content HTML-код - контент страницы
  */
 
@@ -35,3 +39,11 @@ $pages_count = null;
 $cur_page = null;
 $cat_name = null;
 $items_count = null;
+$path = '';
+$cost = null;
+$user_id_max_bet = null;
+$min_cost = null;
+$is_logged = false;
+$user_id = null;
+$is_author = false;
+$is_user_max_bet = false;

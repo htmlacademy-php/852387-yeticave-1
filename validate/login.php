@@ -15,7 +15,7 @@ const EMPTY_FIELDS = [
 /** Получаем отфильтрованный массив полей формы заполненных пользователем
  * @return ?array
  **/
-function get_fields(): ?array
+function get_login_fields(): ?array
 {
     $user_fields = filter_input_array(INPUT_POST, [
         'email' => FILTER_VALIDATE_EMAIL,

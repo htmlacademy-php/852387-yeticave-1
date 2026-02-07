@@ -11,7 +11,7 @@ require_once ('utils/price.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var false|mysqli $connect mysqli Ресурс соединения
- * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
+ * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
  * @var array $lots
  * @var string $cat_name
  * @var int $pages
@@ -26,7 +26,7 @@ const ITEMS_PER_PAGE = 2;
 const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Все лоты в категории';
-$cat_id = $_GET['category'] ?? null;
+$cat_id = (int)filter_input(INPUT_GET, 'category', FILTER_SANITIZE_NUMBER_INT);;
 
 if ($cat_id) {
     $cur_page = $_GET['page'] ?? 1;
