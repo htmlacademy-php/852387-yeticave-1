@@ -17,7 +17,8 @@ require_once ('validate/bet.php');
  * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
  * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
- * @var ?int $cost текущая цена лота
+ * @var ?array $form
+ * @var int $cost текущая цена лота
  * @var ?array $data массив с данными [ID лота и данные лота по ID из БД]
  * @var int $user_id_max_bet ID пользователя максимальной ставки по лоту
  * @var int $min_cost минимальная ставка по лоту
@@ -35,13 +36,14 @@ if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['id'] ?? null;
 }
 
-$data = check_id($_GET['id'], $connect);
+$lot_id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? null;
+$lot = get_lot_by_id($connect, $lot_id);
 
-if (!$data) {
+if (!$lot) {
     http_response_code(404);
     $path = '404.php';
 } else {
-    [$lot_id, $lot] = $data;
+    //[$lot_id, $lot] = $data;
     $bets = get_bets_by_lot_id($connect, $lot_id);
     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
     $min_cost = intval($cost) + intval($lot['step_bet']);
@@ -70,7 +72,7 @@ $content = include_template($path, [
     'bets' => $bets,
     'form' => $form,
     'cost' => $cost,
-    'user_id' => $user_id_max_bet,
+    'user_id_max_bet' => $user_id_max_bet,
     'min_cost' => $min_cost,
     'symbol' => RUB_LOWER_CASE,
     'errors' => $errors,

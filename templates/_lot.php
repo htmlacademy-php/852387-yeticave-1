@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @var array<int,array{id:int, name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
  * @var array{hours: int, minutes: int, seconds: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут, интервал секунд]
- * @var string $symbol
+ * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  */
 ?>
 

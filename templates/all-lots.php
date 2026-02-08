@@ -1,13 +1,16 @@
 <?php
 declare(strict_types=1);
 /**
- * @var string[] $categories список категорий лотов
+ * @var array<array{id: int, name: string, code: string} $categories список категорий лотов
  * @var string $cat_name название категории
  * @var string[] $lots
  * @var int $count_lots
  * @var int[] $pages_count количество страниц
  * @var int[] $pages
- * @var int $cur_page текущая (открытая) страницв
+ * @var int $cur_page текущая (открытая) страница
+ * @var string $tab
+ * @var string $path
+ * @var $cat_id
  */
 ?>
 
@@ -25,7 +28,10 @@ declare(strict_types=1);
         <?=include_template('_pagination.php', [
             'pages' => $pages,
             'pages_count' => $pages_count,
-            'cur_page' => $cur_page
+            'cur_page' => $cur_page,
+            'tab' => $tab,
+            'path' => $path,
+            'value' => $cat_id
         ]); ?>
     </div>
 </main>

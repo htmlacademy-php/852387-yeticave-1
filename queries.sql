@@ -175,3 +175,11 @@ SELECT l.id,
        c.name AS "cat_name" FROM lots l
                                    INNER JOIN categories c ON l.cat_id = c.id
 WHERE l.id = 10;
+
+SELECT u.id,
+       u.date_add,
+       u.name,
+       u.email,
+       u.password,
+       u.contact  FROM users u
+WHERE email = 'frika@mail.ru';

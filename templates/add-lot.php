@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * @var array<array{name: string, code: string} $categories список категорий лотов
+ * @var array<array{id:int, name: string, code: string} $categories список категорий лотов
  * @var ?array $errors все ошибки заполнения формы пользователем
  * @var ?array $form заполненные пользователем поля формы
  */

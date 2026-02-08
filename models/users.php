@@ -35,7 +35,7 @@ function set_user(mysqli $connect, array $data): bool
  * Получает данные пользователя по EMAIL из таблицы БД
  * @param mysqli $connect Ресурс соединения
  * @param string $email данный EMAIL пользователя
- * @return ?array{id: string, date_add: string, name: string,
+ * @return ?array{id: int, date_add: string, name: string,
  *     email: string, password: string, contact: string}
  **/
 function get_user_by_email(mysqli $connect, string $email): ?array

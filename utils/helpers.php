@@ -123,7 +123,7 @@ function include_template(string $name, array $data = []): string
  **/
 function create_new_url(string $path, array $data = []): string
 {
-    $params = $_GET;
+    $params = [];
 
     if (empty($data)) {
         return "/$path";
@@ -149,15 +149,15 @@ function get_post_value(string $name): mixed
 }
 
 /**
- * @param $cur_page
- * @param $items_count
- * @param $page_items
+ * @param int $cur_page
+ * @param int $items_count
+ * @param int $page_items
  * @return array
  */
-function get_data_pagination($cur_page, $items_count, $page_items): array
+function get_data_pagination(int $cur_page, int $items_count, int $page_items): array
 {
     //считаем кол-во страниц и смещение
-    $pages_count = ceil($items_count / $page_items);
+    $pages_count = (int)ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
     //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
@@ -201,29 +201,4 @@ function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_
         $button = timer_format($timer);
     }
     return [$flag, $button];
-}
-
-/**
- * Проверяет входящий ID и возвращает ID лота и его данные из БД
- * @param mysqli $connect mysqli Ресурс соединения
- * @param ?string $id ID лота из строки запроса $_GET['id']
- * @return null|array{$id: int, $lot: array} массив с данными [ID лота и данные лота по ID из БД]
- **/
-function check_id(?string $id, mysqli $connect): ?array
-{
-    if (!isset($id)) {
-        return null;
-    }
-
-    $id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-
-    if (!$id) {
-        return null;
-    }
-    $lot = get_lot_by_id($connect, $id);
-
-    if (empty($lot)) {
-        return null;
-    }
-    return [$id, $lot];
 }

@@ -124,8 +124,7 @@ function count_lots_by_search(mysqli $connect, string $search): ?int
 function count_lots_by_category(mysqli $connect, int $cat_id): ?int
 {
     $sql = 'SELECT COUNT(*) AS count FROM lots WHERE cat_id = ?';
-    $result = get_item($connect, $sql, $cat_id);
-    return $result['count'];
+    return get_item($connect, $sql, $cat_id)['count'];
 }
 
 /**

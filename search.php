@@ -16,7 +16,7 @@ require_once ('utils/price.php');
  * @var array $lots
  * @var ?int $pages
  * @var ?int $pages_count
- * @var ?int $cur_page
+ * @var int $cur_page
  * @var string $page_content содержимое шаблона страницы, в который передаем нужные ему данные
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
@@ -26,15 +26,18 @@ const RUB_UPPER_CASE = 'RUB_UPPER_CASE';
 
 $title = 'Поиск лотов';
 
-$search = trim($_GET['search']) ?? '';
+$search = htmlspecialchars(trim($_GET['search'])) ?? '';
 if ($search) {
-    $cur_page = $_GET['page'] ?? 1;
+    $cur_page = (int)filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT) ?? 1;
     $page_items = 6;
     //узнаем общее число лотов
     $items_count = count_lots_by_search($connect, $search);
     [$pages_count, $offset, $pages] = get_data_pagination($cur_page, $items_count, $ITEMS_PER_PAGE);
 
     $lots = search_lots($connect, $search, $ITEMS_PER_PAGE, $offset);
+
+    $tab = 'search';
+    $path = 'search.php';
 }
 
 $content = include_template('search.php', [
@@ -43,6 +46,9 @@ $content = include_template('search.php', [
     'pages' => $pages,
     'pages_count' => $pages_count,
     'cur_page' => $cur_page,
+    'search' => $search,
+    'tab' => $tab,
+    'path' => $path,
     'symbol' => RUB_UPPER_CASE
 ]);
 
