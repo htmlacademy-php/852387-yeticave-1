@@ -4,9 +4,8 @@ declare(strict_types=1);
 require_once ('utils/date-time.php');
 require_once ('utils/validation.php');
 
-// обязательные поля формы для заполнения
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
-// ошибки при не заполненном поле формы
+
 const EMPTY_FIELDS = [
     'name' => 'Введите наименование лота',
     'description' => 'Напишите описание лота',
@@ -37,7 +36,7 @@ function get_lot_fields(): ?array
  * @param string $date полученная дата
  * @return ?string
  **/
-function validate_date(string $date) : ?string
+function validate_date(string $date): ?string
 {
     if (!is_date_valid($date)) {
         return 'Не верный формат даты. «Дата завершения торгов» должна быть датой в формате «ГГГГ-ММ-ДД»';
@@ -50,12 +49,10 @@ function validate_date(string $date) : ?string
 
 /**
  * Проверка, что входящие данные целое число и больше 0 и получаем строковое пояснение ошибки, если есть
- *
  * @var mixed $value
  * @return ?string
  **/
-
-function validate_price(mixed $value) : ?string
+function validate_price(mixed $value): ?string
 {
     if (is_int($value)) {
         return 'Введите целое число';
@@ -72,14 +69,13 @@ function validate_price(mixed $value) : ?string
  * @param array $ids список всех ID по элементам из БД
  * @return ?string
  **/
-function validate_id(?string $id, array $ids) : ?string
+function validate_id(?string $id, array $ids): ?string
 {
-    if(!in_array($id, $ids)) {
+    if (!in_array($id, $ids)) {
         return 'Указана не существующая категория';
     }
     return null;
 }
-
 
 /**
  * Возвращает массив строковых значений ошибок по полученным данным
@@ -109,6 +105,5 @@ function get_errors(?array $data, array $ids): array
             return validate_id($value, $ids);
         },
     ];
-
     return filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS);
 }

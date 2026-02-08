@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 require_once ('utils/validation.php');
 
-// обязательные поля формы для заполнения
 const REQUIRED = ['email', 'password', 'name', 'message'];
 
-// ошибки при не заполненном поле формы
 const EMPTY_FIELDS = [
     'email' => 'Введите e-mail',
     'password' => 'Введите пароль',
@@ -35,9 +33,9 @@ function get_registration_fields(): ?array
  * @param array $emails список всех EMAIL-ов зарегистрированных пользователей из БД
  * @return ?string
  **/
-function validate_email(?string $email, array $emails) : ?string
+function validate_email(?string $email, array $emails): ?string
 {
-    if(in_array($email, $emails)) {
+    if (in_array($email, $emails)) {
         return 'Указанный email уже используется другим пользователем';
     }
     return null;
@@ -65,6 +63,5 @@ function get_errors(?array $data, array $emails): array
             return validate_length($value, 8, 3000);
         },
     ];
-
     return filter_errors($data, $rules, REQUIRED, EMPTY_FIELDS);
 }

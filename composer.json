@@ -1,0 +1,17 @@
+{
+    "name": "tankov/yeticave",
+    "description": "Website-marketplace ski equipment",
+    "type": "project",
+    "require": {
+        "symfony/mailer": "^8.0",
+        "ext-mysqli": "*",
+        "ext-fileinfo": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "2tankov2",
+            "email": "domino-82@mail.ru"
+        }
+    ]
+}

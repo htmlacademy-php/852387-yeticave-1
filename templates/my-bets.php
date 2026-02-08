@@ -14,12 +14,13 @@ declare(strict_types=1);
  * @var ?array<int,array{lot_id: string, cost: string, date_add: string,
  *      date_end_lot: string, lot_name: string, img_url: string, user_win_id: string,
  *      cat_name: string, author_contact: string} $bets все ставки по ID пользователя из БД
+ * @var ?string $cat_name название категории
  **/
 ?>
 
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
     <section class="rates container">
         <h2>Мои ставки</h2>
         <?php if (isset($bets)): ?>
@@ -31,7 +32,8 @@ declare(strict_types=1);
                         <img src="<?=$bet['img_url'] ?? ''; ?>" width="54" height="40" alt="<?=$bet['lot_name']; ?>">
                     </div>
                     <div>
-                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php', ['id' => $bet['lot_id']]); ?>"><?=$bet['lot_name']; ?></a></h3>
+                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php',
+                                ['id' => $bet['lot_id']]); ?>"><?=$bet['lot_name']; ?></a></h3>
                         <?php if(is_identity($user_id, $bet['user_win_id'])): ?>
                             <p><?= $bet['author_contact']; ?></p>
                         <?php endif; ?>

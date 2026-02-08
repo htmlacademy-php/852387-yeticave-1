@@ -123,7 +123,7 @@ function include_template(string $name, array $data = []): string
  **/
 function create_new_url(string $path, array $data = []): string
 {
-    $params = $_GET;
+    $params = [];
 
     if (empty($data)) {
         return "/$path";
@@ -139,7 +139,6 @@ function create_new_url(string $path, array $data = []): string
 
 /**
  * Возвращает отфильтрованный массив значений заданных в случае успеха или false в случае неудачи
- *
  * @param string $name данное имя поля
  * @return mixed
  **/
@@ -149,15 +148,16 @@ function get_post_value(string $name): mixed
 }
 
 /**
- * @param $cur_page
- * @param $items_count
- * @param $page_items
- * @return array
- */
-function get_data_pagination($cur_page, $items_count, $page_items): array
+* Возвращает массив с данными [кол-во страниц, смещение, массив с номерами страниц]
+* @param int $cur_page номер текущей страницы
+* @param int $items_count количество элементов
+* @param int $page_items количество элементов на странице
+* @return int[] [кол-во страниц, смещение, массив с номерами страниц]
+*/
+function get_data_pagination(int $cur_page, int $items_count, int $page_items): array
 {
     //считаем кол-во страниц и смещение
-    $pages_count = ceil($items_count / $page_items);
+    $pages_count = (int)ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
     //заполняем массив номерами всех страниц
     $pages = range(1, $pages_count);
@@ -185,7 +185,7 @@ function is_identity(?int $user_id_1, ?int $user_id_2): bool
  * @param ?int $user_win_id ID пользователя выигрышной ставки
  * @return string[] [флаг для класса CSS, информационное определение таймера]
  */
-function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id) : array
+function get_bets_timer_options(string $date_end, ?int $user_id, ?int $user_win_id): array
 {
     $timer = get_dt_range($date_end, false);
     if (is_expiration_date($timer)) {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
-// допустимые типы файлов
+
 const FILE_TYPES = ['image/jpeg', 'image/png'];
 
-// проверка загрузки файла пользователем с выводом ошибки и пути файла
 /**
+ * Проверка загрузки файла пользователем с выводом ошибки и пути файла
  * @param array $file Переменные файла, загруженного по HTTP
  * @return null[]|string[] [ошибка, путь файла]
  */
-function validate_upload_file(array $file) : array
+function validate_upload_file(array $file): array
 {
     $error_file = null;
     $path_file = null;

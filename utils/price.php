@@ -8,9 +8,8 @@ const CURRENCY = [
 
 /**
  * Функция возвращает отформатированную сумму вместе со знаком рубля
- *
  * @param string|int $price цена - целое число
- * @param string $symbol
+ * @param string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  * @return string строка в виде числа с добавлением знака рубля
  */
 function price_format(string|int $price, string $symbol = ''): string

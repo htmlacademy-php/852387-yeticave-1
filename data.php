@@ -13,6 +13,10 @@ require_once ('models/categories.php');
  * @var ?array<int,array{id: int, date_add: string, name: string, email: string, password: string, contact: string} $users массив с параметрами по всем users из БД
  * @var ?array $form заполненные пользователем поля формы
  * @var ?array $errors все ошибки заполнения формы пользователем
+ * @var ?int $cost текущая цена лота
+ * @var ?array $data массив с данными [ID лота и данные лота по ID из БД]
+ * @var int $user_id_max_bet ID пользователя максимальной ставки по лоту
+ * @var int $min_cost минимальная ставка по лоту
  * @var string $content HTML-код - контент страницы
  */
 
@@ -23,13 +27,25 @@ const LIMIT_ITEMS = 10;
 $title = 'Главная';
 // выполнение запроса на список категорий
 $categories = get_categories($connect);
-$users = null; // []
-$lots = null; // []
-$bets = null; // []
-$lot = null;  //[]
+$users = null;
+$lots = null;
+$bets = null;
+$lot = null;
 $errors = null;
-$form = null;  //[]
+$form = null;
 $content = '';
 $pages = null;
-$pages_count = null;
-$cur_page = null;
+$pages_count = 0;
+$cur_page = 1;
+$cat_name = null;
+$cat_id = null;
+$items_count = null;
+$path = '';
+$tab = '';
+$cost = 0;
+$user_id_max_bet = null;
+$min_cost = 0;
+$is_logged = false;
+$user_id = null;
+$is_author = false;
+$is_user_max_bet = false;
