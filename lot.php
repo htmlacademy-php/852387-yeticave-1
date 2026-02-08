@@ -15,13 +15,15 @@ require_once ('validate/bet.php');
  * @var string $title заголовок страницы сайта
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
  * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
- * @var array{id: int, author_id: int, date_add: string, name: string, description: string, img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
- * @var array<int,array{customer_id: string, lot_id: string, date_add: string, cost: string} $bets все ставки по ID лота из БД
- * @var ?array $form
+ * @var array{id: int, author_id: int, date_end: string, name: string, description: string,
+ *     img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
+ * @var ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string} $bets все ставки по ID лота из БД
+ * @var ?array{cost: int} $form заполненные пользователем поля формы
+ * @var ?array{cost: string} $errors массив ошибок по данным из формы
  * @var int $cost текущая цена лота
- * @var ?array $data массив с данными [ID лота и данные лота по ID из БД]
  * @var int $user_id_max_bet ID пользователя максимальной ставки по лоту
  * @var int $min_cost минимальная ставка по лоту
+ * @var ?string $cat_name название категории
  * @var string $content HTML-код - контент страницы
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
@@ -43,7 +45,6 @@ if (!$lot) {
     http_response_code(404);
     $path = '404.php';
 } else {
-    //[$lot_id, $lot] = $data;
     $bets = get_bets_by_lot_id($connect, $lot_id);
     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
     $min_cost = intval($cost) + intval($lot['step_bet']);
@@ -79,12 +80,14 @@ $content = include_template($path, [
     'is_logged' => $is_logged,
     'is_user_max_bet' => $is_user_max_bet,
     'is_author' => $is_author,
+    'cat_name' => $cat_name,
 ]);
 
 $layout = include_template('layout.php', [
     'content' => $content,
     'title' => $title,
     'categories' => $categories,
+    'cat_name' => $cat_name,
 ]);
 
 print($layout);

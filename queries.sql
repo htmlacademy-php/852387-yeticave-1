@@ -183,3 +183,19 @@ SELECT u.id,
        u.password,
        u.contact  FROM users u
 WHERE email = 'frika@mail.ru';
+
+SELECT l.id,
+    l.user_id AS "author_id",
+    l.date_end,
+    l.name AS "lot_name",
+    l.img_url,
+    l.description,
+    l.price AS "price_start",
+    l.step_bet,
+    c.name AS "cat_name",
+    MAX(b.cost) AS "cost" FROM lots l
+        INNER JOIN categories c ON l.cat_id = c.id
+                          LEFT JOIN bets b ON b.lot_id = l.id
+        WHERE MATCH(l.name, description) AGAINST('лыжи')
+        group by l.id, l.date_end, l.name, l.date_add
+        ORDER BY l.date_add DESC LIMIT 10 OFFSET 0

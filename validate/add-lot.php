@@ -4,9 +4,8 @@ declare(strict_types=1);
 require_once ('utils/date-time.php');
 require_once ('utils/validation.php');
 
-// обязательные поля формы для заполнения
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
-// ошибки при не заполненном поле формы
+
 const EMPTY_FIELDS = [
     'name' => 'Введите наименование лота',
     'description' => 'Напишите описание лота',

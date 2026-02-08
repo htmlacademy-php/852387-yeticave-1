@@ -5,6 +5,7 @@ declare(strict_types=1);
  * @var string $title имя странице
  * @var array<array{id: int, name: string, code: string} $categories список категорий лотов
  * @var string $content HTML-код - контент страницы
+ * @var ?string $cat_name название категории
  */
 ?>
 
@@ -57,7 +58,7 @@ declare(strict_types=1);
     <nav class="nav">
         <ul class="nav__list container">
             <?php foreach ($categories as $category): ?>
-                <li class="nav__item">
+                <li class="nav__item <?= $category['name'] === $cat_name ? "nav__item--current" : ''?>">
                     <a href="<?=create_new_url('all-lots.php', ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
                 </li>
             <?php endforeach; ?>

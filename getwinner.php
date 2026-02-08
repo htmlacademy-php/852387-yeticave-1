@@ -7,9 +7,9 @@ require_once('sent-email.php');
 
 /**
  * @var false|mysqli $connect Ресурс соединения
- * @var ?array<int,array{lot_id: int, lot_name: string, user_win_id: int}> $lots лоты без победителей со сроком меньше 1 дня
+ * @var ?array<int,array{id: int, name: string, user_win_id: int}> $lots лоты без победителей со сроком меньше 1 дня
  * @var int[] $lot_ids список IDs лотов
- * @var array<int,array{user_id: int, lot_id: int, date_add: string, cost: int} $last_bats массив последних ставок лотов
+ * @var array<int,array{user_id: int, lot_id: int, date_add: string, cost: int} $last_bets массив последних ставок лотов
  * @var int[] $win_ids список IDs пользователей, выигрышной ставки в лотах
  * @var bool $is_update  true/false получилось ли обновить запись в таблице лотов БД
  * @var array{user_name: string, email: string, contact: string} $user данные пользователя (имя, email, другие контакты)
@@ -23,7 +23,7 @@ if (!isset($lots)) {
     exit();
 }
 
-$lot_ids = array_map('intval', array_column($lots, 'lot_id'));
+$lot_ids = array_map('intval', array_column($lots, 'id'));
 
 $last_bets = get_last_bets_by_lots($connect, $lot_ids);
 
@@ -45,5 +45,5 @@ foreach ($lot_ids as $key => $lot_id) {
 
     $lot = get_lot_by_id($connect, $lot_id);
 
-    sent_mail($user['email'], $user['user_name'], $lot['id'], $lot['lot_name']);
+    sent_mail($user['email'], $user['user_name'], $lot['id'], $lot['name']);
 }

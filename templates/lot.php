@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 /**
  * @var ?array<int,array{id: int, name: string, code: string} $categories все категории из БД
+ * @var ?string $cat_name название категории
  * @var array{id: int, date_end: string, name: string, img_url: string,
  *     description: string, price_start: int, step_bet: int, cat_name: string} $lot
  * * все данные лота по ID лота из БД
@@ -20,7 +21,7 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
     <section class="lot-item container">
         <h2><?=htmlspecialchars($lot['name'] ?? ''); ?></h2>
         <div class="lot-item__content">

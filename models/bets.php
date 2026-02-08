@@ -1,27 +1,26 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/db.php');
 require_once ('data.php');
-require_once ('utils/helpers.php');
+require_once ('utils/db.php');
 
-const LIMIT_BETS = 20;
+const LIMIT_BETS = 10;
 
 /**
  * Получает список всех ставок по ID лота или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
  * @param int $id ID лота, все ставки которого нужно найти в БД
  * @param int $limit Количество свежих ставок, которые можно получить в БД
- * @return ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int}
+ * @return ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string}
  **/
 
 function get_bets_by_lot_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): ?array
 {
-    $sql = 'SELECT b.user_id AS "customer_id",
+    $sql = 'SELECT b.user_id AS customer_id,
                     b.lot_id,
                     b.date_add,
                     b.cost,
-                    u.name AS "user_name" FROM bets b
+                    u.name AS user_name FROM bets b
                     INNER JOIN users u ON u.id = b.user_id
          WHERE lot_id = ?
          ORDER BY b.date_add DESC LIMIT ?';
@@ -40,8 +39,10 @@ function set_bet(mysqli $connect, mixed ...$data): bool
     $sql = 'INSERT INTO bets(user_id, lot_id, cost)
                 VALUES (?, ?, ?)';
     $stmt = db_get_prepare_stmt($connect, $sql, $data);
-
-    return mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        die(mysqli_error($connect));
+    }
+    return true;
 }
 
 
@@ -53,8 +54,8 @@ function set_bet(mysqli $connect, mixed ...$data): bool
  */
 function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?int
 {
-    $sql = "SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = ?)";
-    $user = get_item($connect, $sql, $lot_id);
+    $sql = "SELECT user_id FROM bets WHERE cost = (SELECT max(cost) from bets where lot_id = ?) and lot_id = ?";
+    $user = get_item($connect, $sql, $lot_id, $lot_id);
     return $user['user_id'] ?? null;
 }
 
@@ -67,10 +68,10 @@ function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?int
  **/
 function get_bets_by_user_id(mysqli $connect, int $user_id): ?array
 {
-    $sql = 'SELECT b.lot_id, MAX(b.cost) AS "cost", b.date_add AS "date_add",
-                l.date_end AS "date_end_lot", l.name AS "lot_name", l.img_url, l.user_win_id,
-                c.name AS "cat_name",
-                u.contact AS "author_contact" FROM bets b
+    $sql = 'SELECT b.lot_id, MAX(b.cost) AS cost, b.date_add AS date_add,
+                l.date_end AS date_end_lot, l.name AS lot_name, l.img_url, l.user_win_id,
+                c.name AS cat_name,
+                u.contact AS author_contact FROM bets b
                                             INNER JOIN lots l ON b.lot_id = l.id
                                             INNER JOIN categories c ON l.cat_id = c.id
                                             INNER JOIN users u ON l.user_id = u.id
@@ -84,7 +85,7 @@ function get_bets_by_user_id(mysqli $connect, int $user_id): ?array
 /**
  * Возвращает список последних ставок по ID переданных лотов
  * @param mysqli $connect ресурс соединения
- * @param int[] $lots_ids
+ * @param int[] $lots_ids список ID лотов в виде массива
  * @return ?array<int,array{user_id: int, lot_id: int, date_add: string, cost: int} массив ставок
  *
  **/

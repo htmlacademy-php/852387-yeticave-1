@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 /**
- * @var array<int,array{id:int, name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
+ * @var ?array<int,array{id:int, author_id: int, date_end: string, name: string,
+ *                      img_url: string, description: string, price_start: int,
+ *                      step_bet: int, cat_name: string, cost: int} $lots массив с параметрами лотов
  * @var array{hours: int, minutes: int, seconds: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут, интервал секунд]
  * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  */
@@ -10,7 +12,8 @@ declare(strict_types=1);
 
 <ul class="lots__list">
 <?php foreach ($lots as $lot): ?>
-<?php $timer = get_dt_range($lot['date_end'], false); ?>
+    <?php $timer = get_dt_range($lot['date_end'], false); ?>
+    <?php $cost = $lot['cost'] ?? $lot['price_start']; ?>
     <li class="lots__item lot">
         <div class="lot__image">
             <img src="<?= htmlspecialchars($lot['img_url'] ?? ''); ?>" width="350" height="260"

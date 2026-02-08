@@ -28,7 +28,7 @@ function is_date_valid(string $date): bool
 {
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
-    return $dateTimeObj !== false && array_sum([date_get_last_errors()]) === 0;
+    return $dateTimeObj !== false && (!date_get_last_errors() || array_sum(date_get_last_errors()) === 0);
 }
 
 /**
@@ -85,7 +85,7 @@ function diff_date(string $date): float
 /**
  * Функция форматирует массив времени в строку
  *
- * @param array{hours: float|int, minutes: float|int, second: float|int} $time массив ['hours' => количество часов,
+ * @param array{hours: int, minutes: int, second: int} $time массив ['hours' => количество часов,
  *                                                          'minutes' => количество минут, 'second' => количество секунд]
  * @return string время в виде строки НН:ММ
  */

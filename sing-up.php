@@ -9,53 +9,49 @@ require_once ('validate/sing-up.php');
 /**
  * @var string $title заголовок страницы сайта
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
+ * @var ?string $cat_name название категории
  * @var ?array<int,array{id: int, name: string, code: string} $categories список категорий лотов
- * @var ?array $errors все ошибки заполнения формы пользователем
+ * @var ?array{name: string, email: string, password: string, message: string} $errors все ошибки заполнения формы пользователем
  * @var string $content содержимое шаблона страницы, в который передаем нужные ему данные
- * @var ?array $form заполненные пользователем поля формы
+ * @var ?array{name: string, email: string, password: string, message: string} $form заполненные пользователем поля формы
  * @var ?array<int,array{id: int, date_add: string, name: string, email: string, password: string, contact: string} $users массив с параметрами по всем users из БД
  * @var string[] $emails список всех emails зарегистрированных пользователей
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
 
-if ($_SESSION) {
+if (isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }
 
 $title = 'Регистрация аккаунта';
-// выполнение запроса на список всех пользователей
 $users = get_users($connect);
-// получаем список EMAIL всех пользователей
 $emails = array_column($users, 'email');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // получаем данные из полей формы
+
     $form = get_registration_fields();
-    // получаем массив ошибок по данным полей из формы
     $errors = get_errors($form, $emails);
 
-    if ($errors) {
-        $content = include_template('sing-up.php', [
-            'form' => $form,
-            'errors' => $errors,
-            'categories' => $categories
-        ]);
-    } else {
+    if (!$errors) {
         set_user($connect, $form);
         header("Location: /login.php");
         exit();
     }
-} else {
-    $content = include_template('sing-up.php', [
-        'categories' => $categories,
-    ]);
 }
+
+$content = include_template('sing-up.php', [
+    'form' => $form,
+    'errors' => $errors,
+    'categories' => $categories,
+    'cat_name' => $cat_name,
+]);
 
 $layout = include_template('layout.php', [
     'content' => $content,
     'title' => $title,
     'categories' => $categories,
+    'cat_name' => $cat_name,
 ]);
 
 print($layout);

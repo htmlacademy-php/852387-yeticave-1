@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 require_once ('utils/validation.php');
 
-// обязательные поля формы для заполнения
 const REQUIRED = ['email', 'password', 'name', 'message'];
 
-// ошибки при не заполненном поле формы
 const EMPTY_FIELDS = [
     'email' => 'Введите e-mail',
     'password' => 'Введите пароль',

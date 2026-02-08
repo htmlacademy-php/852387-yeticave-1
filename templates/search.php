@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @var string $search
  * @var string $tab
  * @var string $path
- * /
+ * @var ?string $cat_name название категории
  */
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
     <div class="container">
         <section class="lots">
             <h2>Результаты поиска по запросу «<span><?=$search; ?></span>»</h2>

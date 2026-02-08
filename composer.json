@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "symfony/mailer": "^8.0",
-        "ext-mysqli": "*"
+        "ext-mysqli": "*",
+        "ext-fileinfo": "*"
     },
     "license": "MIT",
     "authors": [

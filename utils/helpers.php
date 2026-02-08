@@ -139,7 +139,6 @@ function create_new_url(string $path, array $data = []): string
 
 /**
  * Возвращает отфильтрованный массив значений заданных в случае успеха или false в случае неудачи
- *
  * @param string $name данное имя поля
  * @return mixed
  **/
@@ -149,11 +148,12 @@ function get_post_value(string $name): mixed
 }
 
 /**
- * @param int $cur_page
- * @param int $items_count
- * @param int $page_items
- * @return array
- */
+* Возвращает массив с данными [кол-во страниц, смещение, массив с номерами страниц]
+* @param int $cur_page номер текущей страницы
+* @param int $items_count количество элементов
+* @param int $page_items количество элементов на странице
+* @return int[] [кол-во страниц, смещение, массив с номерами страниц]
+*/
 function get_data_pagination(int $cur_page, int $items_count, int $page_items): array
 {
     //считаем кол-во страниц и смещение

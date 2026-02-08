@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Фильтрация ошибок
  *
- * @param array|null $data
+ * @param ?array $data
  * @param array $rules
  * @param string[] $required обязательные поля формы для заполнения
  * @param string[] $empty_fields ошибки при не заполненном поле формы

@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 require_once ('utils/validation.php');
 
-// обязательные поля формы для заполнения
 const REQUIRED = ['email', 'password'];
 
-// ошибки при не заполненном поле формы
 const EMPTY_FIELDS = [
     'email' => 'Введите e-mail',
     'password' => 'Введите пароль',
 ];
 
 /** Получаем отфильтрованный массив полей формы заполненных пользователем
- * @return ?array
+ * @return ?array{email: string, password: string} заполненные пользователем поля формы
  **/
 function get_login_fields(): ?array
 {
@@ -25,15 +23,6 @@ function get_login_fields(): ?array
     return array_map(fn($value) => $value, $user_fields);
 }
 
-/**
- *  Получаем строковое пояснение ошибки, если EMAIL не найден среди списка EMAIL-ов пользователей из БД
- * @param string $email введенный EMAIL пользователя
- * @return bool
- */
-function has_email(string $email): bool
-{
-
-}
 /**
  * Получаем строковое пояснение ошибки, если EMAIL найден среди списка EMAIL-ов пользователей из БД
  * @param ?array $data_bd список всех EMAIL-ов зарегистрированных пользователей из БД
