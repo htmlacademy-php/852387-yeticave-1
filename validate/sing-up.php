@@ -35,10 +35,10 @@ function get_registration_fields(): ?array
  **/
 function validate_email(?string $email, array $emails): ?string
 {
-    if (in_array($email, $emails)) {
-        return 'Указанный email уже используется другим пользователем';
-    }
-    return null;
+    return match (true) {
+        in_array($email, $emails) => 'Указанный email уже используется другим пользователем',
+        default => null
+        };
 }
 
 /**

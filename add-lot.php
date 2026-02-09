@@ -5,8 +5,8 @@ require_once ('init.php');
 require_once ('data.php');
 require_once ('utils/helpers.php');
 require_once ('models/lots.php');
-require_once('validate/add-lot.php');
-require_once('validate/upload-file.php');
+require_once ('validate/add-lot.php');
+require_once ('validate/upload-file.php');
 
 /**
  * @var boolean|mysqli|object $connect ресурс соединения с сервером БД

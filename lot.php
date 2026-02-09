@@ -41,7 +41,7 @@ if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['id'] ?? null;
 }
 
-$lot_id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? null;
+$lot_id = (int)filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $lot = get_lot_by_id($connect, $lot_id);
 
 if (!$lot) {

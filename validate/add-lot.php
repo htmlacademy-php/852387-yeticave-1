@@ -28,7 +28,7 @@ function get_lot_fields(): ?array
         'step_bet' => FILTER_SANITIZE_NUMBER_INT,
         'cat_id' => FILTER_SANITIZE_NUMBER_INT,
     ]);
-    return array_map(fn($value) => trim($value), $lot_fields);
+    return array_map(static fn($value) => trim($value), $lot_fields);
 }
 
 /**
@@ -38,13 +38,11 @@ function get_lot_fields(): ?array
  **/
 function validate_date(string $date): ?string
 {
-    if (!is_date_valid($date)) {
-        return 'Не верный формат даты. «Дата завершения торгов» должна быть датой в формате «ГГГГ-ММ-ДД»';
-    }
-    if (diff_date($date) > 0) {
-        return '«Дата завершения торгов» должна быть больше текущей даты, хотя бы на один день';
-    }
-    return null;
+    return match (true) {
+        !is_date_valid($date) => 'Не верный формат даты. «Дата завершения торгов» должна быть датой в формате «ГГГГ-ММ-ДД»',
+        diff_date($date) > 0 => '«Дата завершения торгов» должна быть больше текущей даты, хотя бы на один день',
+        default => null
+        };
 }
 
 /**
@@ -54,13 +52,11 @@ function validate_date(string $date): ?string
  **/
 function validate_price(mixed $value): ?string
 {
-    if (is_int($value)) {
-        return 'Введите целое число';
-    }
-    if ($value <= 0) {
-        return 'Значение должно быть больше 0';
-    }
-    return null;
+    return match (true) {
+        is_int($value) => 'Введите целое число',
+        $value <= 0 => 'Значение должно быть больше 0',
+        default => null
+        };
 }
 
 /**
@@ -71,10 +67,10 @@ function validate_price(mixed $value): ?string
  **/
 function validate_id(?string $id, array $ids): ?string
 {
-    if (!in_array($id, $ids)) {
-        return 'Указана не существующая категория';
-    }
-    return null;
+    return match (true) {
+        !in_array($id, $ids, true) => 'Указана не существующая категория',
+        default => null
+        };
 }
 
 /**

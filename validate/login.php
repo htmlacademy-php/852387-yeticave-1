@@ -30,10 +30,10 @@ function get_login_fields(): ?array
  **/
 function validate_email( ?array $data_bd) : ?string
 {
-    if(!$data_bd) {
-        return 'Такой пользователь не найден';
-    }
-    return null;
+    return match (true) {
+        !$data_bd => 'Такой пользователь не найден',
+        default => null
+        };
 }
 
 /**

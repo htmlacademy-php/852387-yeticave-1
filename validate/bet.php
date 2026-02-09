@@ -16,7 +16,7 @@ function get_bet_fields(): ?array
 {
     return filter_input_array(INPUT_POST, [
         'cost' => FILTER_SANITIZE_NUMBER_INT,
-    ]);
+        ]);
 }
 
 /**
@@ -27,10 +27,10 @@ function get_bet_fields(): ?array
  */
 function validate_cost(int|string $value, int $min_cost): ?string
 {
-    if ($value < $min_cost) {
-        return 'Ваша ставка меньше ' . $min_cost;
-    }
-    return null;
+    return match (true) {
+        $value < $min_cost => 'Ваша ставка меньше ' . $min_cost,
+        default => null
+        };
 }
 
 /**
