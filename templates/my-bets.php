@@ -2,18 +2,13 @@
 declare(strict_types=1);
 
 /**
- * Название лота (ссылка на страницу);
- * сумма ставки;
- * дата/время.
- * Выигравшие ставки должны выделяться
- * отдельным цветом, а также там должны быть размещены контакты владельца лота.
- * @var string[] $categories список категорий лотов
+ * @var array<array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array{hours: int, minutes: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут]
  * @var string $symbol знак валюты для строкового форматирования цена
  * @var ?int $user_id авторизованный пользователь
- * @var ?array<int,array{lot_id: string, cost: string, date_add: string,
- *      date_end_lot: string, lot_name: string, img_url: string, user_win_id: string,
- *      cat_name: string, author_contact: string} $bets все ставки по ID пользователя из БД
+ * @var ?array<int,array{lot_id: int, cost: int, date_add: string, date_end: string,
+ *              lot_name: string, img_url: string, user_win_id: int, cat_name: string,
+ *              author_contact: string} $bets все ставки по ID пользователя из БД
  * @var ?string $cat_name название категории
  **/
 ?>
@@ -43,7 +38,7 @@ declare(strict_types=1);
                     <?=$bet['cat_name']; ?>
                 </td>
                 <td class="rates__timer">
-                    <?php [$flag, $button] = get_bets_timer_options($bet['date_end_lot'], $user_id, $bet['user_win_id']); ?>
+                    <?php [$flag, $button] = get_bets_timer_options($bet['date_end'], $user_id, $bet['user_win_id']); ?>
                     <div class="timer timer--<?= $flag; ?>"><?= $button; ?></div>
                 </td>
                 <td class="rates__price">

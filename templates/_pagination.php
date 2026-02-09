@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 ?>
 
-<?php if ($pages_count): ?>
+<?php if ($pages_count > 1): ?>
     <ul class="pagination-list">
         <li class="pagination-item pagination-item-prev">
             <a href="<?= $cur_page > 1 ? create_new_url($path, [$tab => $value, 'page' => $cur_page - 1]) : ''; ?>">Назад</a></li>

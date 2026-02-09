@@ -2,9 +2,10 @@
 declare(strict_types=1);
 
 /**
- * @var array<array{id: int, name: string, code: string} $categories список категорий лотов
- * @var array<int,array{name: string, category: string, price: int, url: string, date_end: string} $lots массив с параметрами лотов
- * @var string $symbol
+ * @var ?array<array{id: int, name: string, code: string} $categories список категорий лотов
+ * @var ?array<int,array{id: int, date_end: string, name: string, price_start: int,
+ *          img_url: string, cost: int, cat_name: string} $lots массив с параметрами лотов
+ * @var string $symbol знак валюты для строкового форматирования цена
  */
 
 ?>
