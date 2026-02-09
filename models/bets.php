@@ -63,13 +63,13 @@ function get_id_user_by_last_bet_on_lot(mysqli $connect, int $lot_id): ?int
  * Получает список всех ставок по ID зарегистрированного user или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
  * @param int $user_id ID пользователя, все ставки которого нужно найти в БД
- * @return ?array<int,array{lot_id: string, cost: string, date_add: string, date_end_lot: string,
- *      lot_name: string, img_url: string, user_win_id: string, cat_name: string, author_contact: string}
+ * @return ?array<int,array{lot_id: int, cost: int, date_add: string, date_end: string,
+ *      lot_name: string, img_url: string, user_win_id: int, cat_name: string, author_contact: string}
  **/
 function get_bets_by_user_id(mysqli $connect, int $user_id): ?array
 {
     $sql = 'SELECT b.lot_id, MAX(b.cost) AS cost, b.date_add AS date_add,
-                l.date_end AS date_end_lot, l.name AS lot_name, l.img_url, l.user_win_id,
+                l.date_end, l.name AS lot_name, l.img_url, l.user_win_id,
                 c.name AS cat_name,
                 u.contact AS author_contact FROM bets b
                                             INNER JOIN lots l ON b.lot_id = l.id
