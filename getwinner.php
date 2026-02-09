@@ -27,7 +27,7 @@ $lot_ids = array_map('intval', array_column($lots, 'id'));
 
 $last_bets = get_last_bets_by_lots($connect, $lot_ids);
 
-if (!isset($last_bets)) {
+if (isset($last_bets)) {
     exit();
 }
 
