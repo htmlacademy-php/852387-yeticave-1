@@ -96,6 +96,6 @@ function get_last_bets_by_lots(mysqli $connect, array $lots_ids): ?array
                     JOIN (SELECT lot_id, MAX(cost) AS cost FROM bets
                                                            GROUP BY lot_id) b2
                         ON (b1.lot_id = b2.lot_id AND b1.cost = b2.cost)
-                                                   WHERE b2.lot_id IN ({$insert})";
+                                                   WHERE b2.lot_id IN ($insert)";
     return get_items($connect, $sql, ...$lots_ids);
 }
