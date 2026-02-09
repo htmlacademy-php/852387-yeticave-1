@@ -24,10 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = get_login_fields();
     $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     $errors = get_errors($form, $user);
-
-    if ($user and password_verify($form['password'], $user['password'])) {
+    if (isset($user) and password_verify($form['password'], $user['password'])) {
         $_SESSION['user'] = $user;
-    } else {
+    } else if ($form['password']) {
         $errors['password'] = 'Вы ввели неверный пароль';
     }
 }
