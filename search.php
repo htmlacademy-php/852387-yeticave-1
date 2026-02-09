@@ -19,6 +19,7 @@ require_once ('utils/price.php');
  * @var int $cur_page текущая (открытая) страница
  * @var ?int $items_count количество лотов по поисковому запросу
  * @var ?string $cat_name название категории
+ * @var string $search строка которую необходимо найти
  * @var string $content содержимое шаблона страницы, в который передаем нужные ему данные
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
  */
