@@ -175,7 +175,7 @@ function get_lots_without_win_and_finishing(mysqli $connect): ?array
 /**
  * Обновляет данные лота в БД
  * @param mysqli $connect ресурс соединения
- * @param array{win_id: int, lot_id: int} $data данные для внесения изменений в лоте в таблице БД
+ * @param int[] $data данные для внесения изменений в лоте в таблице БД
  * @return boolean true/false
  *
  **/

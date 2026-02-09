@@ -20,12 +20,15 @@ require_once ('validate/bet.php');
  * @var ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string} $bets все ставки по ID лота из БД
  * @var ?array{cost: int} $form заполненные пользователем поля формы
  * @var ?array{cost: string} $errors массив ошибок по данным из формы
- * @var int $cost текущая цена лота
- * @var int $user_id_max_bet ID пользователя максимальной ставки по лоту
- * @var int $min_cost минимальная ставка по лоту
+ * @var ?int $cost текущая цена лота
+ * @var ?int $user_id_max_bet ID пользователя максимальной ставки по лоту
+ * @var ?int $min_cost минимальная ставка по лоту
  * @var ?string $cat_name название категории
  * @var string $content HTML-код - контент страницы
  * @var string $layout весь HTML-код страницы с подвалом и шапкой
+ * @var bool $is_logged пользователь авторизован на сайте
+ * @var bool $is_author пользователь является автором лота
+ * @var bool $is_user_max_bet пользователь является автором последней ставки по лоту
  */
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
@@ -47,9 +50,9 @@ if (!$lot) {
 } else {
     $bets = get_bets_by_lot_id($connect, $lot_id);
     $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
-    $min_cost = intval($cost) + intval($lot['step_bet']);
-    $is_user_max_bet = is_identity(get_id_user_by_last_bet_on_lot($connect, $lot_id), $user_id);
-    $is_author = is_identity($lot['author_id'], $user_id);
+    $min_cost = $cost + $lot['step_bet'];
+    $is_user_max_bet = is_identity(get_id_user_by_last_bet_on_lot($connect, $lot_id), $user_id ?? null);
+    $is_author = is_identity($lot['author_id'], $user_id ?? null);
     $title = $lot['name'];
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         set_bet($connect, $_SESSION['user']['id'], $lot['id'], $form['cost']);
         $bets = get_bets_by_lot_id($connect, $lot_id);
         $cost = !empty($bets) ? find_max_bet($bets)['cost'] : $lot['price_start'];
-        $min_cost = intval($cost) + intval($lot['step_bet']);
+        $min_cost = $cost + $lot['step_bet'];
         header('Location: /lot.php?id=' . $lot_id);
     }
 }
@@ -73,13 +76,13 @@ $content = include_template($path, [
     'bets' => $bets,
     'form' => $form,
     'cost' => $cost,
-    'user_id_max_bet' => $user_id_max_bet,
-    'min_cost' => $min_cost,
+    'user_id_max_bet' => $user_id_max_bet ?? null,
+    'min_cost' => $min_cost ?? null,
     'symbol' => RUB_LOWER_CASE,
-    'errors' => $errors,
-    'is_logged' => $is_logged,
-    'is_user_max_bet' => $is_user_max_bet,
-    'is_author' => $is_author,
+    'errors' => $errors ?? null,
+    'is_logged' => $is_logged ?? false,
+    'is_user_max_bet' => $is_user_max_bet ?? false,
+    'is_author' => $is_author ?? false,
     'cat_name' => $cat_name,
 ]);
 

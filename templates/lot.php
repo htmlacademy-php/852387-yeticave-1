@@ -10,8 +10,8 @@ declare(strict_types=1);
  * @var ?array{cost: int} $form заполненные пользователем поля формы
  * @var array{hours: int, minutes: int, seconds: int} $timer кол-во времени до конечной даты [интервал часов, интервал минут, интервал секунд]
  * @var array{customer_id: int, lot_id: int, date_add: string, cost: int} $bets все ставки по ID лота из БД
- * @var int $cost текущая цена лота
- * @var int $min_cost минимальная ставка по лоту
+ * @var ?int $cost текущая цена лота
+ * @var ?int $min_cost минимальная ставка по лоту
  * @var string $symbol знак валюты строчный или заглавный (для строкового представления цены в HTML)
  * @var ?array{cost: string} $errors все ошибки заполнения формы пользователем
  * @var bool $is_logged пользователь авторизован на сайте

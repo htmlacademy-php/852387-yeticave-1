@@ -29,17 +29,12 @@ function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysql
             if (is_int($value)) {
                 $type = 'i';
             }
-            else if (is_string($value)) {
-                $type = 's';
-            }
             else if (is_double($value)) {
                 $type = 'd';
             }
 
-            if ($type) {
-                $types .= $type;
-                $stmt_data[] = $value;
-            }
+            $types .= $type;
+            $stmt_data[] = $value;
         }
 
         $values = array_merge([$stmt, $types], $stmt_data);
@@ -80,13 +75,9 @@ function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysql
  */
 function get_noun_plural_form (int $number, string $one, string $two, string $many): string
 {
-    $number = (int) $number;
     $mod10 = $number % 10;
-    $mod100 = $number % 100;
 
     return match (true) {
-        $mod100 >= 11 && $mod100 <= 20 => $many,
-        $mod10 > 5 => $many,
         $mod10 === 1 => $one,
         $mod10 >= 2 && $mod10 <= 4 => $two,
         default => $many,
