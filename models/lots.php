@@ -55,7 +55,7 @@ function get_lot_by_id(mysqli $connect, int $id): ?array
  * Формирует и выполняет SQL-запрос на добавление нового лота
  * @param mysqli $connect Ресурс соединения
  * @param string[] $data данные для добавления лота в БД
- * @return ?boolean
+ * @return ?bool
  **/
 function set_lot(mysqli $connect, array $data): ?bool
 {
@@ -78,7 +78,7 @@ function set_lot(mysqli $connect, array $data): ?bool
  *  img_url: string, description: string, price_start: int, step_bet: int,
  *  cat_name: string, cost: int}
  */
-function  search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS, int $offset = 0): ?array
+function search_lots(mysqli $connect, string $search, int $limit = LIMIT_ITEMS, int $offset = 0) : ?array
 {
     $sql ='SELECT l.id,
         l.user_id AS author_id,
@@ -176,7 +176,7 @@ function get_lots_without_win_and_finishing(mysqli $connect): ?array
  * Обновляет данные лота в БД
  * @param mysqli $connect ресурс соединения
  * @param int[] $data данные для внесения изменений в лоте в таблице БД
- * @return boolean true/false
+ * @return bool true/false
  *
  **/
 function update_lot(mysqli $connect, array $data): bool

@@ -17,7 +17,7 @@ function get_users(mysqli $connect): ?array
  * Формирует и выполняет SQL-запрос на добавление нового пользователя
  * @param mysqli $connect Ресурс соединения
  * @param string[] $data данные для добавления лота в БД
- * @return boolean
+ * @return bool
  **/
 function set_user(mysqli $connect, array $data): bool
 {
@@ -47,7 +47,8 @@ function get_user_by_email(mysqli $connect, string $email): ?array
 /**
  * Получает список пользователей по IDs или завершаем код с ошибкой
  * @param mysqli $connect Ресурс соединения
- * @return ?array<int,array{user_name: string, email: string, contact: string} данные пользователя (имя, email, другие контакты)
+ * @return ?array<int,array{user_name: string, email: string,
+ *     contact: string} данные пользователя (имя, email, другие контакты)
  */
 function get_user_by_id(mysqli $connect, int $id): ?array
 {

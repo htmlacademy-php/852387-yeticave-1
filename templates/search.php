@@ -18,13 +18,13 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]) ?>
     <div class="container">
         <section class="lots">
-            <h2>Результаты поиска по запросу «<span><?=$search; ?></span>»</h2>
-            <?php if (isset($lots) and count($lots) > 0): ?>
-                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
-            <?php else: ?>
+            <h2>Результаты поиска по запросу «<span><?=$search ?></span>»</h2>
+            <?php if (isset($lots) & count($lots) > 0) : ?>
+                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]) ?>
+            <?php else : ?>
                 <p>Ничего не найдено по вашему запросу</p>
             <?php endif; ?>
         </section>
@@ -35,6 +35,6 @@ declare(strict_types=1);
             'tab' => $tab,
             'path' => $path,
             'value' => $search,
-        ]); ?>
+        ]) ?>
     </div>
 </main>

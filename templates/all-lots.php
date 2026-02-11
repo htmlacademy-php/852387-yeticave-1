@@ -20,13 +20,13 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]) ?>
     <div class="container">
         <section class="lots">
-            <h2>Все лоты в категории <span>«<?=$cat_name; ?>»</span></h2>
-            <?php if ($count_lots > 0): ?>
-                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
-            <?php else: ?>
+            <h2>Все лоты в категории <span>«<?=$cat_name ?>»</span></h2>
+            <?php if ($count_lots > 0) : ?>
+                <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]) ?>
+            <?php else : ?>
                 <p>В этой категории нет лотов</p>
             <?php endif; ?>
         </section>
@@ -37,6 +37,6 @@ declare(strict_types=1);
             'tab' => $tab,
             'path' => $path,
             'value' => $cat_id
-        ]); ?>
+        ]) ?>
     </div>
 </main>

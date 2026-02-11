@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 //require_once ('data.php');
-require_once ('utils/db.php');
+require_once('utils/db.php');
 
 const LIMIT_CATEGORIES = 10;
 
@@ -32,5 +32,3 @@ function get_category_name(mysqli $connect, int $id): ?string
     $result = mysqli_fetch_assoc($query);
     return $result ? $result['name'] : null;
 }
-
-

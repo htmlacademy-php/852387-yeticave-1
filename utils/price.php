@@ -14,7 +14,7 @@ const CURRENCY = [
  */
 function price_format(string|int $price, string $symbol = ''): string
 {
-    $price = intval($price);
+    $price = (int)$price;
     $symbol = $symbol ? CURRENCY[$symbol] : '';
     return number_format($price, 0, ',', ' ') . ' ' . $symbol;
 }

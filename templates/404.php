@@ -8,7 +8,7 @@ declare(strict_types=1);
 ?>
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]) ?>
     <section class="lot-item container">
         <h2>404 Страница не найдена</h2>
         <p>Данной страницы не существует на сайте.</p>

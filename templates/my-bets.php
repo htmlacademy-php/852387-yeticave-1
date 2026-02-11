@@ -15,37 +15,37 @@ declare(strict_types=1);
 
 
 <main>
-    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]); ?>
+    <?=include_template('_category.php', ['categories' => $categories, 'cat_name' => $cat_name]) ?>
     <section class="rates container">
         <h2>Мои ставки</h2>
-        <?php if (isset($bets)): ?>
+        <?php if (isset($bets)) : ?>
         <table class="rates__list">
-            <?php foreach ($bets as $bet): ?>
-            <tr class="rates__item <?= is_identity($user_id, $bet['user_win_id']) ? 'rates__item--win' : ''; ?>">
+            <?php foreach ($bets as $bet) : ?>
+            <tr class="rates__item <?= is_identity($user_id, $bet['user_win_id']) ? 'rates__item--win' : '' ?>">
                 <td class="rates__info">
                     <div class="rates__img">
-                        <img src="<?=$bet['img_url'] ?? ''; ?>" width="54" height="40" alt="<?=$bet['lot_name']; ?>">
+                        <img src="<?=$bet['img_url'] ?? '' ?>" width="54" height="40" alt="<?=$bet['lot_name'] ?>">
                     </div>
                     <div>
-                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php',
-                                ['id' => $bet['lot_id']]); ?>"><?=$bet['lot_name']; ?></a></h3>
-                        <?php if(is_identity($user_id, $bet['user_win_id'])): ?>
-                            <p><?= $bet['author_contact']; ?></p>
+                        <h3 class="rates__title"><a href="<?= create_new_url('lot.php', [
+                            'id' => $bet['lot_id']]) ?>"><?=$bet['lot_name'] ?></a></h3>
+                        <?php if (is_identity($user_id, $bet['user_win_id'])) : ?>
+                            <p><?= $bet['author_contact'] ?></p>
                         <?php endif; ?>
                     </div>
                 </td>
                 <td class="rates__category">
-                    <?=$bet['cat_name']; ?>
+                    <?=$bet['cat_name'] ?>
                 </td>
                 <td class="rates__timer">
                     <?php [$flag, $button] = get_bets_timer_options($bet['date_end'], $user_id, $bet['user_win_id']); ?>
-                    <div class="timer timer--<?= $flag; ?>"><?= $button; ?></div>
+                    <div class="timer timer--<?= $flag ?>"><?= $button ?></div>
                 </td>
                 <td class="rates__price">
-                    <?= price_format($bet['cost'], $symbol); ?>
+                    <?= price_format($bet['cost'], $symbol) ?>
                 </td>
                 <td class="rates__time">
-                    <?= bet_time_format($bet['date_add']); ?>
+                    <?= bet_time_format($bet['date_add']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

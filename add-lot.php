@@ -1,20 +1,21 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('data.php');
-require_once ('utils/helpers.php');
-require_once ('models/lots.php');
-require_once ('validate/add-lot.php');
-require_once ('validate/upload-file.php');
+require_once('init.php');
+require_once('data.php');
+require_once('utils/helpers.php');
+require_once('models/lots.php');
+require_once('validate/add-lot.php');
+require_once('validate/upload-file.php');
 
 /**
- * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
+ * @var bool|mysqli|object $connect ресурс соединения с сервером БД
  * @var string $title заголовок страницы сайта
  * @var ?array<int,array{id: int, name: string, code: string} $categories все категории лотов из БД
  * @var ?array $form заполненные пользователем поля формы
  * @var ?array $errors все ошибки заполнения формы пользователем
- * @var ?array<int,array{id: string, lot_name: string, cat_name: string, cost: string, price_start: string, img_url: ?string, date_end: string} $lots
+ * @var ?array<int,array{id: string, lot_name: string, cat_name: string,
+ *     cost: string, price_start: string, img_url: ?string, date_end: string} $lots
  * @var ?array $lot заполненные пользователем поля формы
  * @var ?string $cat_name название категории
  * @var string $content HTML-код - контент страницы

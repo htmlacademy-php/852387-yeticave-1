@@ -19,7 +19,7 @@ function filter_errors(?array $data, array $rules, array $required, array $empty
             $rule = $rules[$key];
             $errors[$key] = $rule($value);
         }
-        if (in_array($key, $required) && (empty($value))) {
+        if (in_array($key, $required, true) && (empty($value))) {
             $errors[$key] = $empty_fields[$key];
         }
     }
@@ -37,7 +37,7 @@ function filter_errors(?array $data, array $rules, array $required, array $empty
  **/
 function validate_length(string $str, int $min, int $max) : ?string
 {
-    if((strlen($str) > 0 && strlen($str) < $min) || strlen($str) > $max) {
+    if (($str !== '' && strlen($str) < $min) || strlen($str) > $max) {
         return "Значение должно быть от $min до $max символов";
     }
     return null;

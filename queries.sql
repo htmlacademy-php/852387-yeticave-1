@@ -158,7 +158,7 @@ where b2.lot_id in (3, 5, NULL);
 SELECT name, email, contact FROM users WHERE id = 5;
 
 
-SELECT l.id "lot_id", l.name "lot_name", l.user_win_id FROM lots l
+SELECT l.id AS "lot_id", l.name "lot_name", l.user_win_id FROM lots l
                                                               join bets b on l.id = b.lot_id
 WHERE l.user_win_id IS NULL AND l.date_end <= DATE(NOW()) and b.cost is not null
 group by lot_id;

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('models/bets.php');
-require_once ('utils/date-time.php');
-require_once ('utils/price.php');
+require_once('init.php');
+require_once('models/bets.php');
+require_once('utils/date-time.php');
+require_once('utils/price.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -20,7 +20,7 @@ require_once ('utils/price.php');
 
 const RUB_LOWER_CASE = 'RUB_LOWER_CASE';
 
-if(!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     http_response_code(403);
     exit;
 }

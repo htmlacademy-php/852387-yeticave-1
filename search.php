@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('data.php');
-require_once ('models/lots.php');
-require_once ('utils/date-time.php');
-require_once ('utils/price.php');
+require_once('init.php');
+require_once('data.php');
+require_once('models/lots.php');
+require_once('utils/date-time.php');
+require_once('utils/price.php');
 
 /**
  * @var string $title заголовок страницы сайта

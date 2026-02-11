@@ -27,7 +27,7 @@ function sent_mail(string $email, string $user_name, int $lot_id, string $lot_na
     $message = new Email();
     $message->subject('Ваша ставка победила');
     $message->from('lesmir-15@mail.ru');
-    $message->to('lesmir-15@mail.ru'); // $email из БД, для проверки свой 'lesmir-15@mail.ru'
+    $message->to($email); // $email из БД, для проверки свой 'lesmir-15@mail.ru'
 
     $msg_content = include_template('email.php', [
         'lot_id' => $lot_id,
