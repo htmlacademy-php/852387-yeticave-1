@@ -19,7 +19,7 @@ function filter_errors(?array $data, array $rules, array $required, array $empty
             $rule = $rules[$key];
             $errors[$key] = $rule($value);
         }
-        if (in_array($key, $required, true) && (empty($value))) {
+        if ((empty($value)) && in_array($key, $required, true)) {
             $errors[$key] = $empty_fields[$key];
         }
     }
