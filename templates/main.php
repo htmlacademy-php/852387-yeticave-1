@@ -12,12 +12,13 @@ declare(strict_types=1);
 <main class="container">
     <section class="promo">
         <h2 class="promo__title">Нужен стафф для катки?</h2>
-        <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
+        <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное
+            сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <?php foreach ($categories as $category): ?>
-            <li class="promo__item promo__item--<?= htmlspecialchars($category['code']);?>">
-                <a class="promo__link" href="<?=create_new_url('all-lots.php',
-                    ['category' => $category['id']]); ?>"><?= htmlspecialchars($category['name']); ?></a>
+            <?php foreach ($categories as $category) : ?>
+            <li class="promo__item promo__item--<?= htmlspecialchars($category['code']) ?>">
+                <a class="promo__link" href="<?=create_new_url('all-lots.php', [
+                    'category' => $category['id']]) ?>"><?= htmlspecialchars($category['name']) ?></a>
             </li>
             <?php endforeach; ?>
         </ul>
@@ -27,7 +28,7 @@ declare(strict_types=1);
             <h2>Открытые лоты</h2>
         </div>
 
-        <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]); ?>
+        <?=include_template('_lot.php', ['lots' => $lots, 'symbol' => $symbol]) ?>
 
     </section>
 </main>

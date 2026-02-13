@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/date-time.php');
-require_once ('utils/validation.php');
+require_once('utils/date-time.php');
+require_once('utils/validation.php');
 
 const REQUIRED = ['name', 'description', 'price', 'date_end', 'step_bet', 'cat_id'];
 
@@ -39,10 +39,11 @@ function get_lot_fields(): ?array
 function validate_date(string $date): ?string
 {
     return match (true) {
-        !is_date_valid($date) => 'Не верный формат даты. «Дата завершения торгов» должна быть датой в формате «ГГГГ-ММ-ДД»',
+        !is_date_valid($date) => 'Не верный формат даты. «Дата завершения торгов»
+        должна быть датой в формате «ГГГГ-ММ-ДД»',
         diff_date($date) > 0 => '«Дата завершения торгов» должна быть больше текущей даты, хотя бы на один день',
         default => null
-        };
+    };
 }
 
 /**
@@ -56,7 +57,7 @@ function validate_price(mixed $value): ?string
         is_int($value) => 'Введите целое число',
         $value <= 0 => 'Значение должно быть больше 0',
         default => null
-        };
+    };
 }
 
 /**
@@ -70,7 +71,7 @@ function validate_id(?string $id, array $ids): ?string
     return match (true) {
         !in_array($id, $ids, true) => 'Указана не существующая категория',
         default => null
-        };
+    };
 }
 
 /**

@@ -13,7 +13,8 @@ require_once('sent-email.php');
  * @var int[] $win_ids список IDs пользователей, выигрышной ставки в лотах
  * @var bool $is_update  true/false получилось ли обновить запись в таблице лотов БД
  * @var array{user_name: string, email: string, contact: string} $user данные пользователя (имя, email, другие контакты)
- * @var array{id: int, date_end: string, lot_name: string, img_url: string, description: string, price_start: string, step_bet: int, cat_name: string} $lot данные лота
+ * @var array{id: int, date_end: string, lot_name: string, img_url: string,
+ *     description: string, price_start: string, step_bet: int, cat_name: string} $lot данные лота
  *
  **/
 
@@ -34,7 +35,6 @@ if (isset($last_bets)) {
 $win_ids = array_column($last_bets, 'user_id');
 
 foreach ($lot_ids as $key => $lot_id) {
-
     $is_update = update_lot($connect, [$win_ids[$key], $lot_id]);
 
     if (!$is_update) {

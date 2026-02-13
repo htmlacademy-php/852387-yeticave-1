@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('data.php');
-require_once ('utils/helpers.php');
-require_once ('models/lots.php');
-require_once ('utils/date-time.php');
-require_once ('utils/price.php');
+require_once('init.php');
+require_once('data.php');
+require_once('utils/helpers.php');
+require_once('models/lots.php');
+require_once('utils/date-time.php');
+require_once('utils/price.php');
 
 /**
  * @var string $title заголовок страницы сайта
@@ -37,7 +37,7 @@ if ($cat_id) {
     $items_count = count_lots_by_category($connect, $cat_id);
     [$pages_count, $offset, $pages] = get_data_pagination((int)$cur_page, $items_count, ITEMS_PER_PAGE);
     $lots = get_lots_by_category($connect, $cat_id, ITEMS_PER_PAGE, $offset);
-    $cat_name = get_category_name($connect ,$cat_id);
+    $cat_name = get_category_name($connect, $cat_id);
     if (!$cat_name) {
         http_response_code(404);
         $path = '404.php';

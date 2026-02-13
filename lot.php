@@ -1,23 +1,24 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('data.php');
-require_once ('utils/helpers.php');
-require_once ('utils/db.php');
-require_once ('models/lots.php');
-require_once ('models/bets.php');
-require_once ('utils/date-time.php');
-require_once ('utils/price.php');
-require_once ('validate/bet.php');
+require_once('init.php');
+require_once('data.php');
+require_once('utils/helpers.php');
+require_once('utils/db.php');
+require_once('models/lots.php');
+require_once('models/bets.php');
+require_once('utils/date-time.php');
+require_once('utils/price.php');
+require_once('validate/bet.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
+ * @var bool|mysqli|object $connect ресурс соединения с сервером БД
  * @var array<int,array{id: int, name: string, code: string} $categories список категорий лотов
  * @var array{id: int, author_id: int, date_end: string, name: string, description: string,
  *     img_url: string, price_start: int, step_bet: int, cat_name: string} $lot все данные по ID лота из БД
- * @var ?array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string} $bets все ставки по ID лота из БД
+ * @var ?array<int,array{customer_id: int, lot_id: int,
+ *     date_add: string, cost: int, user_name: string} $bets все ставки по ID лота из БД
  * @var ?array{cost: int} $form заполненные пользователем поля формы
  * @var ?array{cost: string} $errors массив ошибок по данным из формы
  * @var ?int $cost текущая цена лота
@@ -56,7 +57,6 @@ if (!$lot) {
     $title = $lot['name'];
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $form = get_bet_fields();
     $errors = array_filter(get_errors($form, $min_cost));
 

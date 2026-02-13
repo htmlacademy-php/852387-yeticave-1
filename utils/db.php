@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/helpers.php');
+require_once('utils/helpers.php');
 
 /**
  * Получаем данные из БД в виде ассоциативного массива или завершаем код с ошибкой
@@ -44,13 +44,14 @@ function get_item(mysqli $link, string $sql, ...$data): ?array
 
 /**
  * Находит элемент(ассоциативный массив) с данными по максимальной ставе
- * @var array<int,array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string} $bets все ставки по лоту
+ * @var array<int,array{customer_id: int, lot_id: int, date_add: string,
+ *     cost: int, user_name: string} $bets все ставки по лоту
  * @return array{customer_id: int, lot_id: int, date_add: string, cost: int, user_name: string}
  */
 
 function find_max_bet(array $bets): array
 {
-    return array_reduce($bets, function ($acc, $bet) {
+    return array_reduce($bets, static function ($acc, $bet) {
         return $acc['cost'] < $bet['cost'] ? $bet : $acc;
     }, $bets[0]);
 }

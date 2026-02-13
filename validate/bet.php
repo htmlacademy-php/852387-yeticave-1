@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/validation.php');
+require_once('utils/validation.php');
 
 const REQUIRED = ['cost'];
 
@@ -30,7 +30,7 @@ function validate_cost(int|string $value, int $min_cost): ?string
     return match (true) {
         $value < $min_cost => 'Ваша ставка меньше ' . $min_cost,
         default => null
-        };
+    };
 }
 
 /**

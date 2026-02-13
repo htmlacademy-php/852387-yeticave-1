@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/validation.php');
+require_once('utils/validation.php');
 
 const REQUIRED = ['email', 'password', 'name', 'message'];
 
@@ -24,7 +24,7 @@ function get_registration_fields(): ?array
         'message' => FILTER_SANITIZE_SPECIAL_CHARS,
     ]);
     $user_fields['email'] = $user_fields['email'] ?: '';
-    return array_map(fn($value) => trim($value), $user_fields);
+    return array_map(static fn($value) => trim($value), $user_fields);
 }
 
 /**
@@ -36,9 +36,9 @@ function get_registration_fields(): ?array
 function validate_email(?string $email, array $emails): ?string
 {
     return match (true) {
-        in_array($email, $emails) => 'Указанный email уже используется другим пользователем',
+        in_array($email, $emails, true) => 'Указанный email уже используется другим пользователем',
         default => null
-        };
+    };
 }
 
 /**

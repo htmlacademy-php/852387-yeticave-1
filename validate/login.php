@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once ('utils/validation.php');
+require_once('utils/validation.php');
 
 const REQUIRED = ['email', 'password'];
 
@@ -20,7 +20,7 @@ function get_login_fields(): ?array
         'password' => FILTER_SANITIZE_SPECIAL_CHARS,
     ]);
     $user_fields['email'] = $user_fields['email'] ?: '';
-    return array_map(fn($value) => $value, $user_fields);
+    return array_map(static fn($value) => $value, $user_fields);
 }
 
 /**
@@ -28,12 +28,12 @@ function get_login_fields(): ?array
  * @param ?array $data_bd список всех EMAIL-ов зарегистрированных пользователей из БД
  * @return ?string
  **/
-function validate_email( ?array $data_bd) : ?string
+function validate_email(?array $data_bd) : ?string
 {
     return match (true) {
         !$data_bd => 'Такой пользователь не найден',
         default => null
-        };
+    };
 }
 
 /**

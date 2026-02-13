@@ -28,8 +28,7 @@ function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysql
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_double($value)) {
+            } elseif (is_float($value)) {
                 $type = 'd';
             }
 
@@ -73,7 +72,7 @@ function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysql
  *
  * @return string Рассчитанная форма множественного числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
     $mod10 = $number % 10;
 
@@ -161,7 +160,7 @@ function get_data_pagination(int $cur_page, int $items_count, int $page_items): 
  * @param ?int $user_id_1 ID одного пользователя
  * @param ?int $user_id_2 ID второго пользователя
  *
- * @return boolean
+ * @return bool
  **/
 function is_identity(?int $user_id_1, ?int $user_id_2): bool
 {

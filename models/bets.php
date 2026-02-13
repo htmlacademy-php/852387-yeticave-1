@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once ('data.php');
-require_once ('utils/db.php');
+require_once('data.php');
+require_once('utils/db.php');
 
 const LIMIT_BETS = 10;
 
@@ -32,7 +32,7 @@ function get_bets_by_lot_id(mysqli $connect, int $id, int $limit = LIMIT_BETS): 
  * Формирует и выполняет SQL-запрос на добавление нового лота
  * @param mysqli $connect Ресурс соединения
  * @param mixed ...$data данные для добавления лота в БД
- * @return boolean true/false
+ * @return bool true/false
  */
 function set_bet(mysqli $connect, mixed ...$data): bool
 {

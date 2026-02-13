@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-require_once ('init.php');
-require_once ('data.php');
-require_once ('models/users.php');
-require_once ('validate/login.php');
+require_once('init.php');
+require_once('data.php');
+require_once('models/users.php');
+require_once('validate/login.php');
 
 /**
  * @var string $title заголовок страницы сайта
- * @var boolean|mysqli|object $connect ресурс соединения с сервером БД
+ * @var bool|mysqli|object $connect ресурс соединения с сервером БД
  * @var ?array<int,array{id: string, name: string, code: string} $categories все категории из БД
  * @var ?string $cat_name название категории
  * @var ?array $form заполненные пользователем поля формы
@@ -20,18 +20,17 @@ require_once ('validate/login.php');
 $title = 'Вход на сайт';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $form = get_login_fields();
     $user = $form['email'] ? get_user_by_email($connect, $form['email']) : null;
     $errors = get_errors($form, $user);
-    if (isset($user) and password_verify($form['password'], $user['password'])) {
+    if (isset($user) & password_verify($form['password'], $user['password'])) {
         $_SESSION['user'] = $user;
-    } else if ($form['password']) {
+    } elseif ($form['password']) {
         $errors['password'] = 'Вы ввели неверный пароль';
     }
 }
 
-if (!empty($_SESSION['user']) and isset($errors)) {
+if (!empty($_SESSION['user']) & isset($errors)) {
     header("Location: /index.php");
     exit();
 }

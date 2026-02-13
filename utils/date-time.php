@@ -48,7 +48,7 @@ function get_interval_in_second(string $datetime): false|int
  * @param string $date_end дата истечения лота
  * @param bool $is_bet опция-флаг = передаваемая дата относиться к ставке TRUE, дата относится к лоту FALSE
  * @return array{hours: float|int, minutes: float|int} массив ['hours' => количество часов,
- *                                                           'minutes' => количество минут, 'second' => количество секунд]
+ *                        'minutes' => количество минут, 'second' => количество секунд]
  */
 function get_dt_range(string $date_end, bool $is_bet = true): array
 {
@@ -79,21 +79,21 @@ function get_dt_range(string $date_end, bool $is_bet = true): array
  **/
 function diff_date(string $date): float
 {
-    return floor((strtotime('now') - strtotime($date)) / SECS_IN_HOUR);
+    return floor((time() - strtotime($date)) / SECS_IN_HOUR);
 }
 
 /**
  * Функция форматирует массив времени в строку
  *
  * @param array{hours: int, minutes: int, second: int} $time массив ['hours' => количество часов,
- *                                                          'minutes' => количество минут, 'second' => количество секунд]
+ *                                          'minutes' => количество минут, 'second' => количество секунд]
  * @return string время в виде строки НН:ММ
  */
 function timer_format(array $time): string
 {
     $result = [];
     foreach ($time as $value) {
-        $result[] = str_pad(strval($value), 2, "0", STR_PAD_LEFT);
+        $result[] = str_pad((string)$value, 2, "0", STR_PAD_LEFT);
     }
     return implode(':', $result);
 }
@@ -125,8 +125,5 @@ function bet_time_format(string $datetime): string
  **/
 function is_expiration_date(array $timer): bool
 {
-    if ($timer['hours'] === 0 and $timer['minutes'] === 0 and $timer['seconds'] === 0) {
-        return true;
-    }
-    return false;
+    return $timer['hours'] === 0 and $timer['minutes'] === 0 and $timer['seconds'] === 0;
 }
